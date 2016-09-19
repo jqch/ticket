@@ -1,0 +1,39 @@
+{% extends 'Agencia/index.html.twig' %}
+{% block content %}
+	<h2>Lista de Agencias <small>{{departamento}}</small></h2>
+	<a href="{{path('agencia_new',{'id': id })}}" class="btn btn-primary">Nuevo</a>
+	<div class="card">
+		<div class="table-responsive">
+            <table aria-busy="false" id="data-table-selection" class="table table-striped bootgrid-table">
+                <thead>
+                    <tr>
+                    	<th data-column-id="id">Id</th>
+                    	<th data-column-id="nombre">Nombre</th>
+                    	<th data-column-id="direccion">Direccion</th>
+                    	<th data-column-id="telefono">Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                		<td>1</td>
+                		<td>Carlyn Zollner</td>
+                		<td>Av. buenos aires</td>
+                		<td>7236423</td>
+                	</tr>
+                	<tr>
+                		<td>2</td>
+                		<td>Carlyn Zollsner</td>
+                		<td>Fiji</td>
+                		<td>157323</td>
+                	</tr>
+                	<tr>
+                		<td>3</td>
+                		<td>Carlyn Zollne33r</td>
+                		<td>Fiji</td>
+                		<td>157323</td>
+                	</tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

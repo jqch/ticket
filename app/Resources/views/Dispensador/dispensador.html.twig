@@ -1,0 +1,67 @@
+{% extends 'fullscreen.html.twig' %}
+{% block stylesheets %}
+    {{parent()}}
+    <!-- Vendor CSS -->
+        <link href="{{asset('vendors/bower_components/animate.css/animate.min.css')}}" rel="stylesheet">
+        <link href="{{asset('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css')}}" rel="stylesheet">
+        <!-- CSS -->
+        <link href="{{asset('css/app.min.1.css')}}" rel="stylesheet">
+
+    <style>
+        #content{
+            background-color: #4534aa;
+        }
+        .btn{
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div id="content">
+        <br><br>
+        <div class="row" id="botones">
+            {% for servicios in servicios %}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="nextScreen({{servicios.id}},{{servicios.esticket}})">{{servicios.servicio}}</button>
+            </div>
+            {% endfor %}
+        </div>
+        <audio id="player" src="{{asset('audio/beep.wav')}}"></audio>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var xhr;
+        function nextScreen(id,ticket){
+            document.getElementById('player').play();
+            if (xhr && xhr.readyState != 4) {
+                    xhr.abort();
+                }
+            xhr = $.ajax({
+                    type: 'post',
+                    cache: false,
+                    data: {id: id, ticket: ticket},
+                    url: "{{ path('dispensador_next_screen') }}",
+                    beforeSend: function () {
+                        $('#'+id).attr('disabled','disabled')
+                    },
+                    success: function (data) {
+                        $('#botones').empty();
+                        $('#botones').append(data);
+                    },
+                    statusCode: {
+                        500: function () {
+                            $('#'+id).removeAttr('disabled')
+                        },
+                        404: function () {
+
+                        }
+                    }
+                });
+        }
+    </script>
+{% endblock %}
