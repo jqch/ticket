@@ -33,6 +33,7 @@ class AgenciaController extends Controller
             if($id == 1){
 
             }
+            $em = $this->getDoctrine()->getManager();
             //dump($id);die;
             switch ($id) {
                 case 1:
@@ -46,6 +47,8 @@ class AgenciaController extends Controller
                     break;
                 default:
                     $departamento = 'Nacional';
+                    $agencias = $em->getRepository('AppBundle:Lugar')->findAll();
+                    dump($agencias);die;
                     break;
             }
             return $this->render('Agencia/list.html.twig', array(
