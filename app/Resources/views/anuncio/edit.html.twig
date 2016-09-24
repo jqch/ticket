@@ -2,12 +2,12 @@
 
 {% block body %}
     <div class="c-header">
-        <h2>Agencias <small></small> </h2>
+        <h2>Anuncio <small></small> </h2>
     </div>
     <div class="card">
         <div class="bar-options">
-            <h3>Editar Agencia</h3>
-            <a href="{{ path('agencia_index') }}" class="btn btn-primary">Atras</a>
+            <h3>Editar Anuncio</h3>
+            <a href="{{ path('anuncio_index') }}" class="btn btn-primary">Atras</a>
             {{ form_start(delete_form) }}
                 <button type="submit" class="btn btn-danger">Eliminar</button>
             {{ form_end(delete_form) }}
@@ -17,5 +17,4 @@
             <button type="submit" class="btn palette-Green bg">Guardar Cambios</button>
         {{ form_end(edit_form) }}
     </div>
-    
 {% endblock %}

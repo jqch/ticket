@@ -65,8 +65,28 @@ class PantallaController extends Controller
      */
     public function nextTextAction(Request $request)
     {
+        // Agencia
+        $agencia = 602;
+
         // Obtener la lista de textos
-        $textList = array('Primer mensaje','Al contrario del pensamiento popular, el texto de Lorem Ipsum no es simplemente texto aleatorio. Tiene sus raices en una pieza clásica de la literatura del Latin, que data del año 45 antes de Cristo.','Tercer anuncio','Hay muchas variaciones de los pasajes de Lorem Ipsum disponibles, pero la mayoría sufrió alteraciones en alguna manera, ya sea porque se le agregó humor, o palabras aleatorias que no parecen ni un poco creíbles.');
+
+        $em = $this->getDoctrine()->getManager();
+        $anuncios = $em->createQueryBuilder()
+                        ->select('a')
+                        ->from('AppBundle:AnuncioLista','al')
+                        ->innerJoin('AppBundle:Anuncio','a','with','al.anuncio = a.id')
+                        ->innerJoin('AppBundle:Agencia','ag','with','a.agencia = ag.id')
+                        ->orderBy('al.orden','ASC')
+                        ->where('ag.id = :idAgencia')
+                        ->andWhere('al.esactivo = true')
+                        ->setParameter('idAgencia',$agencia)
+                        ->getQuery()
+                        ->getResult();
+
+        $textList = array();
+        foreach ($anuncios as $a) {
+            $textList[] = $a->getAnuncio();
+        }
         $total = count($textList);
         $totalPositions = $total - 1;
 
@@ -94,8 +114,8 @@ class PantallaController extends Controller
             return new JsonResponse(array('nextText'=>$nextText));
 
         }else{
-            // Devolvemos el video por dafault
-            $nextVideo = 'Ningun mensaje - default';
+            // Devolvemos el anuncio por dafault
+            $nextVideo = '';
             return new JsonResponse(array('nextText'=>$nextText));
         }
 

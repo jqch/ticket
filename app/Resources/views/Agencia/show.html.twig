@@ -1,4 +1,67 @@
-{% extends 'Agencia/index.html.twig' %}
-{% block content %}
-	<h2>Agencias</h2>
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="c-header">
+        <h2>Agencias <small></small> </h2>
+    </div>
+    <div class="card">
+        <div class="bar-options">
+            <h3>Datos Agencia</h3>
+            <a href="{{ path('agencia_index') }}" class="btn btn-primary">Atras</a>
+            <a href="{{ path('agencia_edit', { 'id': agencium.id }) }}" class="btn btn-warning">Editar</a>
+            {{ form_start(delete_form) }}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            {{ form_end(delete_form) }}
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ agencium.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Agenciatipo</th>
+                        <td>{{ agencium.agenciaTipo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Agencia</th>
+                        <td>{{ agencium.agencia }}</td>
+                    </tr>
+                    <tr>
+                        <th>Direccion</th>
+                        <td>{{ agencium.direccion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Telefono</th>
+                        <td>{{ agencium.telefono }}</td>
+                    </tr>
+                    <tr>
+                        <th>Celular</th>
+                        <td>{{ agencium.celular }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fechaapertura</th>
+                        <td>{% if agencium.fechaApertura %}{{ agencium.fechaApertura|date('Y-m-d') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Fechacierre</th>
+                        <td>{% if agencium.fechaCierre %}{{ agencium.fechaCierre|date('Y-m-d') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Obs</th>
+                        <td>{{ agencium.obs }}</td>
+                    </tr>
+                    <tr>
+                        <th>Anchobanda</th>
+                        <td>{{ agencium.anchobanda }}</td>
+                    </tr>
+                    <tr>
+                        <th>Esactivo</th>
+                        <td>{% if agencium.esactivo %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -2,108 +2,139 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Entity\Agencia;
+use AppBundle\Form\AgenciaType;
 
 /**
- * @Route("/agencia", name="agencia")
+ * Agencia controller.
+ *
+ * @Route("/agencia")
  */
-
 class AgenciaController extends Controller
 {
     /**
-     * @Route("/", name="agencia")
+     * Lists all Agencia entities.
+     *
+     * @Route("/", name="agencia_index")
+     * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return $this->render('Agencia/index.html.twig');
-    }
+        $em = $this->getDoctrine()->getManager();
 
+        $agencias = $em->getRepository('AppBundle:Agencia')->findAll();
 
-    /**
-     * @Route("/list/", defaults={"id" = 0}, name="agencia_list")
-     * @Route("/list/{id}/")
-     */
-    public function listAction(Request $request)
-    {
-        try {
-            $id = $request->get('id');
-            if($id == 1){
-
-            }
-            $em = $this->getDoctrine()->getManager();
-            //dump($id);die;
-            switch ($id) {
-                case 1:
-                    $departamento = 'La Paz';
-                    break;
-                case 2:
-                    $departamento = 'Cochabamba';
-                    break;
-                case 3:
-                    $departamento = 'Santa Cruz';
-                    break;
-                default:
-                    $departamento = 'Nacional';
-                    $agencias = $em->getRepository('AppBundle:Lugar')->findAll();
-                    dump($agencias);die;
-                    break;
-            }
-            return $this->render('Agencia/list.html.twig', array(
-                'id'=>$id,
-                'departamento'=>$departamento
-            ));
-        } catch (Exception $e) {
-
-        }
+        return $this->render('agencia/index.html.twig', array(
+            'agencias' => $agencias,
+        ));
     }
 
     /**
-     * @Route("/show", name="agencia_show")
-     */
-    public function showAction(Request $request)
-    {
-        try {
-            $departamento = 1;
-            return $this->render('Agencia/show.html.twig');
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
+     * Creates a new Agencia entity.
+     *
      * @Route("/new", name="agencia_new")
+     * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        try {
-            return $this->render('Agencia/new.html.twig');
-        } catch (Exception $e) {
+        $agencium = new Agencia();
+        $form = $this->createForm('AppBundle\Form\AgenciaType', $agencium);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agencium);
+            $em->flush();
+
+            return $this->redirectToRoute('agencia_show', array('id' => $agencium->getId()));
         }
+
+        return $this->render('agencia/new.html.twig', array(
+            'agencium' => $agencium,
+            'form' => $form->createView(),
+        ));
     }
-    /**
-     * @Route("/edit", name="agencia_edit")
-     */
-    public function editAction(Request $request)
-    {
-        try {
-            return $this->render('Agencia/edit.html.twig');
-        } catch (Exception $e) {
 
-        }
+    /**
+     * Finds and displays a Agencia entity.
+     *
+     * @Route("/{id}", name="agencia_show")
+     * @Method("GET")
+     */
+    public function showAction(Agencia $agencium)
+    {
+        $deleteForm = $this->createDeleteForm($agencium);
+
+        return $this->render('agencia/show.html.twig', array(
+            'agencium' => $agencium,
+            'delete_form' => $deleteForm->createView(),
+        ));
     }
-    /**
-     * @Route("/delete", name="agencia_delete")
-     */
-    public function deleteAction(Request $request)
-    {
-        try {
-            return new JsonResponse(array('mensaje'=>'hola'));
-        } catch (Exception $e) {
 
+    /**
+     * Displays a form to edit an existing Agencia entity.
+     *
+     * @Route("/{id}/edit", name="agencia_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Agencia $agencium)
+    {
+        $deleteForm = $this->createDeleteForm($agencium);
+        $editForm = $this->createForm('AppBundle\Form\AgenciaType', $agencium);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agencium);
+            $em->flush();
+
+            return $this->redirectToRoute('agencia_edit', array('id' => $agencium->getId()));
         }
+
+        return $this->render('agencia/edit.html.twig', array(
+            'agencium' => $agencium,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a Agencia entity.
+     *
+     * @Route("/{id}", name="agencia_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, Agencia $agencium)
+    {
+        $form = $this->createDeleteForm($agencium);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($agencium);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('agencia_index');
+    }
+
+    /**
+     * Creates a form to delete a Agencia entity.
+     *
+     * @param Agencia $agencium The Agencia entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Agencia $agencium)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('agencia_delete', array('id' => $agencium->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
 }

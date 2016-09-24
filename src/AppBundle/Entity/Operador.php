@@ -60,9 +60,9 @@ class Operador
     /**
      * @var string
      *
-     * @ORM\Column(name="contraseÃ±a", type="string", length=255, nullable=true)
+     * @ORM\Column(name="clave", type="string", length=255, nullable=true)
      */
-    private $contraseã±a;
+    private $clave;
 
     /**
      * @var boolean
@@ -99,4 +99,244 @@ class Operador
     private $operadorTipo;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set ci
+     *
+     * @param string $ci
+     * @return Operador
+     */
+    public function setCi($ci)
+    {
+        $this->ci = $ci;
+
+        return $this;
+    }
+
+    /**
+     * Get ci
+     *
+     * @return string 
+     */
+    public function getCi()
+    {
+        return $this->ci;
+    }
+
+    /**
+     * Set paterno
+     *
+     * @param string $paterno
+     * @return Operador
+     */
+    public function setPaterno($paterno)
+    {
+        $this->paterno = $paterno;
+
+        return $this;
+    }
+
+    /**
+     * Get paterno
+     *
+     * @return string 
+     */
+    public function getPaterno()
+    {
+        return $this->paterno;
+    }
+
+    /**
+     * Set materno
+     *
+     * @param string $materno
+     * @return Operador
+     */
+    public function setMaterno($materno)
+    {
+        $this->materno = $materno;
+
+        return $this;
+    }
+
+    /**
+     * Get materno
+     *
+     * @return string 
+     */
+    public function getMaterno()
+    {
+        return $this->materno;
+    }
+
+    /**
+     * Set nombres
+     *
+     * @param string $nombres
+     * @return Operador
+     */
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+
+        return $this;
+    }
+
+    /**
+     * Get nombres
+     *
+     * @return string 
+     */
+    public function getNombres()
+    {
+        return $this->nombres;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     * @return Operador
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set clave
+     *
+     * @param string $clave
+     * @return Operador
+     */
+    public function setClave($clave)
+    {
+        $this->clave = $clave;
+
+        return $this;
+    }
+
+    /**
+     * Get clave
+     *
+     * @return string 
+     */
+    public function getClave()
+    {
+        return $this->clave;
+    }
+
+    /**
+     * Set esactivo
+     *
+     * @param boolean $esactivo
+     * @return Operador
+     */
+    public function setEsactivo($esactivo)
+    {
+        $this->esactivo = $esactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get esactivo
+     *
+     * @return boolean 
+     */
+    public function getEsactivo()
+    {
+        return $this->esactivo;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return Operador
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set agencia
+     *
+     * @param \AppBundle\Entity\Agencia $agencia
+     * @return Operador
+     */
+    public function setAgencia(\AppBundle\Entity\Agencia $agencia = null)
+    {
+        $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    /**
+     * Get agencia
+     *
+     * @return \AppBundle\Entity\Agencia 
+     */
+    public function getAgencia()
+    {
+        return $this->agencia;
+    }
+
+    /**
+     * Set operadorTipo
+     *
+     * @param \AppBundle\Entity\OperadorTipo $operadorTipo
+     * @return Operador
+     */
+    public function setOperadorTipo(\AppBundle\Entity\OperadorTipo $operadorTipo = null)
+    {
+        $this->operadorTipo = $operadorTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get operadorTipo
+     *
+     * @return \AppBundle\Entity\OperadorTipo 
+     */
+    public function getOperadorTipo()
+    {
+        return $this->operadorTipo;
+    }
 }

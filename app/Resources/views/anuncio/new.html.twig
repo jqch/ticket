@@ -2,17 +2,17 @@
 
 {% block body %}
     <div class="c-header">
-        <h2>Agencias <small></small> </h2>
+        <h2>Anuncio <small></small> </h2>
     </div>
     <div class="card">
         <div class="bar-options">
-            <h3>Crear Agencia</h3>
-            <a href="{{ path('agencia_index') }}" class="btn btn-primary">Atras</a>
+            <h3>Crear Anuncio</h3>
+            <a href="{{ path('anuncio_index') }}" class="btn btn-primary">Atras</a>
         </div>
         {{ form_start(form) }}
             {{ form_widget(form) }}
             <button type="submit" class="btn palette-Green bg">Registrar</button>
         {{ form_end(form) }}
     </div>
-    
 {% endblock %}
+

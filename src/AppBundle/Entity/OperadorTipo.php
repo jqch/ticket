@@ -43,5 +43,86 @@ class OperadorTipo
      */
     private $obs;
 
+    public function __toString(){
+        return $this->operadorTipo;
+    }
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set operadorTipo
+     *
+     * @param string $operadorTipo
+     * @return OperadorTipo
+     */
+    public function setOperadorTipo($operadorTipo)
+    {
+        $this->operadorTipo = $operadorTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get operadorTipo
+     *
+     * @return string 
+     */
+    public function getOperadorTipo()
+    {
+        return $this->operadorTipo;
+    }
+
+    /**
+     * Set esactivo
+     *
+     * @param boolean $esactivo
+     * @return OperadorTipo
+     */
+    public function setEsactivo($esactivo)
+    {
+        $this->esactivo = $esactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get esactivo
+     *
+     * @return boolean 
+     */
+    public function getEsactivo()
+    {
+        return $this->esactivo;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return OperadorTipo
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
 }

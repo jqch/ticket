@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="c-header">
+        <h2>Operador <small></small> </h2>
+    </div>
+    <div class="card">
+        <div class="bar-options">
+            <h3>Editar Operador</h3>
+
+            <a href="{{ path('operador_index') }}" class="btn btn-primary waves-effect">Atras</a>
+            {{ form_start(delete_form) }}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            {{ form_end(delete_form) }}
+        </div>
+        <div class="table-responsive">
+            {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+                <button type="submit" class="btn palette-Green bg waves-effect">Guardar Cambios</button>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -57,4 +57,106 @@ class OperadorServicio
     private $servicio;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set esactivo
+     *
+     * @param boolean $esactivo
+     * @return OperadorServicio
+     */
+    public function setEsactivo($esactivo)
+    {
+        $this->esactivo = $esactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get esactivo
+     *
+     * @return boolean 
+     */
+    public function getEsactivo()
+    {
+        return $this->esactivo;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return OperadorServicio
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set operador
+     *
+     * @param \AppBundle\Entity\Operador $operador
+     * @return OperadorServicio
+     */
+    public function setOperador(\AppBundle\Entity\Operador $operador = null)
+    {
+        $this->operador = $operador;
+
+        return $this;
+    }
+
+    /**
+     * Get operador
+     *
+     * @return \AppBundle\Entity\Operador 
+     */
+    public function getOperador()
+    {
+        return $this->operador;
+    }
+
+    /**
+     * Set servicio
+     *
+     * @param \AppBundle\Entity\Servicio $servicio
+     * @return OperadorServicio
+     */
+    public function setServicio(\AppBundle\Entity\Servicio $servicio = null)
+    {
+        $this->servicio = $servicio;
+
+        return $this;
+    }
+
+    /**
+     * Get servicio
+     *
+     * @return \AppBundle\Entity\Servicio 
+     */
+    public function getServicio()
+    {
+        return $this->servicio;
+    }
 }

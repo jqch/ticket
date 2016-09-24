@@ -1,0 +1,29 @@
+.card{
+    padding: 15px;
+}
+
+.bar-options{
+	padding: 5px;
+	text-align: right;
+	border: 1px solid #EEEEEE;
+}
+
+.bar-options h3{
+	margin-top: 0px;
+	text-align: left;
+	color: #3A8680;
+}
+
+.bar-options form{
+	display: inline-block;
+}
+
+
+ul > li{
+	list-style: none;
+	display: inline-block;
+}
+
+/* 
+ * Formularios
+ */

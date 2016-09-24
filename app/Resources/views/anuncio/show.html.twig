@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="c-header">
+        <h2>Anuncio <small></small> </h2>
+    </div>
+    <div class="card">
+        <div class="bar-options">
+            <h3>Datos Anuncio</h3>
+            <a href="{{ path('anuncio_index') }}" class="btn btn-primary">Atras</a>
+            <a href="{{ path('anuncio_edit', { 'id': anuncio.id }) }}" class="btn btn-warning">Editar</a>
+            {{ form_start(delete_form) }}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            {{ form_end(delete_form) }}
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ anuncio.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Anunciotipo</th>
+                        <td>{{ anuncio.anuncioTipo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Anuncio</th>
+                        <td>{{ anuncio.anuncio }}</td>
+                    </tr>
+                    <tr>
+                        <th>Obs</th>
+                        <td>{{ anuncio.obs }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

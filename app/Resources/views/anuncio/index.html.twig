@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="c-header">
+        <h2>Anuncio <small></small> </h2>
+    </div>
+    <div class="card">
+        <div class="bar-options">
+            <h3>Lista de anuncios</h3>
+            <a href="{{ path('anuncio_new') }}" class="btn btn-primary">Crear Anuncio</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Anunciotipo</th>
+                        <th>Anuncio</th>
+                        <th>Obs</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for anuncio in anuncios %}
+                    <tr>
+                        <td><a href="{{ path('anuncio_show', { 'id': anuncio.id }) }}">{{ anuncio.id }}</a></td>
+                        <td>{{ anuncio.anuncioTipo }}</td>
+                        <td>{{ anuncio.anuncio }}</td>
+                        <td>{{ anuncio.obs }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('anuncio_show', { 'id': anuncio.id }) }}" class="btn btn-primary">Ver</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('anuncio_edit', { 'id': anuncio.id }) }}" class="btn btn-warning">Editar</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
