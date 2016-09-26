@@ -1,59 +1,79 @@
 {% extends 'layout.html.twig' %}
-
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li>
+            <i class="ace-icon fa fa-list-ul home-icon"></i>
+            <a href="{{path('operador_index')}}">Operador</a>
+        </li>
+        <li class="active">Datos</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
-    <div class="c-header">
-        <h2>Operador <small></small> </h2>
+    <div class="page-header">
+        <h1>
+            Operador
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Datos generales
+            </small>
+        </h1>
     </div>
-    <div class="card">
-        <div class="bar-options">
-            <h3>Datos Operador</h3>
-            <a href="{{ path('operador_index') }}" class="btn btn-primary waves-effect">Atras</a>
-            <a href="{{ path('operador_edit', { 'id': operador.id }) }}" class="btn btn-warning waves-effect">Editar</a>
-            {{ form_start(delete_form) }}
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            {{ form_end(delete_form) }}
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('operador_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+                <a href="{{ path('operador_edit', { 'id': operador.id }) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-pencil bigger-130 green"></i></a>
+                {{ form_start(delete_form) }}
+                    <button type="submit" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-trash-o bigger-110 red"></i></button>
+                {{ form_end(delete_form) }}
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped bootgrid-table">
-                <tbody>
-                    <tr>
-                        <th>Id</th>
-                        <td>{{ operador.id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Ci</th>
-                        <td>{{ operador.ci }}</td>
-                    </tr>
-                    <tr>
-                        <th>Paterno</th>
-                        <td>{{ operador.paterno }}</td>
-                    </tr>
-                    <tr>
-                        <th>Materno</th>
-                        <td>{{ operador.materno }}</td>
-                    </tr>
-                    <tr>
-                        <th>Nombres</th>
-                        <td>{{ operador.nombres }}</td>
-                    </tr>
-                    <tr>
-                        <th>Usuario</th>
-                        <td>{{ operador.usuario }}</td>
-                    </tr>
-                    <tr>
-                        <th>Clave</th>
-                        <td>{{ operador.clave }}</td>
-                    </tr>
-                    <tr>
-                        <th>Esactivo</th>
-                        <td>{% if operador.esactivo %}Si{% else %}No{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th>Obs</th>
-                        <td>{{ operador.obs }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped ">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ operador.id }}</td>
+                </tr>
+                <tr>
+                    <th>Ci</th>
+                    <td>{{ operador.ci }}</td>
+                </tr>
+                <tr>
+                    <th>Paterno</th>
+                    <td>{{ operador.paterno }}</td>
+                </tr>
+                <tr>
+                    <th>Materno</th>
+                    <td>{{ operador.materno }}</td>
+                </tr>
+                <tr>
+                    <th>Nombres</th>
+                    <td>{{ operador.nombres }}</td>
+                </tr>
+                <tr>
+                    <th>Usuario</th>
+                    <td>{{ operador.usuario }}</td>
+                </tr>
+                <tr>
+                    <th>Clave</th>
+                    <td>{{ operador.clave }}</td>
+                </tr>
+                <tr>
+                    <th>Esactivo</th>
+                    <td>{% if operador.esactivo %}Si{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Obs</th>
+                    <td>{{ operador.obs }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 {% endblock %}

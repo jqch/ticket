@@ -1,20 +1,45 @@
 {% extends 'layout.html.twig' %}
-
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li>
+            <i class="ace-icon fa fa-list-ul home-icon"></i>
+            <a href="{{path('anuncio_index')}}">Anuncio</a>
+        </li>
+        <li class="active">Editar</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
-    <div class="c-header">
-        <h2>Anuncio <small></small> </h2>
+    <div class="page-header">
+        <h1>
+            Anuncio
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Editar
+            </small>
+        </h1>
     </div>
-    <div class="card">
-        <div class="bar-options">
-            <h3>Editar Anuncio</h3>
-            <a href="{{ path('anuncio_index') }}" class="btn btn-primary">Atras</a>
-            {{ form_start(delete_form) }}
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            {{ form_end(delete_form) }}
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('anuncio_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+                {{ form_start(delete_form) }}
+                    <button type="submit" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-trash-o bigger-110 red"></i></submit>
+                {{ form_end(delete_form) }}
+            </div>
         </div>
-        {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <button type="submit" class="btn palette-Green bg">Guardar Cambios</button>
-        {{ form_end(edit_form) }}
     </div>
+    <div class="table-header">
+        Actualizar datos
+    </div>
+    
+    {{ form_start(edit_form, { 'attr': {'class':'form-horizontal','role':'form'} }) }}
+        {{ form_widget(edit_form) }}
+        <hr>
+        <button type="submit" class="btn btn-white btn-info btn-bold"><i class="fa fa-save green"></i> Guardar Cambios</button>
+    {{ form_end(edit_form) }}
+
 {% endblock %}

@@ -38,16 +38,15 @@ class LoginController extends Controller
                         return $this->redirect($this->generateUrl('ventanilla_index'));
                         break;
                     case 4: // administrador
-                        return $this->render('Login/login.html.twig');
+                        return $this->redirect($this->generateUrl('login'));
                         break;
 
                     default:
-                        # code...
+                        return $this->redirect($this->generateUrl('login'));
                         break;
                 }
             } catch (Exception $e) {
-
+                return $this->redirect($this->generateUrl('login'));
             }
-            return $this->render('Login/login.html.twig');
     }
 }

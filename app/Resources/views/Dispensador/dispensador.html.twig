@@ -9,19 +9,24 @@
 
     <style>
         #content{
-            background-color: #4534aa;
+            background: #FFFFFF;
+            padding-left: 20px;
         }
         .btn{
-            width: 100%;
+            width: 97%;
             margin-bottom: 20px;
             padding: 10px;
             padding-top: 30px;
             padding-bottom: 30px;
+            background-color: #00BC9A;
         }
     </style>
 {% endblock %}
 {% block body %}
     <div id="content">
+
+        <br><br>
+        <div style="text-align:center"><img src="{{asset('img/logo.png')}}" alt="" style="heigth:80%;"></div>
         <br><br>
         <div class="row" id="botones">
             {% for servicios in servicios %}

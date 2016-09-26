@@ -1,16 +1,37 @@
 {% extends 'layout.html.twig' %}
-
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li class="active">Agencia</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
-    <div class="c-header">
-        <h2>Agencias <small></small> </h2>
+    <div class="page-header">
+        <h1>
+            Agencia
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Gestión de Agencias
+            </small>
+        </h1>
     </div>
     <div class="card">
-        <div class="bar-options">
-            <h3>Lista de agencias</h3>
-            <a href="{{ path('agencia_new') }}" class="btn btn-primary">Crear Agencia</a>
+
+        <div class="clearfix">
+            <div class="pull-right tableTools-container">
+                <div class="dt-buttons btn-overlap btn-group">
+                    <a href="{{ path('agencia_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="table-header">
+            Lista de agencias registradas
         </div>
         <div class="table-responsive">
-            <table>
+            <table class="table table-striped dataTable">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -42,14 +63,15 @@
                         <td>{{ agencium.anchobanda }}</td>
                         <td>{% if agencium.esactivo %}Yes{% else %}No{% endif %}</td>
                         <td>
-                            <ul>
-                                <li>
-                                    <a href="{{ path('agencia_show', { 'id': agencium.id }) }}" class="btn btn-primary">Ver</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('agencia_edit', { 'id': agencium.id }) }}" class="btn btn-warning">Editar</a>
-                                </li>
-                            </ul>
+                            <div class="hidden-sm hidden-xs action-buttons">
+                                <a class="blue" href="{{ path('agencia_show', { 'id': agencium.id }) }}">
+                                    <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                </a>
+
+                                <a class="green" href="{{ path('agencia_edit', { 'id': agencium.id }) }}">
+                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -57,4 +79,8 @@
             </table>
         </div>
     </div>
+
+{% endblock %}
+{% block javascripts %}
+    
 {% endblock %}

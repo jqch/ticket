@@ -53,12 +53,18 @@
 		#hora{
 			width: 100%;
 			height: 40%;
+			text-align: center;
+			color: #AACDCF;
+			font-size: 50px;
 		}
 		.ficha{
 			width: 100%;
 			height: 20%;
 			background-color: #00372F;
 			border-top: 1px solid #006255;
+			color: #FFFFFF;
+			font-size: 100px;
+			text-align: center;
 		}
 
 	</style>
@@ -67,14 +73,18 @@
 	<div id="content">
 		<div id="cuerpo">
 			<div id="video">
-				<div id="logo"><img src="{{asset('img/logo.gif')}}" alt="" style="display:none"></div>
+				<div id="logo" style="margin-left:20px"><img src="{{asset('img/logo.png')}}" alt="" style="heigth:80%;"></div>
 				<video id="reproductor" width="100%" height="80%" autoplay="true" controls></video>
 			</div>
 			<div id="botones">
-				<div id="hora"></div>
-				<div id="b1" class="ficha"></div>
-				<div id="b2" class="ficha"></div>
-				<div id="b3" class="ficha"></div>
+				<div id="hora">
+					<br>
+					Hora <br>
+					03:50 PM
+				</div>
+				<div id="b1" class="ficha">C-200</div>
+				<div id="b2" class="ficha" style="background:#07CF81">CR-45</div>
+				<div id="b3" class="ficha">P-7</div>
 			</div>
 		</div>
 		<div id="pie">
@@ -181,7 +191,12 @@
 
 		// Fichas
 		$(document).ready(function(){
-
+			function mostrarhora(){ 
+				var f=new Date();
+				cad=f.getHours()+":"+f.getMinutes()+":"+f.getSeconds(); 
+				$('#hora').val(cad);
+				setTimeout("mostrarhora()",1000); 
+			}
 		});
 
 	</script>

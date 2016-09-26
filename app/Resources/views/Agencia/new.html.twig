@@ -1,18 +1,42 @@
 {% extends 'layout.html.twig' %}
-
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li>
+            <i class="ace-icon fa fa-list-ul home-icon"></i>
+            <a href="{{path('agencia_index')}}">Agencia</a>
+        </li>
+        <li class="active">Crear</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
-    <div class="c-header">
-        <h2>Agencias <small></small> </h2>
+    <div class="page-header">
+        <h1>
+            Agencia
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Crear
+            </small>
+        </h1>
     </div>
-    <div class="card">
-        <div class="bar-options">
-            <h3>Crear Agencia</h3>
-            <a href="{{ path('agencia_index') }}" class="btn btn-primary">Atras</a>
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('agencia_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+            </div>
         </div>
+    </div>
+    <div class="table-header">
+        Registrar datos de la nueva agencia
+    </div>
+    
         {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button type="submit" class="btn palette-Green bg">Registrar</button>
+            <hr>
+            <button type="submit" class="btn btn-white btn-info btn-bold"><i class="fa fa-save green"></i> Registrar</button>
         {{ form_end(form) }}
-    </div>
     
 {% endblock %}

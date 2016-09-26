@@ -1,18 +1,41 @@
 {% extends 'layout.html.twig' %}
-
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li>
+            <i class="ace-icon fa fa-list-ul home-icon"></i>
+            <a href="{{path('agencia_index')}}">Agencia</a>
+        </li>
+        <li class="active">Datos</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
-    <div class="c-header">
-        <h2>Agencias <small></small> </h2>
+    
+    <div class="page-header">
+        <h1>
+            Agencia
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Datos generales
+            </small>
+        </h1>
     </div>
-    <div class="card">
-        <div class="bar-options">
-            <h3>Datos Agencia</h3>
-            <a href="{{ path('agencia_index') }}" class="btn btn-primary">Atras</a>
-            <a href="{{ path('agencia_edit', { 'id': agencium.id }) }}" class="btn btn-warning">Editar</a>
-            {{ form_start(delete_form) }}
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            {{ form_end(delete_form) }}
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('agencia_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+                <a href="{{ path('agencia_edit', { 'id': agencium.id }) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-pencil bigger-130 green"></i></a>
+                {{ form_start(delete_form) }}
+                    <button type="submit" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-trash-o bigger-110 red"></i></button>
+                {{ form_end(delete_form) }}
+            </div>
         </div>
+    </div>
+
+    <div class="card">
         <div class="table-responsive">
             <table class="table table-striped">
                 <tbody>
