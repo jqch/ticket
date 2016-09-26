@@ -25,9 +25,9 @@ class TransaccionTipo
     /**
      * @var string
      *
-     * @ORM\Column(name="ventanilla_tipo", type="string", length=100, nullable=false)
+     * @ORM\Column(name="transaccion_tipo", type="string", length=100, nullable=false)
      */
-    private $ventanillaTipo;
+    private $transaccionTipo;
 
     /**
      * @var boolean
@@ -48,7 +48,7 @@ class TransaccionTipo
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,26 +56,26 @@ class TransaccionTipo
     }
 
     /**
-     * Set ventanillaTipo
+     * Set transaccionTipo
      *
-     * @param string $ventanillaTipo
+     * @param string $transaccionTipo
      * @return TransaccionTipo
      */
-    public function setVentanillaTipo($ventanillaTipo)
+    public function setTransaccionTipo($transaccionTipo)
     {
-        $this->ventanillaTipo = $ventanillaTipo;
+        $this->transaccionTipo = $transaccionTipo;
 
         return $this;
     }
 
     /**
-     * Get ventanillaTipo
+     * Get transaccionTipo
      *
-     * @return string 
+     * @return string
      */
-    public function getVentanillaTipo()
+    public function getTransaccionTipo()
     {
-        return $this->ventanillaTipo;
+        return $this->transaccionTipo;
     }
 
     /**
@@ -94,7 +94,7 @@ class TransaccionTipo
     /**
      * Get esactivo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEsactivo()
     {
@@ -117,7 +117,7 @@ class TransaccionTipo
     /**
      * Get obs
      *
-     * @return string 
+     * @return string
      */
     public function getObs()
     {

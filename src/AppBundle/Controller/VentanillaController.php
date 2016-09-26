@@ -18,12 +18,25 @@ class VentanillaController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $operadorId = 1;
-        $operadorTipo = 2;
-        return $this->render('Ventanilla/ventanilla.html.twig', array(
-            'operadorId'=>$operadorId,
-            'operadorTipo'=>$operadorTipo
-        ));
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+
+            $operador = $em->getRepository('AppBundle:Operador')->find(1);
+            $fecha = date('d-m-Y');
+            $operadorTipo = 2;
+
+            $em->getConnection()->commit();
+            return $this->render('Ventanilla/ventanilla.html.twig', array(
+                'operadorId'=>$operador->getId(),
+                'operadorTipo'=>$operadorTipo,
+                'fecha'=>$fecha
+            ));
+
+        } catch (Exception $e) {
+
+        }
+
     }
 
      /**
@@ -32,10 +45,31 @@ class VentanillaController extends Controller
     public function ticketsEsperaAction(Request $request)
     {
         try {
-            $operadorTipo = $request->get('operadorTipo');
-            //dump($tipoOperador);die;
-            // Consulta de cantidad en espera del dia
-            $enEspera = rand(0,10);
+            $operadorId = $request->get('operadorId');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $serviciosOperador = $em->getRepository('AppBundle:OperadorServicio')->findBy(array('operador'=>$operadorId));
+            $arrayServicios = array();
+            foreach ($serviciosOperador as $so) {
+                $arrayServicios[] = $so->getServicio()->getId();
+            }
+            //dump($arrayServicios);die;
+            $enEspera = $em->createQueryBuilder()
+                                    ->select('t.id')
+                                    ->from('AppBundle:Ticket','t')
+                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
+                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
+                                    ->where('Date(t.fechahora) = :fechaActual')
+                                    ->andWhere('s.id IN (:servicios)')
+                                    ->andWhere('te.id = 0')
+                                    ->orderBy('t.fechahora','DESC')
+                                    ->setParameter('fechaActual',new \DateTime('now'))
+                                    ->setParameter('servicios',$arrayServicios)
+                                    ->getQuery()
+                                    ->getResult();
+
+            $em->getConnection()->commit();
+            $enEspera = count($enEspera);
             return new JsonResponse(array('enEspera'=>$enEspera));
         } catch (Exception $e) {
 
@@ -48,11 +82,33 @@ class VentanillaController extends Controller
     public function nextTicketAction(Request $request)
     {
         try {
-            $operadorTipo = $request->get('operadorTipo');
-            //dump($tipoOperador);die;
-            // Consulta de cantidad en espera del dia
-            $nextTicketNumber = 'C - 980';
-            return new JsonResponse(array('nextTicketNumber'=>$nextTicketNumber));
+            $operadorId = $request->get('operadorId');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $serviciosOperador = $em->getRepository('AppBundle:OperadorServicio')->findBy(array('operador'=>$operadorId));
+            $arrayServicios = array();
+            foreach ($serviciosOperador as $so) {
+                $arrayServicios[] = $so->getServicio()->getId();
+            }
+            //dump($arrayServicios);die;
+            $siguiente = $em->createQueryBuilder()
+                                    ->select('t')
+                                    ->from('AppBundle:Ticket','t')
+                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
+                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
+                                    ->where('Date(t.fechahora) = :fechaActual')
+                                    ->andWhere('s.id IN (:servicios)')
+                                    ->andWhere('te.id = 0')
+                                    ->orderBy('t.fechahora','DESC')
+                                    ->setMaxResults(1)
+                                    ->setParameter('fechaActual',new \DateTime('now'))
+                                    ->setParameter('servicios',$arrayServicios)
+                                    ->getQuery()
+                                    ->getResult();
+
+            $em->getConnection()->commit();
+            return new JsonResponse(array('nextTicketNumber'=>$siguiente[0]->getCodigoticket(),'fecha'=>date('d-m-Y')));
         } catch (Exception $e) {
 
         }

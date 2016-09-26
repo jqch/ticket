@@ -12,62 +12,76 @@
         }
     </style>
 {% endblock %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="">Dashboard</a>
+        </li>
+        <li class="active">Ventanilla</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
 {% block body %}
+    <div class="page-header">
+        <h1>
+            Ventanilla
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Atencion al Cliente
+            </small>
+        </h1>
+    </div>
 
     <input type="hidden" id="operadorId" value="{{operadorId}}">
+    <input type="hidden" id="fecha" value="{{fecha}}">
 
-    <div class="c-header">
-        <h2>Atencion en Ventanilla</h2>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h2>Total Tickets:</h2></div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <h1 id="ticketsEsperaCantidad"></h1>
+        </div>
     </div>
-    <div class="card clearfix" id="messages">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h2>Total Tickets:</h2></div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <h1 id="ticketsEsperaCantidad"></h1>
-            </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:20px">
+            <button id="btn-llamar" class="btn btn-primary nivel1" onclick="nextTicket();">Llamar Siguiente</button>
         </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:20px">
-                <button id="btn-llamar" class="btn btn-primary nivel1" onclick="nextTicket({{operadorTipo}});">Llamar Siguiente</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+            <div class="ficha">
+
             </div>
+            <input type="hidden" id="ficha" value="">
+            <input type="hidden" id="idTicket" value="">
+
+            <input type="text" id="horaInicio" value="">
+            <input type="text" id="horaFin" value="">
+
+            <input type="text" class="reloj" id="Horas" value="00">
+            <input type="text" class="reloj" id="Minutos" value="00">
+            <input type="text" class="reloj" id="Segundos" value="00">
+            <input type="text" class="reloj" id="Centesimas" value="00">
+
         </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                <div class="ficha">
-
-                </div>
-                <input type="hidden" id="ficha" value="">
-                <input type="hidden" id="idTicket" value="">
-
-                <input type="text" id="horaInicio" value="">
-                <input type="text" id="horaFin" value="">
-
-                <input type="text" class="reloj" id="Horas" value="00">
-                <input type="text" class="reloj" id="Minutos" value="00">
-                <input type="text" class="reloj" id="Segundos" value="00">
-                <input type="text" class="reloj" id="Centesimas" value="00">
-
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
-                <button id="btn-rellamar" class="btn btn-primary nivel2" onclick="rellamar();">Re-llamar</button>
-                <button id="btn-suspender" class="btn palette-Red bg waves-effect nivel2" onclick="suspender()">Suspender/Anular</button>
-                <br><br>
-                <label for="">Transaccion del cliente:</label>
-                <select name="" id="transaccion" class="nivel2">
+        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+            <button id="btn-rellamar" class="btn btn-primary nivel2" onclick="rellamar();">Re-llamar</button>
+            <button id="btn-suspender" class="btn palette-Red bg waves-effect nivel2" onclick="suspender()">Suspender/Anular</button>
+            <br><br>
+            <label for="">Transaccion del cliente:</label>
+            <select name="" id="transaccion" class="nivel2">
+                <option value="">Seleccionar...</option>
+                <option value="1">Cobro de cheque</option>
+                <option value="2">Pago de servicios</option>
+            </select><br><br>
+            <button id="btn-iniciar" class="btn palette-Indigo bg waves-effect nivel3" onclick="iniciar()">Iniciar</button>
+            <button id="btn-pausar" class="btn palette-Purple bg waves-effect nivel4" onclick="pausarContinuar()">Pausar</button>
+            <button id="btn-finalizar" class="btn palette-Green bg waves-effect nivel4" onclick="finalizar()">Finalizar</button><br><br>
+                <select name="" id="siguienteOperador" class="nivel4">
                     <option value="">Seleccionar...</option>
-                    <option value="1">Cobro de cheque</option>
-                    <option value="2">Pago de servicios</option>
-                </select><br><br>
-                <button id="btn-iniciar" class="btn palette-Indigo bg waves-effect nivel3" onclick="iniciar()">Iniciar</button>
-                <button id="btn-pausar" class="btn palette-Purple bg waves-effect nivel4" onclick="pausarContinuar()">Pausar</button>
-                <button id="btn-finalizar" class="btn palette-Green bg waves-effect nivel4" onclick="finalizar()">Finalizar</button><br><br>
-                    <select name="" id="siguienteOperador" class="nivel4">
-                        <option value="">Seleccionar...</option>
-                        <option value="">Jefe de Cajeros</option>
-                        <option value="">Supervisor</option>
-                    </select>
-                    <button class="btn palette-Orange bg waves-effect nivel4">Derivar</button>
-            </div>
+                    <option value="">Jefe de Cajeros</option>
+                    <option value="">Supervisor</option>
+                </select>
+                <button class="btn palette-Orange bg waves-effect nivel4">Derivar</button>
         </div>
     </div>
 {% endblock %}
@@ -83,14 +97,15 @@
             $('.nivel2').attr('disabled','disabled');
             $('.nivel3').attr('disabled','disabled');
             $('.nivel4').attr('disabled','disabled');
-            function ticketsEspera(operadorTipo){
+            function ticketsEspera(){
+                var operadorId = $('#operadorId').val();
                 if (xhr && xhr.readyState != 4) {
                         xhr.abort();
                 }
                 xhr = $.ajax({
                         type: 'post',
                         cache: false,
-                        data: {operadorTipo: operadorTipo},
+                        data: {operadorId: operadorId},
                         url: "{{ path('ventanilla_tickets_espera') }}",
                         beforeSend: function () {
 
@@ -111,21 +126,23 @@
             }
 
             setInterval(function(){
-                ticketsEspera({{operadorTipo}});
-            }, 1000);
+                ticketsEspera();
+            }, 5000);
 
         });
 
         function nextTicket(){
 
-            var operadorTipo = $('#operadorTipo').val();
+            var operadorId = $('#operadorId').val();
+            var fecha = $('#fecha').val();
+
             if (xhr1 && xhr1.readyState != 4) {
                     xhr1.abort();
             }
             xhr1 = $.ajax({
                     type: 'post',
                     cache: false,
-                    data: {operadorTipo: operadorTipo},
+                    data: {operadorId: operadorId, fecha: fecha},
                     url: "{{ path('ventanilla_next_ticket') }}",
                     beforeSend: function () {
 

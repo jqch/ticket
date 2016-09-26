@@ -26,7 +26,7 @@
         <div class="row" id="botones">
             {% for servicios in servicios %}
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="nextScreen({{servicios.id}},{{servicios.esticket}})">{{servicios.servicio}}</button>
+                <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="nextScreen({{servicios.id}},new Boolean({{servicios.esticket}}))">{{servicios.servicio}}</button>
             </div>
             {% endfor %}
         </div>

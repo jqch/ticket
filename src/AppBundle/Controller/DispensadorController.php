@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Ticket;
 
 /**
  * @Route("/dispensador", name="dispensador")
@@ -17,41 +18,31 @@ class DispensadorController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $servicios[] = (object) array(
-                'id' => '1',
-                'servicioTipo' => '1',
-                'servicio'=> 'Caja',
-                'esactivo'=>'1',
-                'esticket'=>'0',
-                'rutasonido'=>'beet.mp3',
-                'obs'=>'');
-        $servicios[] = (object) array(
-                'id' => '2',
-                'servicioTipo' => '1',
-                'servicio'=> 'Credito',
-                'esactivo'=>'1',
-                'esticket'=>'1',
-                'rutasonido'=>'beet.mp3',
-                'obs'=>'');
-        $servicios[] = (object) array(
-                'id' => '3',
-                'servicioTipo' => '1',
-                'servicio'=> 'Pataforma',
-                'esactivo'=>'1',
-                'esticket'=>'1',
-                'rutasonido'=>'beet.mp3',
-                'obs'=>'');
-        $servicios[] = (object) array(
-                'id' => '4',
-                'servicioTipo' => '1',
-                'servicio'=> 'Otros Servicios',
-                'esactivo'=>'1',
-                'esticket'=>'1',
-                'rutasonido'=>'beet.mp3',
-                'obs'=>'');
+            try {
+                $servicios = $this->serviciosPrincipales();
+                return $this->render('Dispensador/dispensador.html.twig', array('servicios'=>$servicios));
 
-        return $this->render('Dispensador/dispensador.html.twig', array('servicios'=>$servicios));
+            } catch (Exception $e) {
+
+            }
+
+
+    }
+
+    private function serviciosPrincipales(){
+                $em = $this->getDoctrine()->getManager();
+                $em->getConnection()->beginTransaction();
+                $servicios = $em->createQueryBuilder()
+                                    ->select('s')
+                                    ->from('AppBundle:Servicio','s')
+                                    ->innerJoin('AppBundle:ServicioDetalle','sd','with','sd.servicio = s.id')
+                                    ->where('s.esactivo = :activo')
+                                    ->andWhere('sd.servicioPadre  is null')
+                                    ->setParameter('activo',true)
+                                    ->getQuery()
+                                    ->getResult();
+                $em->getConnection()->commit();
+                return $servicios;
     }
 
     /**
@@ -61,79 +52,70 @@ class DispensadorController extends Controller
         try {
             $id = $request->get('id');
             $esticket = $request->get('ticket');
-
-            // Mostrar la siguiente pantalla
-            if($esticket == 0){
-                    $em = $this->getDoctrine()->getManager();
-                    $servicios[] = (object) array(
-                            'id' => '1',
-                            'servicioTipo' => '1',
-                            'servicio'=> 'Cliente Regular',
-                            'esactivo'=>'1',
-                            'esticket'=>'1',
-                            'rutasonido'=>'beet.mp3',
-                            'obs'=>'');
-                    $servicios[] = (object) array(
-                            'id' => '2',
-                            'servicioTipo' => '1',
-                            'servicio'=> 'Adulto Mayor',
-                            'esactivo'=>'1',
-                            'esticket'=>'1',
-                            'rutasonido'=>'beet.mp3',
-                            'obs'=>'');
-
-                    return $this->render('Dispensador/botones.html.twig', array('servicios'=>$servicios));
-            }
-            // Mostrar la primera pantalla e imprimir el ticket
-            if($esticket == 1){
+            if($esticket == 'true'){
+                // Registrar el ticket
                 $em = $this->getDoctrine()->getManager();
+                $em->getConnection()->beginTransaction();
 
-                // Registrar  el ticket
+                $servicio = $em->getRepository('AppBundle:Servicio')->find($id);
+                $prefijo = $servicio->getObs();
+
+                $serviciosIguales = $em->createQueryBuilder()
+                                                ->select('t.id')
+                                                ->from('AppBundle:Ticket','t')
+                                                ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
+                                                ->where('s.id = :idServicio')
+                                                ->andWhere('t.fechahora >= :fechaActual')
+                                                ->setParameter('idServicio',$id)
+                                                ->setParameter('fechaActual', new \DateTime('2016-09-26'))
+                                                ->getQuery()
+                                                ->getResult();
+
+                $numeroServicio = count($serviciosIguales) + 1;
+
+                $newTicket = new Ticket();
+                $newTicket->setOperador($em->getRepository('AppBundle:Operador')->find(1));
+                $newTicket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(0));
+                $newTicket->setTransaccionTipo($em->getRepository('AppBundle:TransaccionTipo')->find(0));
+                $newTicket->setServicio($em->getRepository('AppBundle:Servicio')->find($id));
+                $newTicket->setCodigoticket($prefijo.'-'.$numeroServicio);
+                $newTicket->setFechahora(new \DateTime('now'));
+                $em->persist($newTicket);
+                $em->flush();
+
+                $em->getConnection()->commit();
+                // Imprimimos el ticket
 
 
-                // imprimir
-
-
-                // Mostrar la primera pantalla
-
-                $servicios[] = (object) array(
-                        'id' => '1',
-                        'servicioTipo' => '1',
-                        'servicio'=> 'Caja',
-                        'esactivo'=>'1',
-                        'esticket'=>'0',
-                        'rutasonido'=>'beet.mp3',
-                        'obs'=>'');
-                $servicios[] = (object) array(
-                        'id' => '2',
-                        'servicioTipo' => '1',
-                        'servicio'=> 'Credito',
-                        'esactivo'=>'1',
-                        'esticket'=>'1',
-                        'rutasonido'=>'beet.mp3',
-                        'obs'=>'');
-                $servicios[] = (object) array(
-                        'id' => '3',
-                        'servicioTipo' => '1',
-                        'servicio'=> 'Pataforma',
-                        'esactivo'=>'1',
-                        'esticket'=>'1',
-                        'rutasonido'=>'beet.mp3',
-                        'obs'=>'');
-                $servicios[] = (object) array(
-                        'id' => '4',
-                        'servicioTipo' => '1',
-                        'servicio'=> 'Otros Servicios',
-                        'esactivo'=>'1',
-                        'esticket'=>'1',
-                        'rutasonido'=>'beet.mp3',
-                        'obs'=>'');
-
+                // mostramos la pantalla principal
+                $servicios = $this->serviciosPrincipales();
                 return $this->render('Dispensador/botones.html.twig', array('servicios'=>$servicios));
             }
 
+            if($esticket == 'false'){
+                // Obtenemos la siguiente pantalla
+                $servicios = $this->serviciosSiguientes($id);
+                return $this->render('Dispensador/botones.html.twig', array('servicios'=>$servicios));
+            }
         } catch (Exception $e) {
 
         }
+    }
+
+    private function serviciosSiguientes($id){
+                $em = $this->getDoctrine()->getManager();
+                $em->getConnection()->beginTransaction();
+                $servicios = $em->createQueryBuilder()
+                                    ->select('s')
+                                    ->from('AppBundle:Servicio','s')
+                                    ->innerJoin('AppBundle:ServicioDetalle','sd','with','sd.servicio = s.id')
+                                    ->where('s.esactivo = :activo')
+                                    ->andWhere('sd.servicioPadre = :idPadre')
+                                    ->setParameter('activo',true)
+                                    ->setParameter('idPadre',$id)
+                                    ->getQuery()
+                                    ->getResult();
+                $em->getConnection()->commit();
+                return $servicios;
     }
 }
