@@ -67,7 +67,7 @@ class DispensadorController extends Controller
                                                 ->where('s.id = :idServicio')
                                                 ->andWhere('t.fechahora >= :fechaActual')
                                                 ->setParameter('idServicio',$id)
-                                                ->setParameter('fechaActual', new \DateTime('2016-09-26'))
+                                                ->setParameter('fechaActual', new \DateTime('2016-09-30'))
                                                 ->getQuery()
                                                 ->getResult();
 

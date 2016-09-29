@@ -140,7 +140,7 @@ class PantallaController extends Controller
                                     ->andWhere('te.id > 0')
                                     ->orderBy('t.fechahora','DESC')
                                     ->setMaxResults(6)
-                                    ->setParameter('fechaActual',new \DateTime('2016-09-26'))
+                                    ->setParameter('fechaActual',new \DateTime('2016-09-30'))
                                     ->getQuery()
                                     ->getArrayResult();
 
