@@ -121,4 +121,42 @@ class PantallaController extends Controller
 
     }
 
+    /**
+     * @Route("/nextTicket", name="pantalla_next_ticket")
+     */
+    public function nextTicketAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+
+            // Obtenemos los tickets que fueron llamados, o los rellamados
+            $tickets = $em->createQueryBuilder()
+                                    ->select('t.id, t.codigoticket, t.obs')
+                                    ->from('AppBundle:Ticket','t')
+                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
+                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
+                                    ->where('Date(t.fechahora) = :fechaActual')
+                                    ->andWhere('te.id > 0')
+                                    ->orderBy('t.fechahora','DESC')
+                                    ->setMaxResults(6)
+                                    ->setParameter('fechaActual',new \DateTime('2016-09-26'))
+                                    ->getQuery()
+                                    ->getArrayResult();
+
+            // Actualizamos los estados para pintar la ficha (obs)
+            foreach ($tickets as $t) {
+                $ticketActual = $em->getRepository('AppBundle:Ticket')->find($t['id']);
+                $ticketActual->setObs(0);
+                $em->flush();
+            }
+
+            $em->getConnection()->commit();
+
+            return new JsonResponse($tickets);
+
+        } catch (Exception $e) {
+            
+        }
+    }
 }

@@ -44,6 +44,13 @@ class Ticket
     private $obs;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="prioridad", type="smallint", nullable=true)
+     */
+    private $prioridad;
+
+    /**
      * @var \Operador
      *
      * @ORM\ManyToOne(targetEntity="Operador")
@@ -172,6 +179,29 @@ class Ticket
     public function getObs()
     {
         return $this->obs;
+    }
+
+    /**
+     * Set prioridad
+     *
+     * @param integer $prioridad
+     * @return Ticket
+     */
+    public function setPrioridad($prioridad)
+    {
+        $this->prioridad = $prioridad;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridad
+     *
+     * @return integer 
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
     }
 
     /**

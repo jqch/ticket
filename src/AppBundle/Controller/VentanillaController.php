@@ -59,15 +59,14 @@ class VentanillaController extends Controller
                                     ->from('AppBundle:Ticket','t')
                                     ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
                                     ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
-                                    ->where('Date(t.fechahora) = :fechaActual')
-                                    ->andWhere('s.id IN (:servicios)')
+                                    //->where('Date(t.fechahora) = :fechaActual')
+                                    ->where('s.id IN (:servicios)')
                                     ->andWhere('te.id = 0')
                                     ->orderBy('t.fechahora','DESC')
-                                    ->setParameter('fechaActual',new \DateTime('now'))
+                                    //->setParameter('fechaActual',new \DateTime('now'))
                                     ->setParameter('servicios',$arrayServicios)
                                     ->getQuery()
                                     ->getResult();
-
             $em->getConnection()->commit();
             $enEspera = count($enEspera);
             return new JsonResponse(array('enEspera'=>$enEspera));
@@ -97,18 +96,46 @@ class VentanillaController extends Controller
                                     ->from('AppBundle:Ticket','t')
                                     ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
                                     ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
-                                    ->where('Date(t.fechahora) = :fechaActual')
-                                    ->andWhere('s.id IN (:servicios)')
+                                    //->where('Date(t.fechahora) = :fechaActual')
+                                    ->where('s.id IN (:servicios)')
                                     ->andWhere('te.id = 0')
-                                    ->orderBy('t.fechahora','DESC')
+                                    ->orderBy('t.fechahora','ASC')
                                     ->setMaxResults(1)
-                                    ->setParameter('fechaActual',new \DateTime('now'))
+                                    //->setParameter('fechaActual',new \DateTime('now'))
                                     ->setParameter('servicios',$arrayServicios)
                                     ->getQuery()
                                     ->getResult();
 
-            $em->getConnection()->commit();
-            return new JsonResponse(array('nextTicketNumber'=>$siguiente[0]->getCodigoticket(),'fecha'=>date('d-m-Y')));
+            // Verificamos si existe el siguente ticket
+            // para actualizar el estado                        
+            if(count($siguiente) > 0){
+
+                // Actualizamos el estado del ticket
+                $ticketUpdate = $em->getRepository('AppBundle:Ticket')->find($siguiente[0]->getId());
+                $ticketUpdate->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(1));
+                $ticketUpdate->setObs(1);
+                $em->flush();
+
+                // Obtenemos los datos del ticket
+                $id = $ticketUpdate->getId();
+                $estado = $ticketUpdate->getTicketEstado()->getId();
+                $codigo = $ticketUpdate->getCodigoticket();
+
+                // Registrar el historial en otra tabla como ticket_detalle
+                $em->getConnection()->commit();
+                return new JsonResponse(array(
+                    'existe'=>1,
+                    'id'=>$id,
+                    'estado'=>$estado,
+                    'codigo'=>$codigo
+                ));
+            }else{
+                $em->getConnection()->commit();
+                return new JsonResponse(array(
+                    'existe'=>0
+                ));
+            }
+            
         } catch (Exception $e) {
 
         }
@@ -121,6 +148,12 @@ class VentanillaController extends Controller
     {
         try {
             $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setObs(1);
+            $em->flush();
+            $em->getConnection()->commit();
             // Registrar  la operacion
             return new JsonResponse(array('mensaje'=>'Re-llamando'));
 
@@ -135,8 +168,19 @@ class VentanillaController extends Controller
     public function suspenderAction(Request $request)
     {
         try {
+            // Actualizamos el estado del ticket
             $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(6));
+            $em->flush();
+            $em->getConnection()->commit();
+
             // Registrar  la operacion
+
+
+
             return new JsonResponse(array('mensaje'=>'Suspendido'));
 
         } catch (Exception $e) {
@@ -152,6 +196,16 @@ class VentanillaController extends Controller
         try {
             $idTicket = $request->get('idTicket');
             $idTransaccion = $request->get('idTransaccion');
+
+            // Actualizamos el estado del ticket
+            $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(2));
+            $em->flush();
+            $em->getConnection()->commit();
+
             // Registrar  la operacion
 
             // Obtener la hora
@@ -174,6 +228,15 @@ class VentanillaController extends Controller
     {
         try {
             $idTicket = $request->get('idTicket');
+            // Actualizamos el estado del ticket
+            $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(3));
+            $em->flush();
+            $em->getConnection()->commit();
+
             // Registrar  la operacion
 
             // Obtener la hora
@@ -196,6 +259,15 @@ class VentanillaController extends Controller
     {
         try {
             $idTicket = $request->get('idTicket');
+            // Actualizamos el estado del ticket
+            $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(2));
+            $em->flush();
+            $em->getConnection()->commit();
+
             // Registrar  la operacion
 
             // Obtener la hora
@@ -218,6 +290,15 @@ class VentanillaController extends Controller
     {
         try {
             $idTicket = $request->get('idTicket');
+            // Actualizamos el estado del ticket
+            $idTicket = $request->get('idTicket');
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
+            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(5));
+            $em->flush();
+            $em->getConnection()->commit();
+
             // Registrar  la operacion
 
             // Obtener la hora

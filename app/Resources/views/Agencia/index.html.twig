@@ -3,7 +3,7 @@
     <ul class="breadcrumb">
         <li>
             <i class="ace-icon fa fa-home home-icon"></i>
-            <a href="{{path('homepage')}}">Dashboard</a>
+            <a href="{{path('dashboard')}}">Dashboard</a>
         </li>
         <li class="active">Agencia</li>
     </ul><!-- /.breadcrumb -->
@@ -60,8 +60,8 @@
                         <td>{% if agencium.fechaApertura %}{{ agencium.fechaApertura|date('Y-m-d') }}{% endif %}</td>
                         <td>{% if agencium.fechaCierre %}{{ agencium.fechaCierre|date('Y-m-d') }}{% endif %}</td>
                         <td>{{ agencium.obs }}</td>
-                        <td>{{ agencium.anchobanda }}</td>
-                        <td>{% if agencium.esactivo %}Yes{% else %}No{% endif %}</td>
+                        <td>{{ agencium.anchobanda }} kb</td>
+                        <td>{% if agencium.esactivo %}Si{% else %}No{% endif %}</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="blue" href="{{ path('agencia_show', { 'id': agencium.id }) }}">

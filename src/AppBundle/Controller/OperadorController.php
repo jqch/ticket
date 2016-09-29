@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Operador;
 use AppBundle\Form\OperadorType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Operador controller.
@@ -16,6 +17,11 @@ use AppBundle\Form\OperadorType;
  */
 class OperadorController extends Controller
 {
+    public $session;
+
+    public function __construct() {
+        $this->session = new Session();
+    }
     /**
      * Lists all Operador entities.
      *
@@ -25,8 +31,11 @@ class OperadorController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $operadors = $em->getRepository('AppBundle:Operador')->findAll();
+        if($this->session->get('agenciaTipoId') == 2){
+            $operadors = $em->getRepository('AppBundle:Operador')->findBy(array('agencia'=>$this->session->get('agenciaId')));
+        }else{
+            $operadors = $em->getRepository('AppBundle:Operador')->findAll();            
+        }
 
         return $this->render('operador/index.html.twig', array(
             'operadors' => $operadors,
@@ -41,12 +50,39 @@ class OperadorController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $operador = new Operador();
-        $form = $this->createForm('AppBundle\Form\OperadorType', $operador);
+        
+        if($this->session->get('agenciaTipoId') == 2){
+            $agenciasId = array($this->get('session')->get('agenciaId'));
+            $operadoresTipo = $em->createQueryBuilder()
+                                ->select('ot')
+                                ->from('AppBundle:OperadorTipo','ot')
+                                ->where('ot.id in (:ids)')
+                                ->setParameter('ids', array(3,4))
+                                ->getQuery()
+                                ->getArrayResult();
+        }else{
+            $agenciasId = $em->createQueryBuilder()
+                                ->select('a')
+                                ->from('AppBundle:Agencia','a')
+                                ->getQuery()
+                                ->getArrayResult();
+            //dump($agenciasId);die;
+            $operadoresTipo = $em->createQueryBuilder()
+                                ->select('ot')
+                                ->from('AppBundle:OperadorTipo','ot')
+                                ->getQuery()
+                                ->getArrayResult();
+        }
+        //$operadoresTipo = array(3,4);
+
+        $form = $this->createForm(new OperadorType($agenciasId, $operadoresTipo), $operador);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            
             $em->persist($operador);
             $em->flush();
 
@@ -84,11 +120,38 @@ class OperadorController extends Controller
     public function editAction(Request $request, Operador $operador)
     {
         $deleteForm = $this->createDeleteForm($operador);
-        $editForm = $this->createForm('AppBundle\Form\OperadorType', $operador);
+        $em = $this->getDoctrine()->getManager();
+        if($this->session->get('agenciaTipoId') == 2){
+            $agenciasId = array($this->get('session')->get('agenciaId'));
+            $operadoresTipo = $em->createQueryBuilder()
+                                ->select('ot')
+                                ->from('AppBundle:OperadorTipo','ot')
+                                ->where('ot.id in (:ids)')
+                                ->setParameter('ids', array(3,4))
+                                ->getQuery()
+                                ->getArrayResult();
+        }else{
+            $agenciasId = $em->createQueryBuilder()
+                                ->select('a')
+                                ->from('AppBundle:Agencia','a')
+                                ->getQuery()
+                                ->getArrayResult();
+            //dump($agenciasId);die;
+            $operadoresTipo = $em->createQueryBuilder()
+                                ->select('ot')
+                                ->from('AppBundle:OperadorTipo','ot')
+                                ->getQuery()
+                                ->getArrayResult();
+        }
+        //$operadoresTipo = array(3,4);
+
+        $editForm = $this->createForm(new OperadorType($agenciasId, $operadoresTipo), $operador);
+
+        //$editForm = $this->createForm('AppBundle\Form\OperadorType', $operador);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            
             $em->persist($operador);
             $em->flush();
 

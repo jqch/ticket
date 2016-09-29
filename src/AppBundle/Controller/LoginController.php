@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/login", name="login")
@@ -12,12 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LoginController extends Controller
 {
+    private $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      * @Route("/", name="login")
      */
     public function indexAction(Request $request)
     {
-            return $this->render('Login/login.html.twig');
+        return $this->render('Login/login.html.twig');
     }
 
     /**
@@ -26,25 +32,27 @@ class LoginController extends Controller
     public function loginCheckAction(Request $request)
     {
             try {
-                $rol = $request->get('usuario');
-                switch ($rol) {
-                    case 1: // pantalla
-                        return $this->redirect($this->generateUrl('pantalla_index'));
-                        break;
-                    case 2: // dispensador
-                        return $this->redirect($this->generateUrl('dispensador_index'));
-                        break;
-                    case 3: // ventanilla - opciones operador
-                        return $this->redirect($this->generateUrl('ventanilla_index'));
-                        break;
-                    case 4: // administrador
-                        return $this->redirect($this->generateUrl('login'));
-                        break;
+                $em = $this->getDoctrine()->getManager();
+                $em->getConnection()->beginTransaction();
 
-                    default:
-                        return $this->redirect($this->generateUrl('login'));
-                        break;
+                $username = $request->get('_username');
+                $password = $request->get('_password');
+
+                $operador = $em->getRepository('AppBundle:Operador')->findOneBy(array('usuario'=>$username, 'clave'=>$password));
+                if($operador){
+                    // Creamos las variables de session
+                    $this->session->set('agenciaId',$operador->getAgencia()->getId());
+                    $this->session->set('agenciaTipoId',$operador->getAgencia()->getAgenciaTipo());
+                    $this->session->set('operadorId',$operador->getId());
+                    $this->session->set('operadorTipoId',$operador->getOperadorTipo()->getId());
+
+                    return $this->redirect($this->generateUrl('dashboard'));
+
                 }
+                $em->getConnection()->commit();
+                $this->get('session')->getFlashBag()->add('notice','Los datos ingresados son incorrectos');
+                return $this->redirect($this->generateUrl('login'));
+
             } catch (Exception $e) {
                 return $this->redirect($this->generateUrl('login'));
             }

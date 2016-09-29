@@ -39,7 +39,7 @@ class Agencia
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=100, nullable=false)
+     * @ORM\Column(name="direccion", type="string", length=255, nullable=false)
      */
     private $direccion;
 
@@ -60,7 +60,7 @@ class Agencia
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_apertura", type="date", nullable=false)
+     * @ORM\Column(name="fecha_apertura", type="date", nullable=true)
      */
     private $fechaApertura;
 

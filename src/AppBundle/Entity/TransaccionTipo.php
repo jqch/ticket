@@ -48,7 +48,7 @@ class TransaccionTipo
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -71,7 +71,7 @@ class TransaccionTipo
     /**
      * Get transaccionTipo
      *
-     * @return string
+     * @return string 
      */
     public function getTransaccionTipo()
     {
@@ -94,7 +94,7 @@ class TransaccionTipo
     /**
      * Get esactivo
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getEsactivo()
     {
@@ -117,7 +117,7 @@ class TransaccionTipo
     /**
      * Get obs
      *
-     * @return string
+     * @return string 
      */
     public function getObs()
     {

@@ -10,6 +10,17 @@
             color: #FFFFFF;
             min-height: 100px;
         }
+        .cronometro{
+            background-color: #C3DBDA;
+            padding: 3px;
+        }
+        .reloj{
+            display: inline-block;
+            width: 32%;
+            text-align: center;
+            color: #25ABCD;
+            background: #FFFFFF;
+        }
     </style>
 {% endblock %}
 {% block header %}
@@ -57,16 +68,21 @@
 
             <input type="hidden" id="horaInicio" value="">
             <input type="hidden" id="horaFin" value="">
-
-            <input type="hidden" class="reloj" id="Horas" value="00">
-            <input type="hidden" class="reloj" id="Minutos" value="00">
-            <input type="hidden" class="reloj" id="Segundos" value="00">
-            <input type="hidden" class="reloj" id="Centesimas" value="00">
+            <hr>
+            <div class="cronometro">
+                <div>
+                    Tiempo de Atencion:
+                </div>
+                <input type="text" class="reloj" id="Horas" value="00" disabled="disabled">
+                <input type="text" class="reloj" id="Minutos" value="00" disabled="disabled">
+                <input type="text" class="reloj" id="Segundos" value="00" disabled="disabled">
+                <input type="hidden" id="Centesimas" value="00">                
+            </div>
 
         </div>
         <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
             <button id="btn-rellamar" class="btn btn-primary nivel2" onclick="rellamar();">Re-llamar</button>
-            <button id="btn-suspender" class="btn btn-danger" onclick="suspender()">Suspender/Anular</button>
+            <button id="btn-suspender" class="btn btn-danger nivel2" onclick="suspender()">Suspender/Anular</button>
             <br><br>
             <label for="">Transaccion del cliente:</label>
             <select name="" id="transaccion" class="nivel2">
@@ -74,15 +90,15 @@
                 <option value="1">Cobro de cheque</option>
                 <option value="2">Pago de servicios</option>
             </select><br><br>
-            <button id="btn-iniciar" class="btn btn-success" onclick="iniciar()">Iniciar</button>
-            <button id="btn-pausar" class="btn btn-warning" onclick="pausarContinuar()">Pausar</button>
-            <button id="btn-finalizar" class="btn btn-primary" onclick="finalizar()">Finalizar</button><br><br>
+            <button id="btn-iniciar" class="btn btn-success nivel3" onclick="iniciar()">Iniciar</button>
+            <button id="btn-pausar" class="btn btn-warning nivel4" onclick="pausarContinuar()">Pausar</button>
+            <button id="btn-finalizar" class="btn btn-primary nivel4" onclick="finalizar()">Finalizar</button><br><br>
                 <select name="" id="siguienteOperador" class="nivel4">
                     <option value="">Seleccionar...</option>
                     <option value="">Jefe de Cajeros</option>
                     <option value="">Supervisor</option>
                 </select>
-                <button class="btn btn-purple">Derivar</button>
+                <button class="btn btn-purple nivel4">Derivar</button>
         </div>
     </div>
 {% endblock %}
@@ -150,11 +166,18 @@
 
                     },
                     success: function (data) {
-                        $('#ficha').val(data.nextTicketNumber);
-                        $('.ficha').empty();
-                        $('.ficha').append(data.nextTicketNumber);
-                        $('.nivel1').attr('disabled','disabled');
-                        $('.nivel2').removeAttr('disabled');
+                        if(data.existe == 1){
+                            $('#ficha').val(data.codigo);
+                            $('#idTicket').val(data.id);
+
+                            $('.ficha').empty();
+                            $('.ficha').append(data.codigo);
+
+                            $('.nivel1').attr('disabled','disabled');
+                            $('.nivel2').removeAttr('disabled');
+                        }else{
+
+                        }
                     },
                     statusCode: {
                         500: function () {
@@ -250,6 +273,7 @@
                         $('.nivel2').attr('disabled','disabled');
                         $('.nivel3').attr('disabled','disabled');
                         $('.nivel4').attr('disabled','disabled');
+                        $('.ficha').empty();
                         resetearCombos();
                     },
                     statusCode: {
@@ -390,6 +414,7 @@
                     $('.nivel2').attr('disabled','disabled');
                     $('.nivel3').attr('disabled','disabled');
                     $('.nivel4').attr('disabled','disabled');
+                    $('.ficha').empty();
                     resetearCombos();
                 },
                 statusCode: {

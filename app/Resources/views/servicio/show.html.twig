@@ -1,0 +1,70 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('homepage')}}">Dashboard</a>
+        </li>
+        <li>
+            <i class="ace-icon fa fa-list-ul home-icon"></i>
+            <a href="{{path('servicio_index')}}">Servicio</a>
+        </li>
+        <li class="active">Datos</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Servicio
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Datos generales
+            </small>
+        </h1>
+    </div>
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('servicio_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+                <a href="{{ path('servicio_edit', { 'id': servicio.id }) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-pencil bigger-130 green"></i></a>
+                {{ form_start(delete_form) }}
+                    <button type="submit" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-trash-o bigger-110 red"></i></button>
+                {{ form_end(delete_form) }}
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-stripped">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ servicio.id }}</td>
+                </tr>
+                <tr>
+                    <th>Serviciotipo</th>
+                    <td>{{ servicio.servicioTipo }}</td>
+                </tr>
+                <tr>
+                    <th>Servicio</th>
+                    <td>{{ servicio.servicio }}</td>
+                </tr>
+                <tr>
+                    <th>Esactivo</th>
+                    <td>{% if servicio.esactivo %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Esticket</th>
+                    <td>{% if servicio.esticket %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Rutasonido</th>
+                    <td>{{ servicio.rutasonido }}</td>
+                </tr>
+                <tr>
+                    <th>Obs</th>
+                    <td>{{ servicio.obs }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
