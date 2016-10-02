@@ -45,6 +45,9 @@ class LoginController extends Controller
                     $this->session->set('agenciaTipoId',$operador->getAgencia()->getAgenciaTipo());
                     $this->session->set('operadorId',$operador->getId());
                     $this->session->set('operadorTipoId',$operador->getOperadorTipo()->getId());
+                    $this->session->set('paterno',$operador->getPaterno());
+                    $this->session->set('materno',$operador->getMaterno());
+                    $this->session->set('nombre',$operador->getNombres());
 
                     return $this->redirect($this->generateUrl('dashboard'));
 

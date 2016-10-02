@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/pantalla", name="pantalla")
@@ -13,6 +14,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PantallaController extends Controller
 {
+
+    public $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      * @Route("/", name="pantalla_index")
      */
@@ -30,7 +37,25 @@ class PantallaController extends Controller
     public function nextVideoAction(Request $request)
     {
         // Obtener la lista de videos
-        $videosList = array('naturaleza.mp4','buscando-a-dori.mp4','mascotas.mp4');
+        $em = $this->getDoctrine()->getManager();
+        $agenciaId = $this->session->get('agenciaId');
+        //dump($agenciaId);die;
+        $videos = $em->createQueryBuilder()
+                                ->select('v')
+                                ->from('AppBundle:VideoLista','vl')
+                                ->innerJoin('AppBundle:Video','v','with','vl.video = v.id')
+                                ->innerJoin('AppBundle:Agencia','a','with','v.agencia = a.id')
+                                ->where('a.id = :idAgencia')
+                                ->setParameter('idAgencia',$agenciaId)
+                                ->getQuery()
+                                ->getResult();
+        //dump($videos);die;
+
+        $videosList = array();
+        foreach ($videos as $vid) {
+            $videosList[] = $vid->getVideo();
+        }
+        //$videosList = array('naturaleza.mp4','buscando-a-dori.mp4','mascotas.mp4');
         $total = count($videosList);
         $totalPositions = $total - 1;
 
@@ -156,7 +181,7 @@ class PantallaController extends Controller
             return new JsonResponse($tickets);
 
         } catch (Exception $e) {
-            
+
         }
     }
 }

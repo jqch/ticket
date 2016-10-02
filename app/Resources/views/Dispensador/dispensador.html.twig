@@ -57,6 +57,7 @@
                     success: function (data) {
                         $('#botones').empty();
                         $('#botones').append(data);
+                        actualizarEspera();
                     },
                     statusCode: {
                         500: function () {
@@ -68,5 +69,33 @@
                     }
                 });
         }
+        function actualizarEspera(){
+                var xhr2;
+                $(function() {
+                        if (xhr2 && xhr2.readyState != 4) {
+                                xhr2.abort();
+                        }
+                        xhr2 = $.ajax({
+                                type: 'post',
+                                cache: false,
+                                data: {},
+                                url: "{{ path('ventanilla_espera') }}",
+                                beforeSend: function () {
+
+                                },
+                                success: function (data) {
+                                        send(data);
+                                },
+                                statusCode: {
+                                    500: function () {
+
+                                    },
+                                    404: function () {
+
+                                    }
+                                }
+                        });
+                });
+            }
     </script>
 {% endblock %}

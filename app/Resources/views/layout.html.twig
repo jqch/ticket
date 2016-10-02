@@ -20,7 +20,7 @@
 
         <!-- ace styles -->
         <link rel="stylesheet" href="{{asset('css/ace.min.css')}}" class="ace-main-stylesheet" id="main-ace-style" />
-        
+
         <style>
             .btn-group > form{
                 display: inline-block;
@@ -342,7 +342,7 @@
                                 <img class="nav-user-photo" src="{{asset('avatars/user.jpg')}}" alt="Jason's Photo" />
                                 <span class="user-info">
                                     <small>Bienvenido,</small>
-                                    Jhon
+                                    {{app.session.get('nombre')}}
                                 </span>
 
                                 <i class="ace-icon fa fa-caret-down"></i>
@@ -471,6 +471,43 @@
 
                             <b class="arrow"></b>
                         </li>
+                         <li class="">
+                            <a href="{{path('agenciaservicio_index')}}">
+                                <i class="menu-icon fa fa-thumbs-o-up"></i>
+                                <span class="menu-text"> Servicio Agencia</span>
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-video-camera"></i>
+                                <span class="menu-text">
+                                    Video
+                                </span>
+
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="{{path('video_index')}}">
+                                        <i class="menu-icon fa fa-upload"></i>
+                                        <span class="menu-text"> Subida</span>
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+                                <li class="">
+                                    <a href="{{path('videolista_index')}}">
+                                        <i class="menu-icon fa fa-table"></i>
+                                        <span class="menu-text"> Lista de Reproduccion </span>
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="">
                             <a href="" class="dropdown-toggle">
                                 <i class="menu-icon fa fa-gavel"></i>
@@ -578,7 +615,8 @@
         <!-- basic scripts -->
 
         <!--[if !IE]> -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="{{asset('js/jquery.min.js')}}"></script>
+        <script src="{{asset('js/fancywebsocket.js')}}"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
         <!-- page specific plugin scripts -->
@@ -597,12 +635,12 @@
         <!-- ace scripts -->
         <script src="{{asset('js/ace-elements.min.js')}}"></script>
         <script src="{{asset('js/ace.min.js')}}"></script>
-        
+
         <script src="{{asset('js/dataTables/jquery.dataTables.min.js')}}"></script>
         <script src="{{asset('js/dataTables/jquery.dataTables.bootstrap.min.js')}}"></script>
-        
+
         <script src="{{asset('js/initialize.js')}}"></script>
-    
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

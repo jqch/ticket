@@ -1,0 +1,61 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('dashboard')}}">Dashboard</a>
+        </li>
+        <li class="active">Video</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Video
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Lista
+            </small>
+        </h1>
+    </div>
+    <div class="clearfix">
+            <div class="pull-right tableTools-container">
+                <div class="dt-buttons btn-overlap btn-group">
+                    <a href="{{ path('video_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                </div>
+            </div>
+        </div>
+     <div class="table-header">
+            Lista de videos
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped dataTable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Agencia</th>
+                        <th>Video</th>
+                        <th>Ruta</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for vid in video %}
+                    <tr>
+                        <td>{{ vid.id }}</td>
+                        <td>{{ vid.agencia.agencia }}</td>
+                        <td>{{ vid.video }}</td>
+                        <td>{{ vid.ruta }}</td>
+                        <td>
+                            <div class="hidden-sm hidden-xs action-buttons">
+                                <a class="red" href="{{ path('video_delete', { 'id': vid.id }) }}">
+                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}

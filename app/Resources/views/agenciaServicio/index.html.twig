@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('dashboard')}}">Dashboard</a>
+        </li>
+        <li class="active">Servicios Agencia</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Servicios Agencia
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Gestión de Servicios de Agencias
+            </small>
+        </h1>
+    </div>
+    <div class="clearfix">
+            <div class="pull-right tableTools-container">
+                <div class="dt-buttons btn-overlap btn-group">
+                    <a href="{{ path('agenciaservicio_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                </div>
+            </div>
+        </div>
+     <div class="table-header">
+            Lista de agencias y servicios
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped dataTable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Agencia</th>
+                        <th>Servicio</th>
+                        <th>Activo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for agserv in agenciaservicio %}
+                    <tr>
+                        <td>{{ agserv.id }}</td>
+                        <td>{{ agserv.agencia.agencia }}</td>
+                        <td>{{ agserv.servicio.servicio }}</td>
+                        <td>
+                            {% if agserv.esactivo == true %}Si{% else %}No{% endif %}
+                        </td>
+                        <td>
+                            <div class="hidden-sm hidden-xs action-buttons">
+                                <a class="green" href="{{ path('agenciaservicio_change', { 'id': agserv.id }) }}">
+                                    <i class="ace-icon fa fa-random bigger-130"></i>
+                                </a>
+                                <a class="red" href="{{ path('agenciaservicio_delete', { 'id': agserv.id }) }}">
+                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}

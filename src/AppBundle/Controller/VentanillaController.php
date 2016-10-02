@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VentanillaController extends Controller
 {
+    private $cont = 12;
     /**
      * @Route("/", name="ventanilla_index")
      */
@@ -107,7 +108,7 @@ class VentanillaController extends Controller
                                     ->getResult();
 
             // Verificamos si existe el siguente ticket
-            // para actualizar el estado                        
+            // para actualizar el estado
             if(count($siguiente) > 0){
 
                 // Actualizamos el estado del ticket
@@ -135,7 +136,7 @@ class VentanillaController extends Controller
                     'existe'=>0
                 ));
             }
-            
+
         } catch (Exception $e) {
 
         }
@@ -313,4 +314,28 @@ class VentanillaController extends Controller
 
         }
     }
+
+    /**
+     * @Route("/espera", name="ventanilla_espera")
+     */
+    public function esperaAction(){
+            try {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->getConnection()->beginTransaction();
+                    $totalCaja = rand(10,100);
+                    $totalPlataforma = 4;
+                    $em->getConnection()->commit();
+
+                    return new JsonResponse(json_encode(array(
+                        'servicio'=>'VENTANILLA',
+                        'accion'=>'ESPERA',
+                        'totalCaja'=>$totalCaja,
+                        'totalPlataforma'=>$totalPlataforma
+                    )));
+
+            } catch (Exception $e) {
+
+            }
+    }
+
 }

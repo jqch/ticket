@@ -65,11 +65,15 @@ class Servicio
     private $obs;
 
 
+    public function __toString(){
+        return $this->servicio;
+    }
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -92,7 +96,7 @@ class Servicio
     /**
      * Get servicioTipo
      *
-     * @return integer 
+     * @return integer
      */
     public function getServicioTipo()
     {
@@ -115,7 +119,7 @@ class Servicio
     /**
      * Get servicio
      *
-     * @return string 
+     * @return string
      */
     public function getServicio()
     {
@@ -138,7 +142,7 @@ class Servicio
     /**
      * Get esactivo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEsactivo()
     {
@@ -161,7 +165,7 @@ class Servicio
     /**
      * Get esticket
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEsticket()
     {
@@ -184,7 +188,7 @@ class Servicio
     /**
      * Get rutasonido
      *
-     * @return string 
+     * @return string
      */
     public function getRutasonido()
     {
@@ -207,7 +211,7 @@ class Servicio
     /**
      * Get obs
      *
-     * @return string 
+     * @return string
      */
     public function getObs()
     {

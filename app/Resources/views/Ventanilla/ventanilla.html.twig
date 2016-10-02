@@ -47,7 +47,7 @@
     <input type="hidden" id="fecha" value="{{fecha}}">
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h2>Tickets pendientes:</h2></div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><h2>Tickets pendientes: <span id="esperaCaja"></span> </h2></div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <h1 id="ticketsEsperaCantidad"></h1>
         </div>
@@ -76,7 +76,7 @@
                 <input type="text" class="reloj" id="Horas" value="00" disabled="disabled">
                 <input type="text" class="reloj" id="Minutos" value="00" disabled="disabled">
                 <input type="text" class="reloj" id="Segundos" value="00" disabled="disabled">
-                <input type="hidden" id="Centesimas" value="00">                
+                <input type="hidden" id="Centesimas" value="00">
             </div>
 
         </div>
@@ -103,7 +103,7 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    
+
     <script type="text/javascript">
         var xhr, xhr1,xhr2,xhr3,xhr4,xhr5,xhr6;
         var centesimas = 0;
