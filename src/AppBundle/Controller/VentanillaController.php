@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/ventanilla", name="ventanilla")
@@ -14,6 +15,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VentanillaController extends Controller
 {
     private $cont = 12;
+    public $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      * @Route("/", name="ventanilla_index")
      */
@@ -23,15 +29,53 @@ class VentanillaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
-            $operador = $em->getRepository('AppBundle:Operador')->find(1);
+            $areaTipoId = $this->session->get('areaTipoId');
+            $area = $em->getRepository('AppBundle:AreaTipo')->find($areaTipoId);
+
+            $ventanillas = $em->getRepository('AppBundle:Ventanilla')->findBy(array(
+                'agencia'=>$this->session->get('agenciaId'),
+                'areaTipo'=>$areaTipoId
+            ));
+
+            $em->getConnection()->commit();
+            return $this->render('Ventanilla/index.html.twig', array(
+                'area'=>$area,
+                'ventanillas'=>$ventanillas
+            ));
+
+        } catch (Exception $e) {
+
+        }
+
+    }
+
+    /**
+     * @Route("/show", name="ventanilla_show")
+     */
+    public function showAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+
+            $area = $request->get('area');
+            $nroVentanilla = $request->get('nroVentanilla');
+
+            $operador = $em->getRepository('AppBundle:Operador')->find($this->session->get('operadorId'));
+            $operadorId = $operador->getId();
+            $areaTipoId = $operador->getAreaTipo()->getId();
             $fecha = date('d-m-Y');
-            $operadorTipo = 2;
+
+            $transaccionCliente = $em->getRepository('AppBundle:TransaccionTipo')->findAll();
 
             $em->getConnection()->commit();
             return $this->render('Ventanilla/ventanilla.html.twig', array(
+                'area'=>$area,
                 'operadorId'=>$operador->getId(),
-                'operadorTipo'=>$operadorTipo,
-                'fecha'=>$fecha
+                'areaTipoId'=>$areaTipoId,
+                'fecha'=>$fecha,
+                'nroVentanilla'=>$nroVentanilla,
+                'transaccionCliente'=>$transaccionCliente
             ));
 
         } catch (Exception $e) {
@@ -68,6 +112,7 @@ class VentanillaController extends Controller
                                     ->setParameter('servicios',$arrayServicios)
                                     ->getQuery()
                                     ->getResult();
+
             $em->getConnection()->commit();
             $enEspera = count($enEspera);
             return new JsonResponse(array('enEspera'=>$enEspera));

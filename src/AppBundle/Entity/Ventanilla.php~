@@ -1,0 +1,67 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Ventanilla
+ *
+ * @ORM\Table(name="ventanilla", indexes={@ORM\Index(name="IDX_C2DBF588A6F796BE", columns={"agencia_id"}), @ORM\Index(name="IDX_C2DBF588AAF70791", columns={"area_tipo_id"})})
+ * @ORM\Entity
+ */
+class Ventanilla
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="ventanilla_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esactivo", type="boolean", nullable=false)
+     */
+    private $esactivo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="obs", type="string", length=200, nullable=true)
+     */
+    private $obs;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numero", type="integer", nullable=true)
+     */
+    private $numero;
+
+    /**
+     * @var \Agencia
+     *
+     * @ORM\ManyToOne(targetEntity="Agencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agencia_id", referencedColumnName="id")
+     * })
+     */
+    private $agencia;
+
+    /**
+     * @var \AreaTipo
+     *
+     * @ORM\ManyToOne(targetEntity="AreaTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="area_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $areaTipo;
+
+
+}

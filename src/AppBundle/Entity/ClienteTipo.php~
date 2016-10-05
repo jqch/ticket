@@ -1,0 +1,61 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ClienteTipo
+ *
+ * @ORM\Table(name="cliente_tipo")
+ * @ORM\Entity
+ */
+class ClienteTipo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="cliente_tipo_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cliente_tipo", type="string", length=20, nullable=false)
+     */
+    private $clienteTipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=50, nullable=false)
+     */
+    private $descripcion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="prioridad", type="integer", nullable=false)
+     */
+    private $prioridad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abrev", type="string", length=5, nullable=true)
+     */
+    private $abrev;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
+     */
+    private $obs;
+
+
+}

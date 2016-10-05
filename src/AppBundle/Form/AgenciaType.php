@@ -16,6 +16,7 @@ class AgenciaType extends AbstractType
     {
         $builder
             ->add('agenciaTipo')
+            ->add('codigo')
             ->add('agencia')
             ->add('direccion')
             ->add('telefono')

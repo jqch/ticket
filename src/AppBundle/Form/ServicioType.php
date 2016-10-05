@@ -19,7 +19,8 @@ class ServicioType extends AbstractType
             ->add('servicio')
             ->add('esactivo')
             ->add('esticket')
-            ->add('rutasonido')
+            ->add('abrev')
+            ->add('areaTipo')
             ->add('obs')
         ;
     }

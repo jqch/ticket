@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Servicio
  *
- * @ORM\Table(name="servicio")
+ * @ORM\Table(name="servicio", indexes={@ORM\Index(name="IDX_CB86F22AAAF70791", columns={"area_tipo_id"})})
  * @ORM\Entity
  */
 class Servicio
@@ -63,6 +63,30 @@ class Servicio
      * @ORM\Column(name="obs", type="string", length=150, nullable=true)
      */
     private $obs;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abrev", type="string", length=5, nullable=false)
+     */
+    private $abrev;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=100, nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var \AreaTipo
+     *
+     * @ORM\ManyToOne(targetEntity="AreaTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="area_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $areaTipo;
 
 
 }

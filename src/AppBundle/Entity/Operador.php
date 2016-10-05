@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Operador
  *
- * @ORM\Table(name="operador", indexes={@ORM\Index(name="IDX_CB8004F1A6F796BE", columns={"agencia_id"}), @ORM\Index(name="IDX_CB8004F19A9472C4", columns={"operador_tipo_id"})})
+ * @ORM\Table(name="operador", indexes={@ORM\Index(name="IDX_CB8004F1AAF70791", columns={"area_tipo_id"}), @ORM\Index(name="IDX_CB8004F1A6F796BE", columns={"agencia_id"})})
  * @ORM\Entity
  */
 class Operador
@@ -25,58 +25,75 @@ class Operador
     /**
      * @var string
      *
-     * @ORM\Column(name="ci", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ci", type="string", length=15, nullable=false)
      */
     private $ci;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="paterno", type="string", length=45, nullable=false)
+     * @ORM\Column(name="paterno", type="string", length=50, nullable=true)
      */
     private $paterno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="materno", type="string", length=45, nullable=true)
+     * @ORM\Column(name="materno", type="string", length=50, nullable=true)
      */
     private $materno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombres", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombres", type="string", length=50, nullable=true)
      */
     private $nombres;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="usuario", type="string", length=15, nullable=false)
+     * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
      */
     private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="clave", type="string", length=255, nullable=true)
+     * @ORM\Column(name="contrasena", type="string", length=50, nullable=true)
      */
-    private $clave;
+    private $contrasena;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cargo", type="string", length=50, nullable=true)
+     */
+    private $cargo;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="esactivo", type="boolean", nullable=false)
+     * @ORM\Column(name="esactivo", type="boolean", nullable=true)
      */
     private $esactivo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="obs", type="string", length=200, nullable=true)
+     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
      */
     private $obs;
+
+    /**
+     * @var \AreaTipo
+     *
+     * @ORM\ManyToOne(targetEntity="AreaTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="area_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $areaTipo;
 
     /**
      * @var \Agencia
@@ -87,16 +104,6 @@ class Operador
      * })
      */
     private $agencia;
-
-    /**
-     * @var \OperadorTipo
-     *
-     * @ORM\ManyToOne(targetEntity="OperadorTipo")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="operador_tipo_id", referencedColumnName="id")
-     * })
-     */
-    private $operadorTipo;
 
 
 
@@ -226,26 +233,49 @@ class Operador
     }
 
     /**
-     * Set clave
+     * Set contrasena
      *
-     * @param string $clave
+     * @param string $contrasena
      * @return Operador
      */
-    public function setClave($clave)
+    public function setContrasena($contrasena)
     {
-        $this->clave = $clave;
+        $this->contrasena = $contrasena;
 
         return $this;
     }
 
     /**
-     * Get clave
+     * Get contrasena
      *
      * @return string 
      */
-    public function getClave()
+    public function getContrasena()
     {
-        return $this->clave;
+        return $this->contrasena;
+    }
+
+    /**
+     * Set cargo
+     *
+     * @param string $cargo
+     * @return Operador
+     */
+    public function setCargo($cargo)
+    {
+        $this->cargo = $cargo;
+
+        return $this;
+    }
+
+    /**
+     * Get cargo
+     *
+     * @return string 
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
     }
 
     /**
@@ -295,6 +325,29 @@ class Operador
     }
 
     /**
+     * Set areaTipo
+     *
+     * @param \AppBundle\Entity\AreaTipo $areaTipo
+     * @return Operador
+     */
+    public function setAreaTipo(\AppBundle\Entity\AreaTipo $areaTipo = null)
+    {
+        $this->areaTipo = $areaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get areaTipo
+     *
+     * @return \AppBundle\Entity\AreaTipo 
+     */
+    public function getAreaTipo()
+    {
+        return $this->areaTipo;
+    }
+
+    /**
      * Set agencia
      *
      * @param \AppBundle\Entity\Agencia $agencia
@@ -315,28 +368,5 @@ class Operador
     public function getAgencia()
     {
         return $this->agencia;
-    }
-
-    /**
-     * Set operadorTipo
-     *
-     * @param \AppBundle\Entity\OperadorTipo $operadorTipo
-     * @return Operador
-     */
-    public function setOperadorTipo(\AppBundle\Entity\OperadorTipo $operadorTipo = null)
-    {
-        $this->operadorTipo = $operadorTipo;
-
-        return $this;
-    }
-
-    /**
-     * Get operadorTipo
-     *
-     * @return \AppBundle\Entity\OperadorTipo 
-     */
-    public function getOperadorTipo()
-    {
-        return $this->operadorTipo;
     }
 }

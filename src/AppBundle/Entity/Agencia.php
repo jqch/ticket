@@ -93,6 +93,27 @@ class Agencia
     private $esactivo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     */
+    private $codigo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="papelporcentaje", type="integer", nullable=true)
+     */
+    private $papelporcentaje;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="frase", type="string", length=100, nullable=true)
+     */
+    private $frase;
+
+    /**
      * @var \Lugar
      *
      * @ORM\ManyToOne(targetEntity="Lugar")
@@ -344,6 +365,75 @@ class Agencia
     public function getEsactivo()
     {
         return $this->esactivo;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Agencia
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * Set papelporcentaje
+     *
+     * @param integer $papelporcentaje
+     * @return Agencia
+     */
+    public function setPapelporcentaje($papelporcentaje)
+    {
+        $this->papelporcentaje = $papelporcentaje;
+
+        return $this;
+    }
+
+    /**
+     * Get papelporcentaje
+     *
+     * @return integer 
+     */
+    public function getPapelporcentaje()
+    {
+        return $this->papelporcentaje;
+    }
+
+    /**
+     * Set frase
+     *
+     * @param string $frase
+     * @return Agencia
+     */
+    public function setFrase($frase)
+    {
+        $this->frase = $frase;
+
+        return $this;
+    }
+
+    /**
+     * Get frase
+     *
+     * @return string 
+     */
+    public function getFrase()
+    {
+        return $this->frase;
     }
 
     /**

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Operador
  *
- * @ORM\Table(name="operador", indexes={@ORM\Index(name="IDX_CB8004F1A6F796BE", columns={"agencia_id"}), @ORM\Index(name="IDX_CB8004F19A9472C4", columns={"operador_tipo_id"})})
+ * @ORM\Table(name="operador", indexes={@ORM\Index(name="IDX_CB8004F1AAF70791", columns={"area_tipo_id"}), @ORM\Index(name="IDX_CB8004F1A6F796BE", columns={"agencia_id"})})
  * @ORM\Entity
  */
 class Operador
@@ -23,60 +23,77 @@ class Operador
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="ci", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ci", type="smallint", nullable=false)
      */
     private $ci;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="paterno", type="string", length=45, nullable=false)
+     * @ORM\Column(name="paterno", type="string", length=50, nullable=true)
      */
     private $paterno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="materno", type="string", length=45, nullable=true)
+     * @ORM\Column(name="materno", type="string", length=50, nullable=true)
      */
     private $materno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombres", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombres", type="string", length=50, nullable=true)
      */
     private $nombres;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="usuario", type="string", length=15, nullable=false)
+     * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
      */
     private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="clave", type="string", length=255, nullable=true)
+     * @ORM\Column(name="contrasena", type="string", length=50, nullable=true)
      */
-    private $clave;
+    private $contrasena;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cargo", type="string", length=50, nullable=true)
+     */
+    private $cargo;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="esactivo", type="boolean", nullable=false)
+     * @ORM\Column(name="esactivo", type="boolean", nullable=true)
      */
     private $esactivo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="obs", type="string", length=200, nullable=true)
+     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
      */
     private $obs;
+
+    /**
+     * @var \AreaTipo
+     *
+     * @ORM\ManyToOne(targetEntity="AreaTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="area_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $areaTipo;
 
     /**
      * @var \Agencia
@@ -87,16 +104,6 @@ class Operador
      * })
      */
     private $agencia;
-
-    /**
-     * @var \OperadorTipo
-     *
-     * @ORM\ManyToOne(targetEntity="OperadorTipo")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="operador_tipo_id", referencedColumnName="id")
-     * })
-     */
-    private $operadorTipo;
 
 
 }

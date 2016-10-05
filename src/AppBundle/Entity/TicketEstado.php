@@ -43,6 +43,13 @@ class TicketEstado
      */
     private $obs;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abrev", type="string", length=5, nullable=true)
+     */
+    private $abrev;
+
 
 
     /**
@@ -122,5 +129,28 @@ class TicketEstado
     public function getObs()
     {
         return $this->obs;
+    }
+
+    /**
+     * Set abrev
+     *
+     * @param string $abrev
+     * @return TicketEstado
+     */
+    public function setAbrev($abrev)
+    {
+        $this->abrev = $abrev;
+
+        return $this;
+    }
+
+    /**
+     * Get abrev
+     *
+     * @return string 
+     */
+    public function getAbrev()
+    {
+        return $this->abrev;
     }
 }

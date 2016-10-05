@@ -427,7 +427,7 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {% if app.session.get('operadorTipoId') == 4 %}
+                    {% if app.session.get('areaTipoId') == 4 or app.session.get('areaTipoId') == 5 %}
                         <li class="">
                             <a href="{{path('ventanilla_index')}}">
                                 <i class="menu-icon fa fa-list"></i>
@@ -437,8 +437,8 @@
                             <b class="arrow"></b>
                         </li>
                     {% endif %}
-                    {% if app.session.get('operadorTipoId') == 1 or app.session.get('operadorTipoId') == 5 %}
-                        {% if app.session.get('operadorTipoId') == 5 %}
+                    {% if app.session.get('areaTipoId') == 1 or app.session.get('areaTipoId') == 2 or app.session.get('areaTipoId') == 3 %}
+                        {% if app.session.get('areaTipoId') == 1 %}
                             <li class="">
                                 <a href="{{path('agencia_index')}}">
                                     <i class="menu-icon fa fa-home"></i>

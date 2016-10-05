@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Ticket
  *
- * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA35B939A38", columns={"operador_id"}), @ORM\Index(name="IDX_97A0ADA33C1F540A", columns={"operador_id_destino"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"})})
+ * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA3F1AD916E", columns={"ventanilla_id"}), @ORM\Index(name="IDX_97A0ADA3A9B61B5B", columns={"ventanilla_id_destino"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"}), @ORM\Index(name="IDX_97A0ADA34896F598", columns={"cliente_tipo_id"})})
  * @ORM\Entity
  */
 class Ticket
@@ -51,24 +51,52 @@ class Ticket
     private $prioridad;
 
     /**
-     * @var \Operador
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Operador")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="operador_id", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="operador", type="integer", nullable=false)
      */
     private $operador;
 
     /**
-     * @var \Operador
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Operador")
+     * @ORM\Column(name="agencia", type="integer", nullable=false)
+     */
+    private $agencia;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
+     */
+    private $fecha;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="hora", type="time", nullable=false)
+     */
+    private $hora;
+
+    /**
+     * @var \Ventanilla
+     *
+     * @ORM\ManyToOne(targetEntity="Ventanilla")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="operador_id_destino", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="ventanilla_id", referencedColumnName="id")
      * })
      */
-    private $operadorDestino;
+    private $ventanilla;
+
+    /**
+     * @var \Ventanilla
+     *
+     * @ORM\ManyToOne(targetEntity="Ventanilla")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ventanilla_id_destino", referencedColumnName="id")
+     * })
+     */
+    private $ventanillaDestino;
 
     /**
      * @var \Servicio
@@ -99,6 +127,16 @@ class Ticket
      * })
      */
     private $transaccionTipo;
+
+    /**
+     * @var \ClienteTipo
+     *
+     * @ORM\ManyToOne(targetEntity="ClienteTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cliente_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $clienteTipo;
 
 
 
@@ -207,10 +245,10 @@ class Ticket
     /**
      * Set operador
      *
-     * @param \AppBundle\Entity\Operador $operador
+     * @param integer $operador
      * @return Ticket
      */
-    public function setOperador(\AppBundle\Entity\Operador $operador = null)
+    public function setOperador($operador)
     {
         $this->operador = $operador;
 
@@ -220,7 +258,7 @@ class Ticket
     /**
      * Get operador
      *
-     * @return \AppBundle\Entity\Operador 
+     * @return integer 
      */
     public function getOperador()
     {
@@ -228,26 +266,118 @@ class Ticket
     }
 
     /**
-     * Set operadorDestino
+     * Set agencia
      *
-     * @param \AppBundle\Entity\Operador $operadorDestino
+     * @param integer $agencia
      * @return Ticket
      */
-    public function setOperadorDestino(\AppBundle\Entity\Operador $operadorDestino = null)
+    public function setAgencia($agencia)
     {
-        $this->operadorDestino = $operadorDestino;
+        $this->agencia = $agencia;
 
         return $this;
     }
 
     /**
-     * Get operadorDestino
+     * Get agencia
      *
-     * @return \AppBundle\Entity\Operador 
+     * @return integer 
      */
-    public function getOperadorDestino()
+    public function getAgencia()
     {
-        return $this->operadorDestino;
+        return $this->agencia;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     * @return Ticket
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime 
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set hora
+     *
+     * @param \DateTime $hora
+     * @return Ticket
+     */
+    public function setHora($hora)
+    {
+        $this->hora = $hora;
+
+        return $this;
+    }
+
+    /**
+     * Get hora
+     *
+     * @return \DateTime 
+     */
+    public function getHora()
+    {
+        return $this->hora;
+    }
+
+    /**
+     * Set ventanilla
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanilla
+     * @return Ticket
+     */
+    public function setVentanilla(\AppBundle\Entity\Ventanilla $ventanilla = null)
+    {
+        $this->ventanilla = $ventanilla;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanilla
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanilla()
+    {
+        return $this->ventanilla;
+    }
+
+    /**
+     * Set ventanillaDestino
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanillaDestino
+     * @return Ticket
+     */
+    public function setVentanillaDestino(\AppBundle\Entity\Ventanilla $ventanillaDestino = null)
+    {
+        $this->ventanillaDestino = $ventanillaDestino;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanillaDestino
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanillaDestino()
+    {
+        return $this->ventanillaDestino;
     }
 
     /**
@@ -317,5 +447,28 @@ class Ticket
     public function getTransaccionTipo()
     {
         return $this->transaccionTipo;
+    }
+
+    /**
+     * Set clienteTipo
+     *
+     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
+     * @return Ticket
+     */
+    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
+    {
+        $this->clienteTipo = $clienteTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteTipo
+     *
+     * @return \AppBundle\Entity\ClienteTipo 
+     */
+    public function getClienteTipo()
+    {
+        return $this->clienteTipo;
     }
 }

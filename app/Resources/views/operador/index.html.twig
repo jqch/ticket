@@ -39,8 +39,10 @@
                     <th>Materno</th>
                     <th>Nombres</th>
                     <th>Usuario</th>
-                    <th>Clave</th>
+                    <th>Contraseña</th>
                     <th>Esactivo</th>
+                    <th>Agencia</th>
+                    <th>Área</th>
                     <th>Obs</th>
                     <th>Acciones</th>
                 </tr>
@@ -54,8 +56,10 @@
                     <td>{{ operador.materno }}</td>
                     <td>{{ operador.nombres }}</td>
                     <td>{{ operador.usuario }}</td>
-                    <td>{{ operador.clave }}</td>
+                    <td>{{ operador.contrasena }}</td>
                     <td>{% if operador.esactivo %}Yes{% else %}No{% endif %}</td>
+                    <td>{{operador.agencia.agencia}}</td>
+                    <td>{{operador.areaTipo.areaTipo}}</td>
                     <td>{{ operador.obs }}</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">

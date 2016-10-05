@@ -38,7 +38,8 @@
                     <th>Servicio</th>
                     <th>Esactivo</th>
                     <th>Esticket</th>
-                    <th>Rutasonido</th>
+                    <th>Abrev.</th>
+                    <th>Área</th>
                     <th>Obs</th>
                     <th>Actions</th>
                 </tr>
@@ -51,7 +52,8 @@
                     <td>{{ servicio.servicio }}</td>
                     <td>{% if servicio.esactivo %}Yes{% else %}No{% endif %}</td>
                     <td>{% if servicio.esticket %}Yes{% else %}No{% endif %}</td>
-                    <td>{{ servicio.rutasonido }}</td>
+                    <td>{{ servicio.abrev }}</td>
+                    <td>{{ servicio.areaTipo.areaTipo }}</td>
                     <td>{{ servicio.obs }}</td>
                     <td>
                         <div class="action-buttons">

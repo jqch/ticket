@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Servicio
  *
- * @ORM\Table(name="servicio")
+ * @ORM\Table(name="servicio", indexes={@ORM\Index(name="IDX_CB86F22AAAF70791", columns={"area_tipo_id"})})
  * @ORM\Entity
  */
 class Servicio
@@ -64,16 +64,38 @@ class Servicio
      */
     private $obs;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abrev", type="string", length=5, nullable=false)
+     */
+    private $abrev;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=100, nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var \AreaTipo
+     *
+     * @ORM\ManyToOne(targetEntity="AreaTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="area_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $areaTipo;
 
     public function __toString(){
         return $this->servicio;
     }
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -96,7 +118,7 @@ class Servicio
     /**
      * Get servicioTipo
      *
-     * @return integer
+     * @return integer 
      */
     public function getServicioTipo()
     {
@@ -119,7 +141,7 @@ class Servicio
     /**
      * Get servicio
      *
-     * @return string
+     * @return string 
      */
     public function getServicio()
     {
@@ -142,7 +164,7 @@ class Servicio
     /**
      * Get esactivo
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getEsactivo()
     {
@@ -165,7 +187,7 @@ class Servicio
     /**
      * Get esticket
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getEsticket()
     {
@@ -188,7 +210,7 @@ class Servicio
     /**
      * Get rutasonido
      *
-     * @return string
+     * @return string 
      */
     public function getRutasonido()
     {
@@ -211,10 +233,79 @@ class Servicio
     /**
      * Get obs
      *
-     * @return string
+     * @return string 
      */
     public function getObs()
     {
         return $this->obs;
+    }
+
+    /**
+     * Set abrev
+     *
+     * @param string $abrev
+     * @return Servicio
+     */
+    public function setAbrev($abrev)
+    {
+        $this->abrev = $abrev;
+
+        return $this;
+    }
+
+    /**
+     * Get abrev
+     *
+     * @return string 
+     */
+    public function getAbrev()
+    {
+        return $this->abrev;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Servicio
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set areaTipo
+     *
+     * @param \AppBundle\Entity\AreaTipo $areaTipo
+     * @return Servicio
+     */
+    public function setAreaTipo(\AppBundle\Entity\AreaTipo $areaTipo = null)
+    {
+        $this->areaTipo = $areaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get areaTipo
+     *
+     * @return \AppBundle\Entity\AreaTipo 
+     */
+    public function getAreaTipo()
+    {
+        return $this->areaTipo;
     }
 }

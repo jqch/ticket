@@ -93,6 +93,27 @@ class Agencia
     private $esactivo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
+     */
+    private $codigo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="papelporcentaje", type="integer", nullable=true)
+     */
+    private $papelporcentaje;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="frase", type="string", length=100, nullable=true)
+     */
+    private $frase;
+
+    /**
      * @var \Lugar
      *
      * @ORM\ManyToOne(targetEntity="Lugar")

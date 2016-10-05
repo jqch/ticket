@@ -56,11 +56,11 @@ class OperadorController extends Controller
         
         if($this->session->get('agenciaTipoId') == 2){
             $agenciasId = array($this->get('session')->get('agenciaId'));
-            $operadoresTipo = $em->createQueryBuilder()
-                                ->select('ot')
-                                ->from('AppBundle:OperadorTipo','ot')
-                                ->where('ot.id in (:ids)')
-                                ->setParameter('ids', array(3,4))
+            $areasTipo = $em->createQueryBuilder()
+                                ->select('at')
+                                ->from('AppBundle:AreaTipo','at')
+                                ->where('at.id in (:ids)')
+                                ->setParameter('ids', array(4,5))
                                 ->getQuery()
                                 ->getArrayResult();
         }else{
@@ -70,15 +70,15 @@ class OperadorController extends Controller
                                 ->getQuery()
                                 ->getArrayResult();
             //dump($agenciasId);die;
-            $operadoresTipo = $em->createQueryBuilder()
+            $areasTipo = $em->createQueryBuilder()
                                 ->select('ot')
-                                ->from('AppBundle:OperadorTipo','ot')
+                                ->from('AppBundle:AreaTipo','ot')
                                 ->getQuery()
                                 ->getArrayResult();
         }
         //$operadoresTipo = array(3,4);
 
-        $form = $this->createForm(new OperadorType($agenciasId, $operadoresTipo), $operador);
+        $form = $this->createForm(new OperadorType($agenciasId, $areasTipo), $operador);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -123,11 +123,11 @@ class OperadorController extends Controller
         $em = $this->getDoctrine()->getManager();
         if($this->session->get('agenciaTipoId') == 2){
             $agenciasId = array($this->get('session')->get('agenciaId'));
-            $operadoresTipo = $em->createQueryBuilder()
+            $areasTipo = $em->createQueryBuilder()
                                 ->select('ot')
-                                ->from('AppBundle:OperadorTipo','ot')
+                                ->from('AppBundle:AreaTipo','ot')
                                 ->where('ot.id in (:ids)')
-                                ->setParameter('ids', array(3,4))
+                                ->setParameter('ids', array(4,5))
                                 ->getQuery()
                                 ->getArrayResult();
         }else{
@@ -137,15 +137,15 @@ class OperadorController extends Controller
                                 ->getQuery()
                                 ->getArrayResult();
             //dump($agenciasId);die;
-            $operadoresTipo = $em->createQueryBuilder()
+            $areasTipo = $em->createQueryBuilder()
                                 ->select('ot')
-                                ->from('AppBundle:OperadorTipo','ot')
+                                ->from('AppBundle:AreaTipo','ot')
                                 ->getQuery()
                                 ->getArrayResult();
         }
         //$operadoresTipo = array(3,4);
 
-        $editForm = $this->createForm(new OperadorType($agenciasId, $operadoresTipo), $operador);
+        $editForm = $this->createForm(new OperadorType($agenciasId, $areasTipo), $operador);
 
         //$editForm = $this->createForm('AppBundle\Form\OperadorType', $operador);
         $editForm->handleRequest($request);

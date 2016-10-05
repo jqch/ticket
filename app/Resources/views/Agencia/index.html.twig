@@ -36,6 +36,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Agenciatipo</th>
+                        <th>Código</th>
                         <th>Agencia</th>
                         <th>Direccion</th>
                         <th>Telefono</th>
@@ -53,6 +54,7 @@
                     <tr>
                         <td><a href="{{ path('agencia_show', { 'id': agencium.id }) }}">{{ agencium.id }}</a></td>
                         <td>{{ agencium.agenciaTipo }}</td>
+                        <td>{{ agencium.codigo }}</td>
                         <td>{{ agencium.agencia }}</td>
                         <td>{{ agencium.direccion }}</td>
                         <td>{{ agencium.telefono }}</td>

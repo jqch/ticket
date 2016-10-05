@@ -38,13 +38,13 @@ class LoginController extends Controller
                 $username = $request->get('_username');
                 $password = $request->get('_password');
 
-                $operador = $em->getRepository('AppBundle:Operador')->findOneBy(array('usuario'=>$username, 'clave'=>$password));
+                $operador = $em->getRepository('AppBundle:Operador')->findOneBy(array('usuario'=>$username, 'contrasena'=>$password));
                 if($operador){
                     // Creamos las variables de session
                     $this->session->set('agenciaId',$operador->getAgencia()->getId());
                     $this->session->set('agenciaTipoId',$operador->getAgencia()->getAgenciaTipo());
                     $this->session->set('operadorId',$operador->getId());
-                    $this->session->set('operadorTipoId',$operador->getOperadorTipo()->getId());
+                    $this->session->set('areaTipoId',$operador->getAreaTipo()->getId());
                     $this->session->set('paterno',$operador->getPaterno());
                     $this->session->set('materno',$operador->getMaterno());
                     $this->session->set('nombre',$operador->getNombres());

@@ -1,0 +1,47 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AreaTipo
+ *
+ * @ORM\Table(name="area_tipo")
+ * @ORM\Entity
+ */
+class AreaTipo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="area_tipo_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="area_tipo", type="string", length=50, nullable=false)
+     */
+    private $areaTipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="obs", type="string", length=200, nullable=true)
+     */
+    private $obs;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esactivo", type="boolean", nullable=false)
+     */
+    private $esactivo;
+
+
+}

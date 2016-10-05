@@ -43,5 +43,12 @@ class TicketEstado
      */
     private $obs;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abrev", type="string", length=5, nullable=true)
+     */
+    private $abrev;
+
 
 }

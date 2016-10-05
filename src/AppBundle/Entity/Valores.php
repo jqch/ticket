@@ -5,41 +5,41 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * LugarTipo
+ * Valores
  *
- * @ORM\Table(name="lugar_tipo")
+ * @ORM\Table(name="valores")
  * @ORM\Entity
  */
-class LugarTipo
+class Valores
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="smallint", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="lugar_tipo_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="valores_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nivel", type="string", length=45, nullable=true)
+     * @ORM\Column(name="mensajecabecera", type="string", length=255, nullable=false)
      */
-    private $nivel;
+    private $mensajecabecera;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="orden", type="string", length=45, nullable=true)
+     * @ORM\Column(name="logo", type="string", length=255, nullable=false)
      */
-    private $orden;
+    private $logo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="obs", type="string", length=45, nullable=true)
+     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
      */
     private $obs;
 
@@ -56,56 +56,56 @@ class LugarTipo
     }
 
     /**
-     * Set nivel
+     * Set mensajecabecera
      *
-     * @param string $nivel
-     * @return LugarTipo
+     * @param string $mensajecabecera
+     * @return Valores
      */
-    public function setNivel($nivel)
+    public function setMensajecabecera($mensajecabecera)
     {
-        $this->nivel = $nivel;
+        $this->mensajecabecera = $mensajecabecera;
 
         return $this;
     }
 
     /**
-     * Get nivel
+     * Get mensajecabecera
      *
      * @return string 
      */
-    public function getNivel()
+    public function getMensajecabecera()
     {
-        return $this->nivel;
+        return $this->mensajecabecera;
     }
 
     /**
-     * Set orden
+     * Set logo
      *
-     * @param string $orden
-     * @return LugarTipo
+     * @param string $logo
+     * @return Valores
      */
-    public function setOrden($orden)
+    public function setLogo($logo)
     {
-        $this->orden = $orden;
+        $this->logo = $logo;
 
         return $this;
     }
 
     /**
-     * Get orden
+     * Get logo
      *
      * @return string 
      */
-    public function getOrden()
+    public function getLogo()
     {
-        return $this->orden;
+        return $this->logo;
     }
 
     /**
      * Set obs
      *
      * @param string $obs
-     * @return LugarTipo
+     * @return Valores
      */
     public function setObs($obs)
     {

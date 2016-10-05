@@ -10,11 +10,11 @@ use Doctrine\ORM\EntityRepository;
 class OperadorType extends AbstractType
 {
     private $agenciasId;
-    private $operadoresTipo;
+    private $areasTipo;
 
-    public function __construct($agenciasId = null, $operadoresTipo = null){
+    public function __construct($agenciasId = null, $areasTipo = null){
         $this->agenciasId = $agenciasId;
-        $this->operadoresTipo = $operadoresTipo;
+        $this->areasTipo = $areasTipo;
     }
 
     /**
@@ -24,7 +24,7 @@ class OperadorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $agenciasId = $this->agenciasId;
-        $operadoresTipo = $this->operadoresTipo;
+        $areasTipo = $this->areasTipo;
 
         $builder
             ->add('ci')
@@ -32,7 +32,7 @@ class OperadorType extends AbstractType
             ->add('materno')
             ->add('nombres')
             ->add('usuario')
-            ->add('clave')
+            ->add('contrasena')
             ->add('esactivo')
             ->add('obs')
             ->add('agencia')
@@ -45,13 +45,13 @@ class OperadorType extends AbstractType
                     ->setParameter('ids', $agenciasId);
                 },
                 'empty_value' => 'Seleccionar...'))//,'data' => $em->getReference("SieAppWebBundle:Agencia", 'agencia'))
-            ->add('operadorTipo', 'entity', array(
-                'class' => 'AppBundle:OperadorTipo',
-                'property' => 'operadorTipo',
-                'query_builder' => function(EntityRepository $er) use ($operadoresTipo){
-                    return $er->createQueryBuilder('ot')
-                    ->where('ot.id IN (:ids)')
-                    ->setParameter('ids', $operadoresTipo);
+            ->add('areaTipo', 'entity', array(
+                'class' => 'AppBundle:AreaTipo',
+                'property' => 'areaTipo',
+                'query_builder' => function(EntityRepository $er) use ($areasTipo){
+                    return $er->createQueryBuilder('at')
+                    ->where('at.id IN (:ids)')
+                    ->setParameter('ids', $areasTipo);
                 },
                 'empty_value' => 'Seleccionar...'))
         ;

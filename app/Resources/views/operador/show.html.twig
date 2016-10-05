@@ -62,12 +62,20 @@
                     <td>{{ operador.usuario }}</td>
                 </tr>
                 <tr>
-                    <th>Clave</th>
-                    <td>{{ operador.clave }}</td>
+                    <th>Contraseña</th>
+                    <td>{{ operador.contrasena }}</td>
                 </tr>
                 <tr>
                     <th>Esactivo</th>
                     <td>{% if operador.esactivo %}Si{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Agencia</th>
+                    <td>{{operador.agencia.agencia}}</td>
+                </tr>
+                <tr>
+                    <th>Área</th>
+                    <td>{{operador.areaTipo.areaTipo}}</td>
                 </tr>
                 <tr>
                     <th>Obs</th>
