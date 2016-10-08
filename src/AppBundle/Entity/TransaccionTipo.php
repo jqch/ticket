@@ -43,7 +43,9 @@ class TransaccionTipo
      */
     private $obs;
 
-
+    public function __toString(){
+        return $this->transaccionTipo;
+    }
 
     /**
      * Get id

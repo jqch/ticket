@@ -53,7 +53,9 @@ class Anuncio
      */
     private $agencia;
 
-
+    public function __toString(){
+        return $this->anuncio;
+    }
 
     /**
      * Get id

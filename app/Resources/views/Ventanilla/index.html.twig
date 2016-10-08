@@ -20,6 +20,7 @@
     </div>
     {% if area|length > 0 and ventanillas|length > 0 %}
         <form action="{{path('ventanilla_show')}}" method="post">
+            <input type="hidden" name="operadorId" value="{{operadorId}}">
             <div class="form-group">
                 <label for="">Área:</label>
                 <input type="hidden" name="idArea" value="{{area.id}}">
@@ -30,7 +31,7 @@
                 <label for="">Número de Ventanilla:</label>
                 <select name="nroVentanilla" id="nroVentanilla" required="" style="width:150px">
                     {% for vent in ventanillas %}
-                        <option value="{{vent.id}}">{{vent.numero}}</option>
+                        <option value="{{vent.numero}}">{{vent.numero}}</option>
                     {% endfor %}
                 </select>
             </div>

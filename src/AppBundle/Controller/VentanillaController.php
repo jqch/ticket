@@ -40,7 +40,8 @@ class VentanillaController extends Controller
             $em->getConnection()->commit();
             return $this->render('Ventanilla/index.html.twig', array(
                 'area'=>$area,
-                'ventanillas'=>$ventanillas
+                'ventanillas'=>$ventanillas,
+                'operadorId' => $this->session->get('operadorId')
             ));
 
         } catch (Exception $e) {
@@ -60,9 +61,9 @@ class VentanillaController extends Controller
 
             $area = $request->get('area');
             $nroVentanilla = $request->get('nroVentanilla');
+            $operadorId = $request->get('operadorId');
 
-            $operador = $em->getRepository('AppBundle:Operador')->find($this->session->get('operadorId'));
-            $operadorId = $operador->getId();
+            $operador = $em->getRepository('AppBundle:Operador')->find($operadorId);
             $areaTipoId = $operador->getAreaTipo()->getId();
             $fecha = date('d-m-Y');
 
@@ -93,7 +94,53 @@ class VentanillaController extends Controller
             $operadorId = $request->get('operadorId');
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
-            $serviciosOperador = $em->getRepository('AppBundle:OperadorServicio')->findBy(array('operador'=>$operadorId));
+
+            $operadorId = $request->get('operadorId');
+            $areaTipoId = $request->get('areaTipoId');
+            $nroVentanilla = $request->get('nroVentanilla');
+
+            /*
+            //look for the tuicion
+            $query = $em->getConnection()->prepare('SELECT get_ue_tuicion (:user_id::INT, :sie::INT, :roluser::INT)');
+            $query->bindValue(':user_id', $this->session->get('userId'));
+            $query->bindValue(':sie', $institucionEducativa->getId());
+            $query->bindValue(':roluser', $this->session->get('roluser'));
+            $query->execute();
+            $aTuicion = $query->fetchAll();
+            //check if the user has the tuicion
+            if (!$aTuicion[0]['get_ue_tuicion']) {
+            */
+
+            // encontramos los servicios que se atiende en el area de la ventanilla
+            //select * from get_ticket_siguiente(202,1,2)
+            $query = $em->getConnection()->prepare('SELECT get_ticket_siguiente(:agencia_id::INT, :servicio_id::INT, :cliente_tipo_id::INT)');
+            $query->bindValue(':agencia_id',202);
+            $query->bindValue(':servicio_id',1);
+            $query->bindValue(':cliente_tipo_id',2);
+            $query->execute();
+
+            $ticket = $query->fetchAll();
+
+            //dump($ticket);die;
+            /*
+            $serviciosArea = $em->createQueryBuilder()
+                                ->select('s')
+                                ->from('AppBundle:Servicio','s')
+                                ->innerJoin('AppBundle:AreaTipo','at','with','s.areaTipo = at.id')
+                                ->innerJoin('AppBundle:AgenciaServicio','ase','with','ase.servicio = s.id')
+                                ->innerJoin('AppBundle:Agencia','a','with','ase.agencia = a.id')
+                                ->where('at.id = :areaTipoId')
+                                ->andWhere('a.id = :agenciaId')
+                                ->setParameter('areaTipoId',$areaTipoId)
+                                ->setParameter('agenciaId',$this->session->get('agenciaId'))
+                                ->getQuery()
+                                ->getResult();
+
+            // servicios del 
+            dump($serviciosArea);die;
+
+            $serviciosArea = $em->getRepository('AppBundle:Servicio')->findBy(array('operador'=>$operadorId));
+
             $arrayServicios = array();
             foreach ($serviciosOperador as $so) {
                 $arrayServicios[] = $so->getServicio()->getId();
@@ -112,10 +159,10 @@ class VentanillaController extends Controller
                                     ->setParameter('servicios',$arrayServicios)
                                     ->getQuery()
                                     ->getResult();
-
+            */
             $em->getConnection()->commit();
-            $enEspera = count($enEspera);
-            return new JsonResponse(array('enEspera'=>$enEspera));
+            $enEspera = rand(0,100);
+            return new JsonResponse(array('enEspera'=>$enEspera,'ticket'=>$ticket));
         } catch (Exception $e) {
 
         }

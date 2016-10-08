@@ -1,12 +1,6 @@
 {% extends 'fullscreen.html.twig' %}
 {% block stylesheets %}
-    {{parent()}}
-    <!-- Vendor CSS -->
-        <link href="{{asset('vendors/bower_components/animate.css/animate.min.css')}}" rel="stylesheet">
-        <link href="{{asset('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css')}}" rel="stylesheet">
-        <!-- CSS -->
-        <link href="{{asset('css/app.min.1.css')}}" rel="stylesheet">
-
+    
     <style>
         #content{
             background: #FFFFFF;
@@ -20,48 +14,107 @@
             padding-bottom: 30px;
             background-color: #00BC9A;
         }
+        #imprimir{ 
+            text-align: center; 
+            position: absolute;
+            top: -250px;
+        }
+        @media print {
+            /* ticket imprimir */
+            #imp-titulo{ font-weight: bold; }
+            #imp-agenciaNombre{}
+            #imp-codigoTicket{ font-size: 30px; }
+            #imp-fechaHora{}
+            #imp-frase{font-size: 10px}
+        }
+        
     </style>
 {% endblock %}
 {% block body %}
     <div id="content">
-
+        <input type="hidden" id="agenciaId" value="{{agenciaId}}">
+        <input type="hidden" id="servicioId" value="">
+        <input type="hidden" id="clienteTipoId" value="">
         <br><br>
         <div style="text-align:center"><img src="{{asset('img/logo.png')}}" alt="" style="heigth:80%;"></div>
         <br><br>
         <div class="row" id="botones">
-            {% for servicios in servicios %}
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="nextScreen({{servicios.id}},new Boolean({{servicios.esticket}}))">{{servicios.servicio}}</button>
+            <div id="botones-servicios">
+                {% for servicios in servicios %}
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="siguientePantalla({{servicios.id}});">{{servicios.servicio}}</button>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div id="botones-tiposClientes" style="display:none">
+                {% for tc in tiposCliente %}
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <button id="{{tc.id}}" class="btn btn-primary btn-lg waves-effect" onclick="registrar({{tc.id}})">{{tc.clienteTipo}} <br> <span>{{tc.descripcion}}</span> </button>
+                </div>
+                {% endfor %}
+            </div>
         </div>
         <audio id="player" src="{{asset('audio/beep.wav')}}"></audio>
+        <div id="imprimir" style="background:#3ED4E3; width:5cm; height:6cm">
+            <div id="imp-titulo">{{titulo}}</div>
+            <div id="imp-agenciaNombre">{{agenciaNombre}}</div>
+            <div id="imp-codigoTicket"></div>
+            <div id="imp-fechaHora"></div>
+            <div id="imp-frase">{{frase}}</div>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}
+    <script src="{{asset('js/jquery.printarea.js')}}"></script>
     <script>
         var xhr;
-        function nextScreen(id,ticket){
+
+        function siguientePantalla(servicioId){
+            $('#servicioId').val(servicioId);
+
             document.getElementById('player').play();
+
+            $('#botones-servicios').css('display','none');
+            $('#botones-tiposClientes').fadeIn();
+            
+        }
+
+        function registrar(clienteTipoId){
+            $('#clienteTipoId').val(clienteTipoId);
+
+            document.getElementById('player').play();        
+
+            var agenciaId = $('#agenciaId').val();
+            var servicioId = $('#servicioId').val();
+            var clienteTipoId = $('#clienteTipoId').val();
+
             if (xhr && xhr.readyState != 4) {
                     xhr.abort();
                 }
             xhr = $.ajax({
                     type: 'post',
                     cache: false,
-                    data: {id: id, ticket: ticket},
-                    url: "{{ path('dispensador_next_screen') }}",
+                    data: {agenciaId: agenciaId, servicioId: servicioId, clienteTipoId: clienteTipoId},
+                    url: "{{ path('dispensador_registrar_ticket') }}",
                     beforeSend: function () {
-                        $('#'+id).attr('disabled','disabled')
+                        
                     },
                     success: function (data) {
-                        $('#botones').empty();
-                        $('#botones').append(data);
-                        actualizarEspera();
+                        $('#botones-tiposClientes').css('display','none');
+                        $('#botones-servicios').fadeIn();
+
+                        $('#imp-codigoTicket').empty();
+                        $('#imp-fechaHora').empty();
+
+                        $('#imp-codigoTicket').append(data.codigoTicket);
+                        $('#imp-fechaHora').append(data.fechaHora);
+              
+                        $('#imprimir').printArea();
+
                     },
                     statusCode: {
                         500: function () {
-                            $('#'+id).removeAttr('disabled')
+
                         },
                         404: function () {
 

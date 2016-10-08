@@ -23,9 +23,9 @@ class Operador
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="ci", type="smallint", nullable=false)
+     * @ORM\Column(name="ci", type="string", length=15, nullable=false)
      */
     private $ci;
 

@@ -57,7 +57,9 @@ class ClienteTipo
      */
     private $obs;
 
-
+    public function __toString(){
+        return $this->clienteTipo;
+    }
 
     /**
      * Get id

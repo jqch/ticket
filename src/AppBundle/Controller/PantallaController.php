@@ -25,7 +25,27 @@ class PantallaController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $firstVideo = 'buscando-a-dori.mp4';
+        $agenciaId = $this->session->get('agenciaId');
+        $em = $this->getDoctrine()->getManager();
+        $listaVideos = $em->createQueryBuilder()
+                        ->select('v')
+                        ->from('AppBundle:Video','v')
+                        ->innerJoin('AppBundle:Agencia','a','with','v.agencia = a.id')
+                        ->innerJoin('AppBundle:VideoLista','vl','with','vl.video = v.id')
+                        ->where('a.id = :agenciaId')
+                        ->andWhere('vl.esactivo = true')
+                        ->orderBy('vl.orden','ASC')
+                        ->setParameter('agenciaId',$agenciaId)
+                        ->getQuery()
+                        ->getResult();
+
+        if(count($listaVideos)>0){
+            $firstVideo = $listaVideos[0]->getVideo();
+        }else{
+            $firstVideo = "";
+        }
+
+        //$firstVideo = 'buscando-a-dori.mp4';
         return $this->render('Pantalla/pantalla.html.twig',array(
             'firstVideo'=>$firstVideo
         ));
@@ -41,14 +61,16 @@ class PantallaController extends Controller
         $agenciaId = $this->session->get('agenciaId');
         //dump($agenciaId);die;
         $videos = $em->createQueryBuilder()
-                                ->select('v')
-                                ->from('AppBundle:VideoLista','vl')
-                                ->innerJoin('AppBundle:Video','v','with','vl.video = v.id')
-                                ->innerJoin('AppBundle:Agencia','a','with','v.agencia = a.id')
-                                ->where('a.id = :idAgencia')
-                                ->setParameter('idAgencia',$agenciaId)
-                                ->getQuery()
-                                ->getResult();
+                        ->select('v')
+                        ->from('AppBundle:Video','v')
+                        ->innerJoin('AppBundle:Agencia','a','with','v.agencia = a.id')
+                        ->innerJoin('AppBundle:VideoLista','vl','with','vl.video = v.id')
+                        ->where('a.id = :agenciaId')
+                        ->andWhere('vl.esactivo = true')
+                        ->orderBy('vl.orden','ASC')
+                        ->setParameter('agenciaId',$agenciaId)
+                        ->getQuery()
+                        ->getResult();
         //dump($videos);die;
 
         $videosList = array();
@@ -78,8 +100,8 @@ class PantallaController extends Controller
             return new JsonResponse(array('nextVideo'=>$nextVideo));
 
         }else{
-            // Devolvemos el video por dafault
-            $nextVideo = 'naturaleza.mp4';
+            // Devolvemos el video por dafault nulo
+            $nextVideo = '';
             return new JsonResponse(array('nextVideo'=>$nextVideo));
         }
 
@@ -155,6 +177,18 @@ class PantallaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
+            $agenciaId = $this->session->get('agenciaId');
+            $fecha = date('Y-m-d');
+
+            $query = $em->getConnection()->prepare('SELECT get_ticket_pantalla_json(:agencia_id::INT, :fecha::DATE, :total::INT)');
+            $query->bindValue(':agencia_id',$agenciaId);
+            $query->bindValue(':fecha',$fecha);
+            $query->bindValue(':total',6);
+            $query->execute();
+            $tickets = $query->fetchAll();
+
+            $ticket = json_decode($tickets[0]['get_ticket_pantalla_json']);
+            dump($ticket);die;
             // Obtenemos los tickets que fueron llamados, o los rellamados
             $tickets = $em->createQueryBuilder()
                                     ->select('t.id, t.codigoticket, t.obs')
@@ -183,5 +217,14 @@ class PantallaController extends Controller
         } catch (Exception $e) {
 
         }
+    }
+
+    /**
+     * @Route("/hora", name="pantalla_hora")
+     */
+    public function horaAction(Request $request)
+    {
+        $hora = date('H:i:s');
+        return new JsonResponse(array('hora'=>$hora));
     }
 }

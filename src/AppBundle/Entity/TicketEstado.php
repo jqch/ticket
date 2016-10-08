@@ -50,7 +50,9 @@ class TicketEstado
      */
     private $abrev;
 
-
+    public function __toString(){
+        return $this->ticketEstado;
+    }
 
     /**
      * Get id

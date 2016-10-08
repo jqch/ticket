@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Ticket
  *
- * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA3F1AD916E", columns={"ventanilla_id"}), @ORM\Index(name="IDX_97A0ADA3A9B61B5B", columns={"ventanilla_id_destino"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"}), @ORM\Index(name="IDX_97A0ADA34896F598", columns={"cliente_tipo_id"})})
+ * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA34896F598", columns={"cliente_tipo_id"}), @ORM\Index(name="IDX_97A0ADA3F1AD916E", columns={"ventanilla_id"}), @ORM\Index(name="IDX_97A0ADA3A9B61B5B", columns={"ventanilla_id_destino"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"})})
  * @ORM\Entity
  */
 class Ticket
@@ -30,39 +30,18 @@ class Ticket
     private $codigoticket;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="numeroticket", type="integer", nullable=false)
+     */
+    private $numeroticket;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fechahora", type="datetime", nullable=false)
      */
     private $fechahora;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
-     */
-    private $obs;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="prioridad", type="smallint", nullable=true)
-     */
-    private $prioridad;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="operador", type="integer", nullable=false)
-     */
-    private $operador;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="agencia", type="integer", nullable=false)
-     */
-    private $agencia;
 
     /**
      * @var \DateTime
@@ -77,6 +56,37 @@ class Ticket
      * @ORM\Column(name="hora", type="time", nullable=false)
      */
     private $hora;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="operador", type="integer", nullable=true)
+     */
+    private $operador;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="agencia", type="integer", nullable=true)
+     */
+    private $agencia;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="obs", type="string", length=255, nullable=true)
+     */
+    private $obs;
+
+    /**
+     * @var \ClienteTipo
+     *
+     * @ORM\ManyToOne(targetEntity="ClienteTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cliente_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $clienteTipo;
 
     /**
      * @var \Ventanilla
@@ -128,16 +138,6 @@ class Ticket
      */
     private $transaccionTipo;
 
-    /**
-     * @var \ClienteTipo
-     *
-     * @ORM\ManyToOne(targetEntity="ClienteTipo")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cliente_tipo_id", referencedColumnName="id")
-     * })
-     */
-    private $clienteTipo;
-
 
 
     /**
@@ -174,6 +174,29 @@ class Ticket
     }
 
     /**
+     * Set numeroticket
+     *
+     * @param integer $numeroticket
+     * @return Ticket
+     */
+    public function setNumeroticket($numeroticket)
+    {
+        $this->numeroticket = $numeroticket;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroticket
+     *
+     * @return integer 
+     */
+    public function getNumeroticket()
+    {
+        return $this->numeroticket;
+    }
+
+    /**
      * Set fechahora
      *
      * @param \DateTime $fechahora
@@ -197,49 +220,49 @@ class Ticket
     }
 
     /**
-     * Set obs
+     * Set fecha
      *
-     * @param string $obs
+     * @param \DateTime $fecha
      * @return Ticket
      */
-    public function setObs($obs)
+    public function setFecha($fecha)
     {
-        $this->obs = $obs;
+        $this->fecha = $fecha;
 
         return $this;
     }
 
     /**
-     * Get obs
+     * Get fecha
      *
-     * @return string 
+     * @return \DateTime 
      */
-    public function getObs()
+    public function getFecha()
     {
-        return $this->obs;
+        return $this->fecha;
     }
 
     /**
-     * Set prioridad
+     * Set hora
      *
-     * @param integer $prioridad
+     * @param \DateTime $hora
      * @return Ticket
      */
-    public function setPrioridad($prioridad)
+    public function setHora($hora)
     {
-        $this->prioridad = $prioridad;
+        $this->hora = $hora;
 
         return $this;
     }
 
     /**
-     * Get prioridad
+     * Get hora
      *
-     * @return integer 
+     * @return \DateTime 
      */
-    public function getPrioridad()
+    public function getHora()
     {
-        return $this->prioridad;
+        return $this->hora;
     }
 
     /**
@@ -289,49 +312,49 @@ class Ticket
     }
 
     /**
-     * Set fecha
+     * Set obs
      *
-     * @param \DateTime $fecha
+     * @param string $obs
      * @return Ticket
      */
-    public function setFecha($fecha)
+    public function setObs($obs)
     {
-        $this->fecha = $fecha;
+        $this->obs = $obs;
 
         return $this;
     }
 
     /**
-     * Get fecha
+     * Get obs
      *
-     * @return \DateTime 
+     * @return string 
      */
-    public function getFecha()
+    public function getObs()
     {
-        return $this->fecha;
+        return $this->obs;
     }
 
     /**
-     * Set hora
+     * Set clienteTipo
      *
-     * @param \DateTime $hora
+     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
      * @return Ticket
      */
-    public function setHora($hora)
+    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
     {
-        $this->hora = $hora;
+        $this->clienteTipo = $clienteTipo;
 
         return $this;
     }
 
     /**
-     * Get hora
+     * Get clienteTipo
      *
-     * @return \DateTime 
+     * @return \AppBundle\Entity\ClienteTipo 
      */
-    public function getHora()
+    public function getClienteTipo()
     {
-        return $this->hora;
+        return $this->clienteTipo;
     }
 
     /**
@@ -447,28 +470,5 @@ class Ticket
     public function getTransaccionTipo()
     {
         return $this->transaccionTipo;
-    }
-
-    /**
-     * Set clienteTipo
-     *
-     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
-     * @return Ticket
-     */
-    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
-    {
-        $this->clienteTipo = $clienteTipo;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteTipo
-     *
-     * @return \AppBundle\Entity\ClienteTipo 
-     */
-    public function getClienteTipo()
-    {
-        return $this->clienteTipo;
     }
 }

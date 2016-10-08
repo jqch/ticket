@@ -123,10 +123,10 @@ class Agencia
      */
     private $lugar;
 
+
     public function __toString(){
         return $this->agencia;
     }
-
     /**
      * Get id
      *

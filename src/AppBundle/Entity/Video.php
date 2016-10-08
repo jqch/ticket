@@ -60,7 +60,9 @@ class Video
      */
     private $agencia;
 
-
+    public function __toString(){
+        return $this->video;
+    }
 
     /**
      * Get id

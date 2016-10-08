@@ -35,7 +35,6 @@
                         <th>Id</th>
                         <th>Agencia</th>
                         <th>Video</th>
-                        <th>Ruta</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -45,9 +44,8 @@
                         <td>{{ vid.id }}</td>
                         <td>{{ vid.agencia.agencia }}</td>
                         <td>{{ vid.video }}</td>
-                        <td>{{ vid.ruta }}</td>
                         <td>
-                            <div class="hidden-sm hidden-xs action-buttons">
+                            <div class="action-buttons">
                                 <a class="red" href="{{ path('video_delete', { 'id': vid.id }) }}">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>

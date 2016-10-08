@@ -49,6 +49,7 @@
     <input type="hidden" id="operadorId" value="{{operadorId}}">
     <input type="hidden" id="area" value="{{area}}">
     <input type="hidden" id="nroVentanilla" value="{{nroVentanilla}}">
+    <input type="hidden" id="areaTipoId" value="{{areaTipoId}}">
     <input type="hidden" id="fecha" value="{{fecha}}">
 
     <div class="row">
@@ -122,13 +123,16 @@
             $('.nivel4').attr('disabled','disabled');
             function ticketsEspera(){
                 var operadorId = $('#operadorId').val();
+                var areaTipoId = $('#areaTipoId').val();
+                var nroVentanilla = $('#nroVentanilla').val();
+
                 if (xhr && xhr.readyState != 4) {
                     xhr.abort();
                 }
                 xhr = $.ajax({
                         type: 'post',
                         cache: false,
-                        data: {operadorId: operadorId},
+                        data: {operadorId: operadorId, areaTipoId:areaTipoId, nroVentanilla:nroVentanilla},
                         url: "{{ path('ventanilla_tickets_espera') }}",
                         beforeSend: function () {
 
@@ -150,7 +154,7 @@
 
             setInterval(function(){
                 ticketsEspera();
-            }, 5000);
+            }, 3000);
 
         });
 
