@@ -50,4 +50,83 @@ class LugarDetalle
     private $lugarPadre;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return LugarDetalle
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set lugar
+     *
+     * @param \AppBundle\Entity\Lugar $lugar
+     * @return LugarDetalle
+     */
+    public function setLugar(\AppBundle\Entity\Lugar $lugar = null)
+    {
+        $this->lugar = $lugar;
+
+        return $this;
+    }
+
+    /**
+     * Get lugar
+     *
+     * @return \AppBundle\Entity\Lugar 
+     */
+    public function getLugar()
+    {
+        return $this->lugar;
+    }
+
+    /**
+     * Set lugarPadre
+     *
+     * @param \AppBundle\Entity\Lugar $lugarPadre
+     * @return LugarDetalle
+     */
+    public function setLugarPadre(\AppBundle\Entity\Lugar $lugarPadre = null)
+    {
+        $this->lugarPadre = $lugarPadre;
+
+        return $this;
+    }
+
+    /**
+     * Get lugarPadre
+     *
+     * @return \AppBundle\Entity\Lugar 
+     */
+    public function getLugarPadre()
+    {
+        return $this->lugarPadre;
+    }
 }

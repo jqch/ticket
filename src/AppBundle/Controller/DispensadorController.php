@@ -65,6 +65,7 @@ class DispensadorController extends Controller
     public function registrarTicketAction(Request $request){
         try {
             
+            // obtenemos los balores del dispensador
             $agenciaId = $request->get('agenciaId');
             $servicioId = $request->get('servicioId');
             $clienteTipoId = $request->get('clienteTipoId');
@@ -72,43 +73,23 @@ class DispensadorController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
-            // Obtenemos el numero de ticket
-            $query = $em->getConnection()->prepare('SELECT get_ticket_siguiente_json(:agencia_id::INT, :servicio_id::INT, :cliente_tipo_id::INT, :fecha::DATE)');
+
+            // Obtenemos el codigo de ticket y registramos el ticket
+            $query = $em->getConnection()->prepare('SELECT get_generar_ticket_espera_json(:agencia_id::INT, :servicio_id::VARCHAR, :cliente_tipo_id::VARCHAR, :fecha::DATE, :esregistro::BOOLEAN)');
             $query->bindValue(':agencia_id',$agenciaId);
             $query->bindValue(':servicio_id',$servicioId);
             $query->bindValue(':cliente_tipo_id',$clienteTipoId);
             $query->bindValue(':fecha',$fechaActual);
+            $query->bindValue('esregistro',true);
             $query->execute();
             $ticket = $query->fetchAll();
-            dump($ticket);die;
-            $ticket = json_decode($ticket[0]['get_ticket_siguiente_json']);
-            
-            //$servicio = $em->getRepository('AppBundle:Servicio')->find($servicioId);
-            //$clienteTipo = $em->getRepository('AppBundle:ClienteTipo')->find($clienteTipoId);
 
-            /* Registro del nuevo ticket */
+            // decodificacmos la respuesta json
+            $ticket = json_decode($ticket[0]['get_generar_ticket_espera_json']);
 
-            $newTicket = new Ticket();
-            $newTicket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(0));
-            $newTicket->setTransaccionTipo($em->getRepository('AppBundle:TransaccionTipo')->find(0));
-            $newTicket->setServicio($em->getRepository('AppBundle:Servicio')->find($servicioId));
-            $newTicket->setClienteTipo($em->getRepository('AppBundle:ClienteTipo')->find($clienteTipoId));
-            $newTicket->setCodigoticket($ticket->codigoticket);
-            $newTicket->setNumeroticket($ticket->numeroticket);
-            $newTicket->setFechahora(new \DateTime('now'));
-            $newTicket->setFecha(new \DateTime('now'));
-            $newTicket->setHora(new \DateTime('now'));
-            $newTicket->setAgencia($agenciaId);
-            $newTicket->setObs('');
-
-            $em->persist($newTicket);
-            $em->flush();
-
-            // IMPRIMIMOS EL TICKET
-            
-            $codigoTicket = $ticket->codigoticket.$ticket->numeroticket;
+            // asignacmos el codigo y fecha de registro
+            $codigoTicket = $ticket->get_generar_ticket_espera;
             $fechaHora = date('d-m-Y H:i');
-            //dump($fechaHora);die;
 
             $em->getConnection()->commit();
             

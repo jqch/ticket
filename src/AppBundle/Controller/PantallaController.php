@@ -20,6 +20,7 @@ class PantallaController extends Controller
     public function __construct(){
         $this->session = new Session();
     }
+
     /**
      * @Route("/", name="pantalla_index")
      */
@@ -45,9 +46,14 @@ class PantallaController extends Controller
             $firstVideo = "";
         }
 
+        $valores = $em->getRepository('AppBundle:Valores')->find(2);
+        $cantidad = $valores->getMensajecabecera();
+
         //$firstVideo = 'buscando-a-dori.mp4';
         return $this->render('Pantalla/pantalla.html.twig',array(
-            'firstVideo'=>$firstVideo
+            'firstVideo'=>$firstVideo,
+            'agenciaId'=>$agenciaId,
+            'cantidad'=>$cantidad
         ));
     }
 
@@ -113,7 +119,7 @@ class PantallaController extends Controller
     public function nextTextAction(Request $request)
     {
         // Agencia
-        $agencia = 602;
+        $agenciaId = $this->session->get('agenciaId');
 
         // Obtener la lista de textos
 
@@ -126,10 +132,10 @@ class PantallaController extends Controller
                         ->orderBy('al.orden','ASC')
                         ->where('ag.id = :idAgencia')
                         ->andWhere('al.esactivo = true')
-                        ->setParameter('idAgencia',$agencia)
+                        ->setParameter('idAgencia',$agenciaId)
                         ->getQuery()
                         ->getResult();
-
+        //dump($anuncios);die;
         $textList = array();
         foreach ($anuncios as $a) {
             $textList[] = $a->getAnuncio();
@@ -177,42 +183,33 @@ class PantallaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
+            $cantidad = $request->get('cantidad');
+
             $agenciaId = $this->session->get('agenciaId');
             $fecha = date('Y-m-d');
 
-            $query = $em->getConnection()->prepare('SELECT get_ticket_pantalla_json(:agencia_id::INT, :fecha::DATE, :total::INT)');
+            $query = $em->getConnection()->prepare('SELECT get_listar_ticket_pantalla_json(:agencia_id::INT, :fecha::DATE, :cantidad::INT)');
             $query->bindValue(':agencia_id',$agenciaId);
             $query->bindValue(':fecha',$fecha);
-            $query->bindValue(':total',6);
+            $query->bindValue(':cantidad',$cantidad);
             $query->execute();
             $tickets = $query->fetchAll();
 
-            $ticket = json_decode($tickets[0]['get_ticket_pantalla_json']);
-            dump($ticket);die;
-            // Obtenemos los tickets que fueron llamados, o los rellamados
-            $tickets = $em->createQueryBuilder()
-                                    ->select('t.id, t.codigoticket, t.obs')
-                                    ->from('AppBundle:Ticket','t')
-                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
-                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
-                                    ->where('Date(t.fechahora) = :fechaActual')
-                                    ->andWhere('te.id > 0')
-                                    ->orderBy('t.fechahora','DESC')
-                                    ->setMaxResults(6)
-                                    ->setParameter('fechaActual',new \DateTime('2016-09-30'))
-                                    ->getQuery()
-                                    ->getArrayResult();
-
-            // Actualizamos los estados para pintar la ficha (obs)
-            foreach ($tickets as $t) {
-                $ticketActual = $em->getRepository('AppBundle:Ticket')->find($t['id']);
-                $ticketActual->setObs(0);
-                $em->flush();
+            $arrayTickets = array();
+            if(count($tickets)>0){
+                foreach ($tickets as $t) {
+                    $ticket = json_decode($t['get_listar_ticket_pantalla_json']);
+                    $arrayTickets[] = $ticket;
+                }
             }
+            //dump($arrayTickets);
+            
+            //die;
+            $cantidadTickets = count($arrayTickets);
 
             $em->getConnection()->commit();
 
-            return new JsonResponse($tickets);
+            return new JsonResponse(array('ticket'=>$arrayTickets,'cantidad'=>$cantidad, 'cantidadTickets'=>$cantidadTickets));
 
         } catch (Exception $e) {
 

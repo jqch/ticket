@@ -53,5 +53,109 @@ class Anuncio
      */
     private $agencia;
 
+    public function __toString(){
+        return $this->anuncio;
+    }
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set anuncioTipo
+     *
+     * @param integer $anuncioTipo
+     * @return Anuncio
+     */
+    public function setAnuncioTipo($anuncioTipo)
+    {
+        $this->anuncioTipo = $anuncioTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get anuncioTipo
+     *
+     * @return integer 
+     */
+    public function getAnuncioTipo()
+    {
+        return $this->anuncioTipo;
+    }
+
+    /**
+     * Set anuncio
+     *
+     * @param string $anuncio
+     * @return Anuncio
+     */
+    public function setAnuncio($anuncio)
+    {
+        $this->anuncio = $anuncio;
+
+        return $this;
+    }
+
+    /**
+     * Get anuncio
+     *
+     * @return string 
+     */
+    public function getAnuncio()
+    {
+        return $this->anuncio;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return Anuncio
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set agencia
+     *
+     * @param \AppBundle\Entity\Agencia $agencia
+     * @return Anuncio
+     */
+    public function setAgencia(\AppBundle\Entity\Agencia $agencia = null)
+    {
+        $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    /**
+     * Get agencia
+     *
+     * @return \AppBundle\Entity\Agencia 
+     */
+    public function getAgencia()
+    {
+        return $this->agencia;
+    }
 }

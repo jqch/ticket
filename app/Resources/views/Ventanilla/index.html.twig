@@ -18,30 +18,24 @@
             </small>
         </h1>
     </div>
-    {% if area|length > 0 and ventanillas|length > 0 %}
-        <form action="{{path('ventanilla_show')}}" method="post">
-            <input type="hidden" name="operadorId" value="{{operadorId}}">
-            <div class="form-group">
-                <label for="">Área:</label>
-                <input type="hidden" name="idArea" value="{{area.id}}">
-                <input type="hidden" name="area" value="{{area.areaTipo}}">
-                <label>{{area.areaTipo}}</label>
-            </div>
-            <div class="form-group">
-                <label for="">Número de Ventanilla:</label>
-                <select name="nroVentanilla" id="nroVentanilla" required="" style="width:150px">
-                    {% for vent in ventanillas %}
-                        <option value="{{vent.numero}}">{{vent.numero}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <hr>
-            <button type="submit" class="btn btn-white btn-info btn-bold">Iniciar atención <i class="fa fa-hand-o-right"></i></button>
-        </form>
-    {% else %}
-        <div class="alert alert-info">
-            <i class="fa fa-info-circle"></i> No hay ventanillas registradas
+    <form action="{{path('ventanilla_show')}}" method="post">
+        <input type="hidden" name="agenciaId" value="{{agenciaId}}">
+        <input type="hidden" name="area" value="{{area.areaTipo}}">
+        <input type="hidden" name="areaId" value="{{area.id}}">
+        <input type="hidden" name="operadorId" value="{{operadorId}}">
+        <div class="form-group">
+            <label for="">Area:</label> {{ area.areaTipo }}
         </div>
-    {% endif %}
+        <div class="form-group">
+            <label for="">Ventanilla:</label>
+            <select name="nroVentanilla" id="nroVentanilla" required="" style="width:150px">
+                {% for vent in ventanillas %}
+                    <option value="{{vent.numero}}">{{vent.numero}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-white btn-info btn-bold">Iniciar atención <i class="fa fa-hand-o-right"></i></button>
+    </form>
     
 {% endblock %}

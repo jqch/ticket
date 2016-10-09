@@ -43,9 +43,12 @@
         </h1>
     </div>
     <h3 class="header smaller lighter green align-center">
+        Agencia: {{agencia.agencia}} <br>
+
         {{area}} - Ventanilla {{nroVentanilla}}
     </h3>
 
+    <input type="hidden" id="agenciaId" value="{{agenciaId}}">
     <input type="hidden" id="operadorId" value="{{operadorId}}">
     <input type="hidden" id="area" value="{{area}}">
     <input type="hidden" id="nroVentanilla" value="{{nroVentanilla}}">
@@ -54,7 +57,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3 class="lighter blue">Tickets pendientes: <span id="ticketsEsperaCantidad" style="margin-left:10px"></span></h3>
+            <h3 class="lighter blue">Tickets en espera: <span id="ticketsEsperaCantidad" style="margin-left:10px"></span></h3>
         </div>
     </div>
     <br>   
@@ -125,6 +128,7 @@
                 var operadorId = $('#operadorId').val();
                 var areaTipoId = $('#areaTipoId').val();
                 var nroVentanilla = $('#nroVentanilla').val();
+                var agenciaId = $('#agenciaId').val();
 
                 if (xhr && xhr.readyState != 4) {
                     xhr.abort();
@@ -132,7 +136,7 @@
                 xhr = $.ajax({
                         type: 'post',
                         cache: false,
-                        data: {operadorId: operadorId, areaTipoId:areaTipoId, nroVentanilla:nroVentanilla},
+                        data: {operadorId: operadorId, areaTipoId:areaTipoId, nroVentanilla:nroVentanilla, agenciaId:agenciaId},
                         url: "{{ path('ventanilla_tickets_espera') }}",
                         beforeSend: function () {
 
@@ -154,7 +158,7 @@
 
             setInterval(function(){
                 ticketsEspera();
-            }, 3000);
+            }, 5000);
 
         });
 

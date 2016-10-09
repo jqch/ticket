@@ -42,14 +42,14 @@
             <div id="botones-servicios">
                 {% for servicios in servicios %}
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="siguientePantalla({{servicios.id}});">{{servicios.servicio}}</button>
+                    <button id="{{servicios.id}}" class="btn btn-primary btn-lg waves-effect" onclick="siguientePantalla('{{servicios.id}}');">{{servicios.servicio}}</button>
                 </div>
                 {% endfor %}
             </div>
             <div id="botones-tiposClientes" style="display:none">
                 {% for tc in tiposCliente %}
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <button id="{{tc.id}}" class="btn btn-primary btn-lg waves-effect" onclick="registrar({{tc.id}})">{{tc.clienteTipo}} <br> <span>{{tc.descripcion}}</span> </button>
+                    <button id="{{tc.id}}" class="btn btn-primary btn-lg waves-effect" onclick="registrar('{{tc.id}}')">{{tc.clienteTipo}} <br> <span>{{tc.descripcion}}</span> </button>
                 </div>
                 {% endfor %}
             </div>
@@ -58,7 +58,7 @@
         <div id="imprimir" style="background:#3ED4E3; width:5cm; height:6cm">
             <div id="imp-titulo">{{titulo}}</div>
             <div id="imp-agenciaNombre">{{agenciaNombre}}</div>
-            <div id="imp-codigoTicket"></div>
+            <h1 id="imp-codigoTicket"></h1>
             <div id="imp-fechaHora"></div>
             <div id="imp-frase">{{frase}}</div>
         </div>

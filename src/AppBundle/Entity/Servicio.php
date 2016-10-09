@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Servicio
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=1, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="servicio_id_seq", allocationSize=1, initialValue=1)
@@ -95,7 +95,7 @@ class Servicio
     /**
      * Get id
      *
-     * @return integer 
+     * @return string 
      */
     public function getId()
     {

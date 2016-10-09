@@ -30,6 +30,7 @@ class VentanillaController extends Controller
             $em->getConnection()->beginTransaction();
 
             $areaTipoId = $this->session->get('areaTipoId');
+
             $area = $em->getRepository('AppBundle:AreaTipo')->find($areaTipoId);
 
             $ventanillas = $em->getRepository('AppBundle:Ventanilla')->findBy(array(
@@ -41,7 +42,8 @@ class VentanillaController extends Controller
             return $this->render('Ventanilla/index.html.twig', array(
                 'area'=>$area,
                 'ventanillas'=>$ventanillas,
-                'operadorId' => $this->session->get('operadorId')
+                'operadorId' => $this->session->get('operadorId'),
+                'agenciaId' => $this->session->get('agenciaId')
             ));
 
         } catch (Exception $e) {
@@ -59,9 +61,14 @@ class VentanillaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
+
             $area = $request->get('area');
+            $areaId = $request->get('areaId');
             $nroVentanilla = $request->get('nroVentanilla');
             $operadorId = $request->get('operadorId');
+            $agenciaId = $request->get('agenciaId');
+
+            $agencia = $em->getRepository('AppBundle:Agencia')->find($agenciaId);
 
             $operador = $em->getRepository('AppBundle:Operador')->find($operadorId);
             $areaTipoId = $operador->getAreaTipo()->getId();
@@ -76,7 +83,9 @@ class VentanillaController extends Controller
                 'areaTipoId'=>$areaTipoId,
                 'fecha'=>$fecha,
                 'nroVentanilla'=>$nroVentanilla,
-                'transaccionCliente'=>$transaccionCliente
+                'transaccionCliente'=>$transaccionCliente,
+                'agenciaId' => $agenciaId,
+                'agencia'=>$agencia
             ));
 
         } catch (Exception $e) {
@@ -91,14 +100,13 @@ class VentanillaController extends Controller
     public function ticketsEsperaAction(Request $request)
     {
         try {
-            $operadorId = $request->get('operadorId');
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
             $operadorId = $request->get('operadorId');
             $areaTipoId = $request->get('areaTipoId');
             $nroVentanilla = $request->get('nroVentanilla');
-
+            $agenciaId = $request->get('agenciaId');
             /*
             //look for the tuicion
             $query = $em->getConnection()->prepare('SELECT get_ue_tuicion (:user_id::INT, :sie::INT, :roluser::INT)');
@@ -113,55 +121,19 @@ class VentanillaController extends Controller
 
             // encontramos los servicios que se atiende en el area de la ventanilla
             //select * from get_ticket_siguiente(202,1,2)
-            $query = $em->getConnection()->prepare('SELECT get_ticket_siguiente(:agencia_id::INT, :servicio_id::INT, :cliente_tipo_id::INT)');
-            $query->bindValue(':agencia_id',202);
-            $query->bindValue(':servicio_id',1);
-            $query->bindValue(':cliente_tipo_id',2);
+            $query = $em->getConnection()->prepare('SELECT get_cantidad_ticket_espera_json(:agencia_id::INT, :area_tipo_id::INT, :fecha::DATE)');
+            $query->bindValue(':agencia_id',$agenciaId);
+            $query->bindValue(':area_tipo_id',$areaTipoId);
+            $query->bindValue(':fecha',date('Y-m-d'));
             $query->execute();
 
+
             $ticket = $query->fetchAll();
+            $ticket = json_decode($ticket[0]['get_cantidad_ticket_espera_json']);
 
             //dump($ticket);die;
-            /*
-            $serviciosArea = $em->createQueryBuilder()
-                                ->select('s')
-                                ->from('AppBundle:Servicio','s')
-                                ->innerJoin('AppBundle:AreaTipo','at','with','s.areaTipo = at.id')
-                                ->innerJoin('AppBundle:AgenciaServicio','ase','with','ase.servicio = s.id')
-                                ->innerJoin('AppBundle:Agencia','a','with','ase.agencia = a.id')
-                                ->where('at.id = :areaTipoId')
-                                ->andWhere('a.id = :agenciaId')
-                                ->setParameter('areaTipoId',$areaTipoId)
-                                ->setParameter('agenciaId',$this->session->get('agenciaId'))
-                                ->getQuery()
-                                ->getResult();
-
-            // servicios del 
-            dump($serviciosArea);die;
-
-            $serviciosArea = $em->getRepository('AppBundle:Servicio')->findBy(array('operador'=>$operadorId));
-
-            $arrayServicios = array();
-            foreach ($serviciosOperador as $so) {
-                $arrayServicios[] = $so->getServicio()->getId();
-            }
-            //dump($arrayServicios);die;
-            $enEspera = $em->createQueryBuilder()
-                                    ->select('t.id')
-                                    ->from('AppBundle:Ticket','t')
-                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
-                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
-                                    //->where('Date(t.fechahora) = :fechaActual')
-                                    ->where('s.id IN (:servicios)')
-                                    ->andWhere('te.id = 0')
-                                    ->orderBy('t.fechahora','DESC')
-                                    //->setParameter('fechaActual',new \DateTime('now'))
-                                    ->setParameter('servicios',$arrayServicios)
-                                    ->getQuery()
-                                    ->getResult();
-            */
             $em->getConnection()->commit();
-            $enEspera = rand(0,100);
+            $enEspera = $ticket->get_cantidad_ticket_espera;
             return new JsonResponse(array('enEspera'=>$enEspera,'ticket'=>$ticket));
         } catch (Exception $e) {
 

@@ -139,4 +139,336 @@ class Ticket
     private $transaccionTipo;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set codigoticket
+     *
+     * @param string $codigoticket
+     * @return Ticket
+     */
+    public function setCodigoticket($codigoticket)
+    {
+        $this->codigoticket = $codigoticket;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoticket
+     *
+     * @return string 
+     */
+    public function getCodigoticket()
+    {
+        return $this->codigoticket;
+    }
+
+    /**
+     * Set numeroticket
+     *
+     * @param integer $numeroticket
+     * @return Ticket
+     */
+    public function setNumeroticket($numeroticket)
+    {
+        $this->numeroticket = $numeroticket;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroticket
+     *
+     * @return integer 
+     */
+    public function getNumeroticket()
+    {
+        return $this->numeroticket;
+    }
+
+    /**
+     * Set fechahora
+     *
+     * @param \DateTime $fechahora
+     * @return Ticket
+     */
+    public function setFechahora($fechahora)
+    {
+        $this->fechahora = $fechahora;
+
+        return $this;
+    }
+
+    /**
+     * Get fechahora
+     *
+     * @return \DateTime 
+     */
+    public function getFechahora()
+    {
+        return $this->fechahora;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     * @return Ticket
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime 
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set hora
+     *
+     * @param \DateTime $hora
+     * @return Ticket
+     */
+    public function setHora($hora)
+    {
+        $this->hora = $hora;
+
+        return $this;
+    }
+
+    /**
+     * Get hora
+     *
+     * @return \DateTime 
+     */
+    public function getHora()
+    {
+        return $this->hora;
+    }
+
+    /**
+     * Set operador
+     *
+     * @param integer $operador
+     * @return Ticket
+     */
+    public function setOperador($operador)
+    {
+        $this->operador = $operador;
+
+        return $this;
+    }
+
+    /**
+     * Get operador
+     *
+     * @return integer 
+     */
+    public function getOperador()
+    {
+        return $this->operador;
+    }
+
+    /**
+     * Set agencia
+     *
+     * @param integer $agencia
+     * @return Ticket
+     */
+    public function setAgencia($agencia)
+    {
+        $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    /**
+     * Get agencia
+     *
+     * @return integer 
+     */
+    public function getAgencia()
+    {
+        return $this->agencia;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return Ticket
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set clienteTipo
+     *
+     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
+     * @return Ticket
+     */
+    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
+    {
+        $this->clienteTipo = $clienteTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteTipo
+     *
+     * @return \AppBundle\Entity\ClienteTipo 
+     */
+    public function getClienteTipo()
+    {
+        return $this->clienteTipo;
+    }
+
+    /**
+     * Set ventanilla
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanilla
+     * @return Ticket
+     */
+    public function setVentanilla(\AppBundle\Entity\Ventanilla $ventanilla = null)
+    {
+        $this->ventanilla = $ventanilla;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanilla
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanilla()
+    {
+        return $this->ventanilla;
+    }
+
+    /**
+     * Set ventanillaDestino
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanillaDestino
+     * @return Ticket
+     */
+    public function setVentanillaDestino(\AppBundle\Entity\Ventanilla $ventanillaDestino = null)
+    {
+        $this->ventanillaDestino = $ventanillaDestino;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanillaDestino
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanillaDestino()
+    {
+        return $this->ventanillaDestino;
+    }
+
+    /**
+     * Set servicio
+     *
+     * @param \AppBundle\Entity\Servicio $servicio
+     * @return Ticket
+     */
+    public function setServicio(\AppBundle\Entity\Servicio $servicio = null)
+    {
+        $this->servicio = $servicio;
+
+        return $this;
+    }
+
+    /**
+     * Get servicio
+     *
+     * @return \AppBundle\Entity\Servicio 
+     */
+    public function getServicio()
+    {
+        return $this->servicio;
+    }
+
+    /**
+     * Set ticketEstado
+     *
+     * @param \AppBundle\Entity\TicketEstado $ticketEstado
+     * @return Ticket
+     */
+    public function setTicketEstado(\AppBundle\Entity\TicketEstado $ticketEstado = null)
+    {
+        $this->ticketEstado = $ticketEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketEstado
+     *
+     * @return \AppBundle\Entity\TicketEstado 
+     */
+    public function getTicketEstado()
+    {
+        return $this->ticketEstado;
+    }
+
+    /**
+     * Set transaccionTipo
+     *
+     * @param \AppBundle\Entity\TransaccionTipo $transaccionTipo
+     * @return Ticket
+     */
+    public function setTransaccionTipo(\AppBundle\Entity\TransaccionTipo $transaccionTipo = null)
+    {
+        $this->transaccionTipo = $transaccionTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get transaccionTipo
+     *
+     * @return \AppBundle\Entity\TransaccionTipo 
+     */
+    public function getTransaccionTipo()
+    {
+        return $this->transaccionTipo;
+    }
 }

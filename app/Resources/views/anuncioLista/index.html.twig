@@ -1,0 +1,92 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('dashboard')}}">Dashboard</a>
+        </li>
+        <li class="active">Lista de Anuncios</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-duallistbox.min.css')}}" />
+    <div class="page-header">
+        <h1>
+            Anuncios
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Lista
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="elements.html#home" aria-expanded="true">
+                            <i class="green ace-icon fa fa-list-ol bigger-120"></i>
+                            Lista Actual
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="elements.html#messages" aria-expanded="false">
+                            <i class="blue ace-icon fa fa-th bigger-120"></i>
+                            Generar nueva lista
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade active in">
+                         <h3 class="header smaller lighter green">
+                            Lista actual
+                        </h3>
+                         <ul class="list-group">
+                         {% for al in anuncioLista %}
+                                <li class="list-group-item">{{loop.index}} - {{al.anuncio}}</li>
+                         {% endfor %}
+                         </ul>
+                    </div>
+
+                    <div id="messages" class="tab-pane fade">
+                        <h3 class="header smaller lighter blue">
+                            Generar nueva lista
+                        </h3>
+                        <form action="{{path('anunciolista_lista')}}" method="post">
+                            <select multiple="multiple" name="nuevaLista[]" id="demo2" class="demo2">
+                                {% for aa in anuncioAgencia %}
+                                    <option value="{{aa.id}}">{{aa.anuncio}}</option>
+                                {% endfor %}
+                            </select>
+                            <hr>
+                            <button class="btn btn-white btn-info"><i class="fa fa-save"></i> Guardar lista</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('js/jquery.bootstrap-duallistbox.min.js')}}"></script>
+    <script src="{{asset('js/jquery.raty.min.js')}}"></script>
+    <script type="text/javascript">
+            jQuery(function($){
+                var demo2 = $('.demo2').bootstrapDualListbox({
+                    nonSelectedListLabel: 'Anuncios disponibles',
+                    selectedListLabel : 'Nueva lista'
+                });
+            });
+            function mostrar(){
+                if( $('#divNuevaLista').is(":visible") ){
+                    $('#divNuevaLista').css('display','none');
+                }else{
+                    $('#divNuevaLista').css('display','block');
+                }
+            }
+        </script>
+{% endblock %}

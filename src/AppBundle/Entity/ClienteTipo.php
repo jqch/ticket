@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class ClienteTipo
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=1, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="cliente_tipo_id_seq", allocationSize=1, initialValue=1)
@@ -57,14 +57,12 @@ class ClienteTipo
      */
     private $obs;
 
-    public function __toString(){
-        return $this->clienteTipo;
-    }
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return string 
      */
     public function getId()
     {

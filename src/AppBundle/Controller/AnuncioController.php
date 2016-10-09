@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Anuncio;
 use AppBundle\Form\AnuncioType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Anuncio controller.
@@ -16,6 +17,12 @@ use AppBundle\Form\AnuncioType;
  */
 class AnuncioController extends Controller
 {
+    public $session;
+
+    public function __construct() {
+        $this->session = new Session();
+    }
+
     /**
      * Lists all Anuncio entities.
      *
@@ -25,8 +32,12 @@ class AnuncioController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $anuncios = $em->getRepository('AppBundle:Anuncio')->findAll();
+        $agenciaId = $this->session->get('agenciaId');
+        if($this->session->get('agenciaTipoId') == 2){
+            $anuncios = $em->getRepository('AppBundle:Anuncio')->findBy(array('agencia'=>$agenciaId));
+        }else{
+            $anuncios = $em->getRepository('AppBundle:Anuncio')->findAll();
+        }
 
         return $this->render('anuncio/index.html.twig', array(
             'anuncios' => $anuncios,

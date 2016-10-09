@@ -124,4 +124,338 @@ class Agencia
     private $lugar;
 
 
+    public function __toString(){
+        return $this->agencia;
+    }
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set agenciaTipo
+     *
+     * @param integer $agenciaTipo
+     * @return Agencia
+     */
+    public function setAgenciaTipo($agenciaTipo)
+    {
+        $this->agenciaTipo = $agenciaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get agenciaTipo
+     *
+     * @return integer 
+     */
+    public function getAgenciaTipo()
+    {
+        return $this->agenciaTipo;
+    }
+
+    /**
+     * Set agencia
+     *
+     * @param string $agencia
+     * @return Agencia
+     */
+    public function setAgencia($agencia)
+    {
+        $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    /**
+     * Get agencia
+     *
+     * @return string 
+     */
+    public function getAgencia()
+    {
+        return $this->agencia;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     * @return Agencia
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string 
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set telefono
+     *
+     * @param string $telefono
+     * @return Agencia
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string 
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     * @return Agencia
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string 
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set fechaApertura
+     *
+     * @param \DateTime $fechaApertura
+     * @return Agencia
+     */
+    public function setFechaApertura($fechaApertura)
+    {
+        $this->fechaApertura = $fechaApertura;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaApertura
+     *
+     * @return \DateTime 
+     */
+    public function getFechaApertura()
+    {
+        return $this->fechaApertura;
+    }
+
+    /**
+     * Set fechaCierre
+     *
+     * @param \DateTime $fechaCierre
+     * @return Agencia
+     */
+    public function setFechaCierre($fechaCierre)
+    {
+        $this->fechaCierre = $fechaCierre;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCierre
+     *
+     * @return \DateTime 
+     */
+    public function getFechaCierre()
+    {
+        return $this->fechaCierre;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     * @return Agencia
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string 
+     */
+    public function getObs()
+    {
+        return $this->obs;
+    }
+
+    /**
+     * Set anchobanda
+     *
+     * @param integer $anchobanda
+     * @return Agencia
+     */
+    public function setAnchobanda($anchobanda)
+    {
+        $this->anchobanda = $anchobanda;
+
+        return $this;
+    }
+
+    /**
+     * Get anchobanda
+     *
+     * @return integer 
+     */
+    public function getAnchobanda()
+    {
+        return $this->anchobanda;
+    }
+
+    /**
+     * Set esactivo
+     *
+     * @param boolean $esactivo
+     * @return Agencia
+     */
+    public function setEsactivo($esactivo)
+    {
+        $this->esactivo = $esactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get esactivo
+     *
+     * @return boolean 
+     */
+    public function getEsactivo()
+    {
+        return $this->esactivo;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Agencia
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * Set papelporcentaje
+     *
+     * @param integer $papelporcentaje
+     * @return Agencia
+     */
+    public function setPapelporcentaje($papelporcentaje)
+    {
+        $this->papelporcentaje = $papelporcentaje;
+
+        return $this;
+    }
+
+    /**
+     * Get papelporcentaje
+     *
+     * @return integer 
+     */
+    public function getPapelporcentaje()
+    {
+        return $this->papelporcentaje;
+    }
+
+    /**
+     * Set frase
+     *
+     * @param string $frase
+     * @return Agencia
+     */
+    public function setFrase($frase)
+    {
+        $this->frase = $frase;
+
+        return $this;
+    }
+
+    /**
+     * Get frase
+     *
+     * @return string 
+     */
+    public function getFrase()
+    {
+        return $this->frase;
+    }
+
+    /**
+     * Set lugar
+     *
+     * @param \AppBundle\Entity\Lugar $lugar
+     * @return Agencia
+     */
+    public function setLugar(\AppBundle\Entity\Lugar $lugar = null)
+    {
+        $this->lugar = $lugar;
+
+        return $this;
+    }
+
+    /**
+     * Get lugar
+     *
+     * @return \AppBundle\Entity\Lugar 
+     */
+    public function getLugar()
+    {
+        return $this->lugar;
+    }
 }
