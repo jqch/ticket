@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use AppBundle\Entity\Ticket;
 
 /**
  * @Route("/ventanilla", name="ventanilla")
@@ -64,7 +65,8 @@ class VentanillaController extends Controller
 
             $area = $request->get('area');
             $areaId = $request->get('areaId');
-            $nroVentanilla = $request->get('nroVentanilla');
+            $ventanillaId = $request->get('ventanillaId');
+            $ventanilla = $em->getRepository('AppBundle:Ventanilla')->find($ventanillaId);
             $operadorId = $request->get('operadorId');
             $agenciaId = $request->get('agenciaId');
 
@@ -82,7 +84,8 @@ class VentanillaController extends Controller
                 'operadorId'=>$operador->getId(),
                 'areaTipoId'=>$areaTipoId,
                 'fecha'=>$fecha,
-                'nroVentanilla'=>$nroVentanilla,
+                'ventanillaNro'=>$ventanilla->getNumero(),
+                'ventanillaId'=>$ventanillaId,
                 'transaccionCliente'=>$transaccionCliente,
                 'agenciaId' => $agenciaId,
                 'agencia'=>$agencia
@@ -105,22 +108,8 @@ class VentanillaController extends Controller
 
             $operadorId = $request->get('operadorId');
             $areaTipoId = $request->get('areaTipoId');
-            $nroVentanilla = $request->get('nroVentanilla');
             $agenciaId = $request->get('agenciaId');
-            /*
-            //look for the tuicion
-            $query = $em->getConnection()->prepare('SELECT get_ue_tuicion (:user_id::INT, :sie::INT, :roluser::INT)');
-            $query->bindValue(':user_id', $this->session->get('userId'));
-            $query->bindValue(':sie', $institucionEducativa->getId());
-            $query->bindValue(':roluser', $this->session->get('roluser'));
-            $query->execute();
-            $aTuicion = $query->fetchAll();
-            //check if the user has the tuicion
-            if (!$aTuicion[0]['get_ue_tuicion']) {
-            */
 
-            // encontramos los servicios que se atiende en el area de la ventanilla
-            //select * from get_ticket_siguiente(202,1,2)
             $query = $em->getConnection()->prepare('SELECT get_cantidad_ticket_espera_json(:agencia_id::INT, :area_tipo_id::INT, :fecha::DATE)');
             $query->bindValue(':agencia_id',$agenciaId);
             $query->bindValue(':area_tipo_id',$areaTipoId);
@@ -131,7 +120,6 @@ class VentanillaController extends Controller
             $ticket = $query->fetchAll();
             $ticket = json_decode($ticket[0]['get_cantidad_ticket_espera_json']);
 
-            //dump($ticket);die;
             $em->getConnection()->commit();
             $enEspera = $ticket->get_cantidad_ticket_espera;
             return new JsonResponse(array('enEspera'=>$enEspera,'ticket'=>$ticket));
@@ -146,260 +134,97 @@ class VentanillaController extends Controller
     public function nextTicketAction(Request $request)
     {
         try {
+
+            $agenciaId = $request->get('agenciaId');
+            $areaTipoId = $request->get('areaTipoId');
+            $fecha = $request->get('fecha');
+            $ventanillaId = $request->get('ventanillaId');
             $operadorId = $request->get('operadorId');
 
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
-            $serviciosOperador = $em->getRepository('AppBundle:OperadorServicio')->findBy(array('operador'=>$operadorId));
-            $arrayServicios = array();
-            foreach ($serviciosOperador as $so) {
-                $arrayServicios[] = $so->getServicio()->getId();
+            /*
+            $query = $em->getConnection()->prepare('SELECT get_generar_ticket_llamada_json(:agencia_id::INT, :area_tipo_id::INT, :fecha::DATE, :ventanilla_id::INT, :operador_id::INT)');
+            $query->bindValue(':agencia_id',$agenciaId);
+            $query->bindValue(':area_tipo_id',$areaTipoId);
+            $query->bindValue(':fecha',date('Y-m-d'));
+            $query->bindValue(':ventanilla_id',$ventanillaId);
+            $query->bindValue(':operador_id',$operadorId);
+            $query->execute();
+            $ticket = $query->fetchAll();
+            $ticket = json_decode($ticket[0]['get_genera_ticket_llamada_json']);
+
+
+            */
+            $servicioId = 'C';
+            $clienteTipoId = 'N';
+            $ticketNro = '6';
+
+            $em->getConnection()->commit();
+            return new JsonResponse(array(
+                'existe'=>1,
+                'estado'=>1,
+                'servicioId'=>$servicioId,
+                'clienteTipoId'=>$clienteTipoId,
+                'ticketNro'=>$ticketNro,
+                'codigo'=>$servicioId.$clienteTipoId.$ticketNro
+            ));
+            
+        } catch (Exception $e) {
+
+        }
+    }
+
+
+    /**
+     * @Route("/accion", name="ventanilla_accion")
+     */
+    public function accionAction(Request $request)
+    {
+        try {
+            $agenciaId = $request->get('agenciaId');
+            $servicioId = $request->get('servicioId');
+            $clienteTipoId = $request->get('clienteTipoId');
+            $ticketNro = $request->get('ticketNro');
+            $ventanillaId = $request->get('ventanillaId');
+            $operadorId = $request->get('operadorId');
+            $fecha = $request->get('fecha');
+            $accion = $request->get('accion');
+            $transaccionId = $request->get('transaccionId');
+            $observacion = $request->get('observacion');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
+            
+            // Switch para el boton de pausa y continuar
+            if($accion == 3){
+                $accion = $request->get('newEstado');
             }
-            //dump($arrayServicios);die;
-            $siguiente = $em->createQueryBuilder()
-                                    ->select('t')
-                                    ->from('AppBundle:Ticket','t')
-                                    ->innerJoin('AppBundle:Servicio','s','with','t.servicio = s.id')
-                                    ->innerJoin('AppBundle:TicketEstado','te','with','t.ticketEstado = te.id')
-                                    //->where('Date(t.fechahora) = :fechaActual')
-                                    ->where('s.id IN (:servicios)')
-                                    ->andWhere('te.id = 0')
-                                    ->orderBy('t.fechahora','ASC')
-                                    ->setMaxResults(1)
-                                    //->setParameter('fechaActual',new \DateTime('now'))
-                                    ->setParameter('servicios',$arrayServicios)
-                                    ->getQuery()
-                                    ->getResult();
 
-            // Verificamos si existe el siguente ticket
-            // para actualizar el estado
-            if(count($siguiente) > 0){
-
-                // Actualizamos el estado del ticket
-                $ticketUpdate = $em->getRepository('AppBundle:Ticket')->find($siguiente[0]->getId());
-                $ticketUpdate->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(1));
-                $ticketUpdate->setObs(1);
-                $em->flush();
-
-                // Obtenemos los datos del ticket
-                $id = $ticketUpdate->getId();
-                $estado = $ticketUpdate->getTicketEstado()->getId();
-                $codigo = $ticketUpdate->getCodigoticket();
-
-                // Registrar el historial en otra tabla como ticket_detalle
-                $em->getConnection()->commit();
-                return new JsonResponse(array(
-                    'existe'=>1,
-                    'id'=>$id,
-                    'estado'=>$estado,
-                    'codigo'=>$codigo
-                ));
-            }else{
-                $em->getConnection()->commit();
-                return new JsonResponse(array(
-                    'existe'=>0
-                ));
-            }
-
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/rellamar", name="ventanilla_rellamar")
-     */
-    public function rellamarAction(Request $request)
-    {
-        try {
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setObs(1);
+            $newTicket = new Ticket();
+            $newTicket->setVentanilla($em->getRepository('AppBundle:Ventanilla')->find($ventanillaId));
+            $newTicket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find($accion));
+            $newTicket->setTransaccionTipo($em->getRepository('AppBundle:TransaccionTipo')->find($transaccionId));
+            $newTicket->setServicio($em->getRepository('AppBundle:Servicio')->find($servicioId));
+            $newTicket->setClienteTipo($em->getRepository('AppBundle:ClienteTipo')->find($clienteTipoId));
+            $newTicket->setNumeroticket($ticketNro);
+            $newTicket->setFechahora(new \DateTime('now'));
+            $newTicket->setFecha(new \DateTime('now'));
+            $newTicket->setHora(new \DateTime('now'));
+            $newTicket->setOperador($operadorId);
+            $newTicket->setAgenciaId(203);
+            $newTicket->setObs($observacion);
+            $em->persist($newTicket);
             $em->flush();
-            $em->getConnection()->commit();
-            // Registrar  la operacion
-            return new JsonResponse(array('mensaje'=>'Re-llamando'));
 
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/suspender", name="ventanilla_suspender")
-     */
-    public function suspenderAction(Request $request)
-    {
-        try {
-            // Actualizamos el estado del ticket
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(6));
-            $em->flush();
             $em->getConnection()->commit();
 
             // Registrar  la operacion
-
-
-
-            return new JsonResponse(array('mensaje'=>'Suspendido'));
+            return new JsonResponse(array('mensaje'=>$accion));
 
         } catch (Exception $e) {
 
         }
-    }
-
-    /**
-     * @Route("/iniciar", name="ventanilla_iniciar")
-     */
-    public function iniciarAction(Request $request)
-    {
-        try {
-            $idTicket = $request->get('idTicket');
-            $idTransaccion = $request->get('idTransaccion');
-
-            // Actualizamos el estado del ticket
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(2));
-            $em->flush();
-            $em->getConnection()->commit();
-
-            // Registrar  la operacion
-
-            // Obtener la hora
-            $horaInicio = date("H:i:s");
-
-            return new JsonResponse(array(
-                'mensaje'=>'Iniciando',
-                'horaInicio'=>$horaInicio
-            ));
-
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/pausar", name="ventanilla_pausar")
-     */
-    public function pausarAction(Request $request)
-    {
-        try {
-            $idTicket = $request->get('idTicket');
-            // Actualizamos el estado del ticket
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(3));
-            $em->flush();
-            $em->getConnection()->commit();
-
-            // Registrar  la operacion
-
-            // Obtener la hora
-            $horaInicio = date("H:i:s");
-
-            return new JsonResponse(array(
-                'mensaje'=>'Iniciando',
-                'horaInicio'=>$horaInicio
-            ));
-
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/continuar", name="ventanilla_continuar")
-     */
-    public function continuarAction(Request $request)
-    {
-        try {
-            $idTicket = $request->get('idTicket');
-            // Actualizamos el estado del ticket
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(2));
-            $em->flush();
-            $em->getConnection()->commit();
-
-            // Registrar  la operacion
-
-            // Obtener la hora
-            $horaInicio = date("H:i:s");
-
-            return new JsonResponse(array(
-                'mensaje'=>'Iniciando',
-                'horaInicio'=>$horaInicio
-            ));
-
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/finalizar", name="ventanilla_finalizar")
-     */
-    public function finalizarAction(Request $request)
-    {
-        try {
-            $idTicket = $request->get('idTicket');
-            // Actualizamos el estado del ticket
-            $idTicket = $request->get('idTicket');
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction();
-            $ticket = $em->getRepository('AppBundle:Ticket')->find($idTicket);
-            $ticket->setTicketEstado($em->getRepository('AppBundle:TicketEstado')->find(5));
-            $em->flush();
-            $em->getConnection()->commit();
-
-            // Registrar  la operacion
-
-            // Obtener la hora
-            $horaInicio = date("H:i:s");
-
-            return new JsonResponse(array(
-                'mensaje'=>'Iniciando',
-                'horaInicio'=>$horaInicio
-            ));
-
-        } catch (Exception $e) {
-
-        }
-    }
-
-    /**
-     * @Route("/espera", name="ventanilla_espera")
-     */
-    public function esperaAction(){
-            try {
-                    $em = $this->getDoctrine()->getManager();
-                    $em->getConnection()->beginTransaction();
-                    $totalCaja = rand(10,100);
-                    $totalPlataforma = 4;
-                    $em->getConnection()->commit();
-
-                    return new JsonResponse(json_encode(array(
-                        'servicio'=>'VENTANILLA',
-                        'accion'=>'ESPERA',
-                        'totalCaja'=>$totalCaja,
-                        'totalPlataforma'=>$totalPlataforma
-                    )));
-
-            } catch (Exception $e) {
-
-            }
     }
 
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Ticket
  *
- * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA34896F598", columns={"cliente_tipo_id"}), @ORM\Index(name="IDX_97A0ADA3F1AD916E", columns={"ventanilla_id"}), @ORM\Index(name="IDX_97A0ADA3A9B61B5B", columns={"ventanilla_id_destino"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"})})
+ * @ORM\Table(name="ticket", indexes={@ORM\Index(name="IDX_97A0ADA35609E41", columns={"ticket_estado_id"}), @ORM\Index(name="IDX_97A0ADA3A70D56FD", columns={"transaccion_tipo_id"}), @ORM\Index(name="IDX_97A0ADA34896F598", columns={"cliente_tipo_id"}), @ORM\Index(name="IDX_97A0ADA371CAA3E7", columns={"servicio_id"}), @ORM\Index(name="IDX_97A0ADA3F1AD916E", columns={"ventanilla_id"}), @ORM\Index(name="IDX_97A0ADA3A9B61B5B", columns={"ventanilla_id_destino"})})
  * @ORM\Entity
  */
 class Ticket
@@ -23,13 +23,6 @@ class Ticket
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="codigoticket", type="string", length=8, nullable=false)
-     */
-    private $codigoticket;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="numeroticket", type="integer", nullable=false)
@@ -39,21 +32,21 @@ class Ticket
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechahora", type="datetime", nullable=false)
+     * @ORM\Column(name="fechahora", type="datetime", nullable=true)
      */
     private $fechahora;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date", nullable=false)
+     * @ORM\Column(name="fecha", type="date", nullable=true)
      */
     private $fecha;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="hora", type="time", nullable=false)
+     * @ORM\Column(name="hora", type="time", nullable=true)
      */
     private $hora;
 
@@ -67,9 +60,9 @@ class Ticket
     /**
      * @var integer
      *
-     * @ORM\Column(name="agencia", type="integer", nullable=true)
+     * @ORM\Column(name="agencia_id", type="integer", nullable=true)
      */
-    private $agencia;
+    private $agenciaId;
 
     /**
      * @var string
@@ -77,46 +70,6 @@ class Ticket
      * @ORM\Column(name="obs", type="string", length=255, nullable=true)
      */
     private $obs;
-
-    /**
-     * @var \ClienteTipo
-     *
-     * @ORM\ManyToOne(targetEntity="ClienteTipo")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cliente_tipo_id", referencedColumnName="id")
-     * })
-     */
-    private $clienteTipo;
-
-    /**
-     * @var \Ventanilla
-     *
-     * @ORM\ManyToOne(targetEntity="Ventanilla")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ventanilla_id", referencedColumnName="id")
-     * })
-     */
-    private $ventanilla;
-
-    /**
-     * @var \Ventanilla
-     *
-     * @ORM\ManyToOne(targetEntity="Ventanilla")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ventanilla_id_destino", referencedColumnName="id")
-     * })
-     */
-    private $ventanillaDestino;
-
-    /**
-     * @var \Servicio
-     *
-     * @ORM\ManyToOne(targetEntity="Servicio")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="servicio_id", referencedColumnName="id")
-     * })
-     */
-    private $servicio;
 
     /**
      * @var \TicketEstado
@@ -138,6 +91,46 @@ class Ticket
      */
     private $transaccionTipo;
 
+    /**
+     * @var \ClienteTipo
+     *
+     * @ORM\ManyToOne(targetEntity="ClienteTipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cliente_tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $clienteTipo;
+
+    /**
+     * @var \Servicio
+     *
+     * @ORM\ManyToOne(targetEntity="Servicio")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="servicio_id", referencedColumnName="id")
+     * })
+     */
+    private $servicio;
+
+    /**
+     * @var \Ventanilla
+     *
+     * @ORM\ManyToOne(targetEntity="Ventanilla")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ventanilla_id", referencedColumnName="id")
+     * })
+     */
+    private $ventanilla;
+
+    /**
+     * @var \Ventanilla
+     *
+     * @ORM\ManyToOne(targetEntity="Ventanilla")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ventanilla_id_destino", referencedColumnName="id")
+     * })
+     */
+    private $ventanillaDestino;
+
 
 
     /**
@@ -148,29 +141,6 @@ class Ticket
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set codigoticket
-     *
-     * @param string $codigoticket
-     * @return Ticket
-     */
-    public function setCodigoticket($codigoticket)
-    {
-        $this->codigoticket = $codigoticket;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoticket
-     *
-     * @return string 
-     */
-    public function getCodigoticket()
-    {
-        return $this->codigoticket;
     }
 
     /**
@@ -289,26 +259,26 @@ class Ticket
     }
 
     /**
-     * Set agencia
+     * Set agenciaId
      *
-     * @param integer $agencia
+     * @param integer $agenciaId
      * @return Ticket
      */
-    public function setAgencia($agencia)
+    public function setAgenciaId($agenciaId)
     {
-        $this->agencia = $agencia;
+        $this->agenciaId = $agenciaId;
 
         return $this;
     }
 
     /**
-     * Get agencia
+     * Get agenciaId
      *
      * @return integer 
      */
-    public function getAgencia()
+    public function getAgenciaId()
     {
-        return $this->agencia;
+        return $this->agenciaId;
     }
 
     /**
@@ -332,98 +302,6 @@ class Ticket
     public function getObs()
     {
         return $this->obs;
-    }
-
-    /**
-     * Set clienteTipo
-     *
-     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
-     * @return Ticket
-     */
-    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
-    {
-        $this->clienteTipo = $clienteTipo;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteTipo
-     *
-     * @return \AppBundle\Entity\ClienteTipo 
-     */
-    public function getClienteTipo()
-    {
-        return $this->clienteTipo;
-    }
-
-    /**
-     * Set ventanilla
-     *
-     * @param \AppBundle\Entity\Ventanilla $ventanilla
-     * @return Ticket
-     */
-    public function setVentanilla(\AppBundle\Entity\Ventanilla $ventanilla = null)
-    {
-        $this->ventanilla = $ventanilla;
-
-        return $this;
-    }
-
-    /**
-     * Get ventanilla
-     *
-     * @return \AppBundle\Entity\Ventanilla 
-     */
-    public function getVentanilla()
-    {
-        return $this->ventanilla;
-    }
-
-    /**
-     * Set ventanillaDestino
-     *
-     * @param \AppBundle\Entity\Ventanilla $ventanillaDestino
-     * @return Ticket
-     */
-    public function setVentanillaDestino(\AppBundle\Entity\Ventanilla $ventanillaDestino = null)
-    {
-        $this->ventanillaDestino = $ventanillaDestino;
-
-        return $this;
-    }
-
-    /**
-     * Get ventanillaDestino
-     *
-     * @return \AppBundle\Entity\Ventanilla 
-     */
-    public function getVentanillaDestino()
-    {
-        return $this->ventanillaDestino;
-    }
-
-    /**
-     * Set servicio
-     *
-     * @param \AppBundle\Entity\Servicio $servicio
-     * @return Ticket
-     */
-    public function setServicio(\AppBundle\Entity\Servicio $servicio = null)
-    {
-        $this->servicio = $servicio;
-
-        return $this;
-    }
-
-    /**
-     * Get servicio
-     *
-     * @return \AppBundle\Entity\Servicio 
-     */
-    public function getServicio()
-    {
-        return $this->servicio;
     }
 
     /**
@@ -470,5 +348,97 @@ class Ticket
     public function getTransaccionTipo()
     {
         return $this->transaccionTipo;
+    }
+
+    /**
+     * Set clienteTipo
+     *
+     * @param \AppBundle\Entity\ClienteTipo $clienteTipo
+     * @return Ticket
+     */
+    public function setClienteTipo(\AppBundle\Entity\ClienteTipo $clienteTipo = null)
+    {
+        $this->clienteTipo = $clienteTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteTipo
+     *
+     * @return \AppBundle\Entity\ClienteTipo 
+     */
+    public function getClienteTipo()
+    {
+        return $this->clienteTipo;
+    }
+
+    /**
+     * Set servicio
+     *
+     * @param \AppBundle\Entity\Servicio $servicio
+     * @return Ticket
+     */
+    public function setServicio(\AppBundle\Entity\Servicio $servicio = null)
+    {
+        $this->servicio = $servicio;
+
+        return $this;
+    }
+
+    /**
+     * Get servicio
+     *
+     * @return \AppBundle\Entity\Servicio 
+     */
+    public function getServicio()
+    {
+        return $this->servicio;
+    }
+
+    /**
+     * Set ventanilla
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanilla
+     * @return Ticket
+     */
+    public function setVentanilla(\AppBundle\Entity\Ventanilla $ventanilla = null)
+    {
+        $this->ventanilla = $ventanilla;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanilla
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanilla()
+    {
+        return $this->ventanilla;
+    }
+
+    /**
+     * Set ventanillaDestino
+     *
+     * @param \AppBundle\Entity\Ventanilla $ventanillaDestino
+     * @return Ticket
+     */
+    public function setVentanillaDestino(\AppBundle\Entity\Ventanilla $ventanillaDestino = null)
+    {
+        $this->ventanillaDestino = $ventanillaDestino;
+
+        return $this;
+    }
+
+    /**
+     * Get ventanillaDestino
+     *
+     * @return \AppBundle\Entity\Ventanilla 
+     */
+    public function getVentanillaDestino()
+    {
+        return $this->ventanillaDestino;
     }
 }
