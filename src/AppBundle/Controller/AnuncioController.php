@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Anuncio;
 use AppBundle\Form\AnuncioType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Anuncio controller.
@@ -33,10 +34,10 @@ class AnuncioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $agenciaId = $this->session->get('agenciaId');
-        if($this->session->get('agenciaTipoId') == 2){
-            $anuncios = $em->getRepository('AppBundle:Anuncio')->findBy(array('agencia'=>$agenciaId));
+        if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+            $anuncios = $em->getRepository('AppBundle:Anuncio')->findAll();            
         }else{
-            $anuncios = $em->getRepository('AppBundle:Anuncio')->findAll();
+            $anuncios = $em->getRepository('AppBundle:Anuncio')->findBy(array('agencia'=>$agenciaId));
         }
 
         return $this->render('anuncio/index.html.twig', array(
@@ -53,7 +54,20 @@ class AnuncioController extends Controller
     public function newAction(Request $request)
     {
         $anuncio = new Anuncio();
+        $agenciaId = $this->session->get('agenciaId');
         $form = $this->createForm('AppBundle\Form\AnuncioType', $anuncio);
+        
+        if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+            $form->add('agencia','entity',array('class'=>'AppBundle:Agencia'));
+        }else{
+            $form->add('agencia', 'entity', array('class' => 'AppBundle:Agencia',
+                    'query_builder' => function (EntityRepository $e) use ($agenciaId) {
+                        return $e->createQueryBuilder('a')
+                                ->where('a.id = :id')
+                                ->setParameter('id', $agenciaId);
+                    }, 'property' => 'agencia'));            
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,8 +108,19 @@ class AnuncioController extends Controller
      */
     public function editAction(Request $request, Anuncio $anuncio)
     {
+        $agenciaId = $this->session->get('agenciaId');
         $deleteForm = $this->createDeleteForm($anuncio);
         $editForm = $this->createForm('AppBundle\Form\AnuncioType', $anuncio);
+        if($this->session->get('agenciaTipoId') == 2){
+            $editForm->add('agencia', 'entity', array('class' => 'AppBundle:Agencia',
+                    'query_builder' => function (EntityRepository $e) use ($agenciaId) {
+                        return $e->createQueryBuilder('a')
+                                ->where('a.id = :id')
+                                ->setParameter('id', $agenciaId);
+                    }, 'property' => 'agencia'));            
+        }else{
+            $editForm->add('agencia','entity',array('class'=>'AppBundle:Agencia'));
+        }
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

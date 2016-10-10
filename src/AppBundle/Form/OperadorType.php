@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 class OperadorType extends AbstractType
 {
+    
     private $agenciasId;
     private $areasTipo;
 
@@ -35,7 +36,6 @@ class OperadorType extends AbstractType
             ->add('contrasena')
             ->add('esactivo')
             ->add('obs')
-            ->add('agencia')
             ->add('agencia', 'entity', array(
                 'class' => 'AppBundle:Agencia',
                 'property' => 'agencia',

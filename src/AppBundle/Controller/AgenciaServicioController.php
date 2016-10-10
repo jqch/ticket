@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\AgenciaServicio;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * AgenciaServicio controller.
@@ -15,6 +17,11 @@ use AppBundle\Entity\AgenciaServicio;
  */
 class AgenciaServicioController extends Controller
 {
+    public $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      * Lists all Agencia entities.
      *
@@ -24,8 +31,13 @@ class AgenciaServicioController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $agenciaservicio = $em->getRepository('AppBundle:AgenciaServicio')->findAll(array('id'=>'ASC'));
+        $agenciaId = $this->session->get('agenciaId');
+        if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+            $agenciaservicio = $em->getRepository('AppBundle:AgenciaServicio')->findAll();
+        }else{
+            $agenciaservicio = $em->getRepository('AppBundle:AgenciaServicio')->findBy(array('agencia'=>$agenciaId));
+        }
+        //$agenciaservicio = $em->getRepository('AppBundle:AgenciaServicio')->findAll(array('id'=>'ASC'));
 
         return $this->render('agenciaServicio/index.html.twig', array(
             'agenciaservicio' => $agenciaservicio,
@@ -42,7 +54,7 @@ class AgenciaServicioController extends Controller
     {
         try {
             $em = $this->getDoctrine()->getManager();
-
+            $agenciaId = $this->session->get('agenciaId');
             if ($request->getMethod() == 'POST') {
                 $form = $request->get('form');
                 $existe = $em->getRepository('AppBundle:AgenciaServicio')->findOneBy(array('agencia'=>$form['agencia'],'servicio'=>$form['servicio']));
@@ -59,10 +71,24 @@ class AgenciaServicioController extends Controller
                 return $this->redirect($this->generateUrl('agenciaservicio_index'));
             }
 
-            $form = $this->createFormBuilder()
-                ->add('agencia', 'entity',array('class'=>'AppBundle:Agencia'))
-                ->add('servicio', 'entity',array('class'=>'AppBundle:Servicio'))
-                ->getForm();
+            
+            if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+                $form = $this->createFormBuilder()
+                    ->add('agencia','entity',array('class'=>'AppBundle:Agencia'))
+                    ->add('servicio', 'entity',array('class'=>'AppBundle:Servicio'))
+                    ->getForm();
+            }else{
+                $form = $this->createFormBuilder()
+                    ->add('agencia', 'entity', array('class' => 'AppBundle:Agencia',
+                            'query_builder' => function (EntityRepository $e) use ($agenciaId) {
+                                return $e->createQueryBuilder('a')
+                                        ->where('a.id = :id')
+                                        ->setParameter('id', $agenciaId);
+                            }, 'property' => 'agencia'))
+                    ->add('servicio', 'entity',array('class'=>'AppBundle:Servicio'))
+                        ->getForm();
+            }
+            
 
             return $this->render('agenciaServicio/new.html.twig',array('form'=>$form->createView()));
 
@@ -72,7 +98,7 @@ class AgenciaServicioController extends Controller
     }
 
     /**
-     * @Route("/change/{id}", name="agenciaservicio_change")
+     * @Route("/change", name="agenciaservicio_change")
      */
     public function changeAction(Request $request)
     {

@@ -46,13 +46,11 @@
                         <td>{{ agserv.agencia.agencia }}</td>
                         <td>{{ agserv.servicio.servicio }}</td>
                         <td>
-                            {% if agserv.esactivo == true %}Si{% else %}No{% endif %}
+                            <span id="estado{{agserv.id}}">{% if agserv.esactivo == true %}Si{% else %}No{% endif %}</span>
                         </td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="{{ path('agenciaservicio_change', { 'id': agserv.id }) }}">
-                                    <i class="ace-icon fa fa-random bigger-130"></i>
-                                </a>
+                                <button class="btn btn-link" onclick="changeEstado('{{ agserv.id }}');"><i class="ace-icon fa fa-random bigger-130"></i></button>
                                 <a class="red" href="{{ path('agenciaservicio_delete', { 'id': agserv.id }) }}">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
@@ -63,4 +61,29 @@
                 </tbody>
             </table>
         </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var estado;
+        var changeEstado = function(id){
+            $.ajax({
+                type: 'get',
+                cache: false,
+                data: { id:id },
+                url: "{{ path('agenciaservicio_change') }}",
+                beforeSend: function(){
+                    estado = $('#estado'+id).text();
+                    $('#estado'+id).empty();
+                    $('#estado'+id).append('<img src="{{asset("img/loading.gif")}}">');
+                },
+                success: function(data){
+                    if(estado == 'Si' ){
+                        $('#estado'+id).text('No');
+                    }else{
+                        $('#estado'+id).text('Si');
+                    }
+                }
+            })
+        }
+    </script>
 {% endblock %}

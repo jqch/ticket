@@ -49,7 +49,7 @@
             <div id="botones-tiposClientes" style="display:none">
                 {% for tc in tiposCliente %}
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <button id="{{tc.id}}" class="btn btn-primary btn-lg waves-effect" onclick="registrar('{{tc.id}}')">{{tc.clienteTipo}} <br> <span>{{tc.descripcion}}</span> </button>
+                    <button id="{{tc.id}}" class="btn btn-primary btn-lg waves-effect" onclick="registrar('{{tc.id}}')">{{tc.clienteTipo}} <br> <small style="color:#EEEEEE">{{tc.descripcion}}</small> </button>
                 </div>
                 {% endfor %}
             </div>
@@ -122,33 +122,6 @@
                     }
                 });
         }
-        function actualizarEspera(){
-                var xhr2;
-                $(function() {
-                        if (xhr2 && xhr2.readyState != 4) {
-                                xhr2.abort();
-                        }
-                        xhr2 = $.ajax({
-                                type: 'post',
-                                cache: false,
-                                data: {},
-                                url: "{{ path('ventanilla_espera') }}",
-                                beforeSend: function () {
-
-                                },
-                                success: function (data) {
-                                        send(data);
-                                },
-                                statusCode: {
-                                    500: function () {
-
-                                    },
-                                    404: function () {
-
-                                    }
-                                }
-                        });
-                });
-            }
+        
     </script>
 {% endblock %}

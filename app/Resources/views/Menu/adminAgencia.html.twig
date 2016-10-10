@@ -6,22 +6,7 @@
     </a>
     <b class="arrow"></b>
 </li>
-<li class="">
-    <a href="{{path('anuncio_index')}}">
-        <i class="menu-icon fa fa-text-width"></i>
-        <span class="menu-text"> Anuncio </span>
-    </a>
 
-    <b class="arrow"></b>
-</li>
-<li class="">
-    <a href="{{path('anunciolista_index')}}">
-        <i class="menu-icon fa fa-text-width"></i>
-        <span class="menu-text"> Anuncio Lista</span>
-    </a>
-
-    <b class="arrow"></b>
-</li>
 <li class="">
     <a href="{{path('servicio_index')}}">
         <i class="menu-icon fa fa-thumbs-o-up"></i>
@@ -37,6 +22,35 @@
     </a>
 
     <b class="arrow"></b>
+</li>
+<li class="">
+    <a href="" class="dropdown-toggle">
+        <i class="menu-icon fa fa-text-width"></i>
+        <span class="menu-text">
+            Anuncio
+        </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu">
+        <li class="">
+            <a href="{{path('anuncio_index')}}">
+                <i class="menu-icon fa fa-file-o"></i>
+                <span class="menu-text"> Registro</span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="{{path('anunciolista_index')}}">
+                <i class="menu-icon fa fa-table"></i>
+                <span class="menu-text"> Lista</span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+    </ul>
 </li>
 <li class="">
     <a href="" class="dropdown-toggle">

@@ -34,7 +34,6 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Anunciotipo</th>
                     <th>Agencia</th>
                     <th>Anuncio</th>
                     <th>Obs</th>
@@ -45,7 +44,6 @@
             {% for anuncio in anuncios %}
                 <tr>
                     <td><a href="{{ path('anuncio_show', { 'id': anuncio.id }) }}">{{ anuncio.id }}</a></td>
-                    <td>{{ anuncio.anuncioTipo }}</td>
                     <td>{{ anuncio.agencia.agencia }}</td>
                     <td>{{ anuncio.anuncio }}</td>
                     <td>{{ anuncio.obs }}</td>

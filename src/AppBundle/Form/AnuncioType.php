@@ -15,10 +15,9 @@ class AnuncioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('anuncioTipo')
+            ->add('anuncioTipo','hidden',array('data'=>1))
             ->add('anuncio')
             ->add('obs')
-            ->add('agencia')
         ;
     }
     

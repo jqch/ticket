@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Video;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Agencia controller.
@@ -15,6 +17,11 @@ use AppBundle\Entity\Video;
  */
 class VideoController extends Controller
 {
+    public $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      *
      * @Route("/", name="video_index")
@@ -23,8 +30,12 @@ class VideoController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $video = $em->getRepository('AppBundle:Video')->findAll();
+        $agenciaId = $this->session->get('agenciaId');
+        if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+            $video = $em->getRepository('AppBundle:Video')->findAll();
+        }else{
+            $video = $em->getRepository('AppBundle:Video')->findBy(array('agencia'=>$agenciaId));
+        }
 
         return $this->render('video/index.html.twig', array(
             'video' => $video,
@@ -90,11 +101,22 @@ class VideoController extends Controller
                     return $this->redirect($this->generateUrl('video_index'));
                 }*/
             }
-
-            $form = $this->createFormBuilder()
-                ->add('agencia', 'entity',array('class'=>'AppBundle:Agencia'))
-                ->getForm();
-
+            $agenciaId = $this->session->get('agenciaId');
+            if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+                $form = $this->createFormBuilder()
+                    ->add('agencia','entity',array('class'=>'AppBundle:Agencia'))
+                    ->getForm();
+            }else{
+                $form = $this->createFormBuilder()
+                    ->add('agencia', 'entity', array('class' => 'AppBundle:Agencia',
+                        'query_builder' => function (EntityRepository $e) use ($agenciaId) {
+                            return $e->createQueryBuilder('a')
+                                    ->where('a.id = :id')
+                                    ->setParameter('id', $agenciaId);
+                        }, 'property' => 'agencia'))
+                    ->getForm();
+            }
+            
             return $this->render('video/new.html.twig',array('form'=>$form->createView()));
 
         } catch (Exception $e) {
