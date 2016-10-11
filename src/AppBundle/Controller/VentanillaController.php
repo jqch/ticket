@@ -143,7 +143,7 @@ class VentanillaController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
-            /*
+            
             $query = $em->getConnection()->prepare('SELECT get_generar_ticket_llamada_json(:agencia_id::INT, :area_tipo_id::INT, :fecha::DATE, :ventanilla_id::INT, :operador_id::INT)');
             $query->bindValue(':agencia_id',$agenciaId);
             $query->bindValue(':area_tipo_id',$areaTipoId);
@@ -152,13 +152,13 @@ class VentanillaController extends Controller
             $query->bindValue(':operador_id',$operadorId);
             $query->execute();
             $ticket = $query->fetchAll();
-            $ticket = json_decode($ticket[0]['get_genera_ticket_llamada_json']);
+            $ticket = json_decode($ticket[0]['get_generar_ticket_llamada_json']);
 
-
-            */
-            $servicioId = 'C';
-            $clienteTipoId = 'N';
-            $ticketNro = '6';
+            //dump($ticket);die;
+            
+            $servicioId = $ticket->o_servicio_id;
+            $clienteTipoId = $ticket->o_cliente_tipo_id;
+            $ticketNro = $ticket->o_numeroticket;
 
             $em->getConnection()->commit();
             return new JsonResponse(array(
