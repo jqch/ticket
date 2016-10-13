@@ -5,28 +5,28 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="{{path('dashboard')}}">Dashboard</a>
         </li>
-        <li class="active">Servicio</li>
+        <li class="active">Transacción</li>
     </ul><!-- /.breadcrumb -->
 {% endblock %}
 {% block body %}
     <div class="page-header">
         <h1>
-            Servicio
+            Transacción
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                Gestión de Servicios
+                Gestión de Transacciones
             </small>
         </h1>
     </div>
     <div class="clearfix">
         <div class="pull-right tableTools-container">
             <div class="dt-buttons btn-overlap btn-group">
-                <a href="{{ path('servicio_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                <a href="{{ path('transacciontipo_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
             </div>
         </div>
     </div>
     <div class="table-header">
-        Lista de servicios registrados
+        Lista de Transacciones
     </div>
     <div class="table-responsive">
 
@@ -34,28 +34,26 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Servicio</th>
-                    <th>Activo</th>
-                    <th>Área</th>
+                    <th>Transacción</th>
+                    <th>Habilitado</th>
                     <th>Obs</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-            {% for servicio in servicios %}
+            {% for transaccionTipo in transaccionTipos %}
                 <tr>
-                    <td><a href="{{ path('servicio_show', { 'id': servicio.id }) }}">{{ servicio.id }}</a></td>
-                    <td>{{ servicio.servicio }}</td>
-                    <td>{% if servicio.esactivo %}Si{% else %}No{% endif %}</td>
-                    <td>{{ servicio.areaTipo.areaTipo }}</td>
-                    <td>{{ servicio.obs }}</td>
+                    <td><a href="{{ path('transacciontipo_show', { 'id': transaccionTipo.id }) }}">{{ transaccionTipo.id }}</a></td>
+                    <td>{{ transaccionTipo.transaccionTipo }}</td>
+                    <td>{% if transaccionTipo.esactivo %}Si{% else %}No{% endif %}</td>
+                    <td>{{ transaccionTipo.obs }}</td>
                     <td>
                         <div class="action-buttons">
-                            <a class="blue" href="{{ path('servicio_show', { 'id': servicio.id }) }}">
+                            <a class="blue" href="{{ path('transacciontipo_show', { 'id': transaccionTipo.id }) }}">
                                 <i class="ace-icon fa fa-search-plus bigger-130"></i>
                             </a>
 
-                            <a class="green" href="{{ path('servicio_edit', { 'id': servicio.id }) }}">
+                            <a class="green" href="{{ path('transacciontipo_edit', { 'id': transaccionTipo.id }) }}">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                             </a>
                         </div>
@@ -67,3 +65,4 @@
     </div>
 
 {% endblock %}
+

@@ -125,6 +125,97 @@ class VideoController extends Controller
     }
 
     /**
+     * Creates a new Video entity.
+     *
+     * @Route("/upload", name="video_upload")
+     * @Method({"GET", "POST"})
+     */
+    public function uploadAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($request->getMethod() == 'POST') {
+                $form = $request->get('form');
+
+                //$allowedExts = array("mp4","3gp");
+
+                //$extension = pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
+
+                $ruta = 'C:/xampp/htdocs/vid/';
+
+                /*if (($_FILES["video"]["type"] == "video/mp4")
+                && ($_FILES["video"]["size"] < 50000)
+                && in_array($extension, $allowedExts)){
+                    if ($_FILES["video"]["error"] > 0){
+                        //echo "Return Code: " . $_FILES["video"]["error"] . "<br />";
+                        // Error l cargar el video
+                        die('error');
+                        return $this->redirect($this->generateUrl('video_index'));
+                    }else{
+                        //echo "Upload: " . $_FILES["video"]["name"] . "<br />";
+                        //echo "Type: " . $_FILES["video"]["type"] . "<br />";
+                        //echo "Size: " . ($_FILES["video"]["size"] / 1024) . " Kb<br />";
+                        //echo "Temp file: " . $_FILES["video"]["tmp_name"] . "<br />";
+
+                        if (file_exists($ruta . $_FILES["video"]["name"])){
+                            // El video ya existe
+                            die('el video ya existe');
+                            return $this->redirect($this->generateUrl('video_index'));
+                        }else{*/
+                            move_uploaded_file($_FILES["video"]["tmp_name"], $ruta."".$_FILES["video"]["name"]);
+                            //echo "Stored in: " . "upload/" . $_FILES["video"]["name"];
+
+                            $agencias = $request->get('agencias');
+                            for($i=0;$i<count($agencias);$i++){
+                                $newVideo = new Video();
+                                $newVideo->setVideoTipo(1);
+                                $newVideo->setAgencia($em->getRepository('AppBundle:Agencia')->find($agencias[$i]));
+                                $newVideo->setVideo($_FILES["video"]["name"]);
+                                $newVideo->setRuta($ruta);
+                                $em->persist($newVideo);
+                                $em->flush();
+                            }
+                            
+                            return $this->redirect($this->generateUrl('video_index'));
+                        /*}
+                    }
+                }else{
+                    // Error l cargar el video
+                    die('error de entrada');
+                    return $this->redirect($this->generateUrl('video_index'));
+                }*/
+            }
+
+            $agenciaId = $this->session->get('agenciaId');
+            if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+                
+                $agencias = $em->createQueryBuilder()
+                                ->select('a')
+                                ->from('AppBundle:Agencia','a')
+                                ->getQuery()
+                                ->getResult();
+            }else{
+                $agencias = $em->createQueryBuilder()
+                                ->select('a')
+                                ->from('AppBundle:Agencia','a')
+                                ->where('a.id = :agenciaId')
+                                ->setParameter('agenciaId',$agenciaId)
+                                ->getQuery()
+                                ->getResult();
+
+                
+            }
+            
+            return $this->render('video/upload.html.twig',array('agencias'=>$agencias));
+
+        } catch (Exception $e) {
+
+        }
+    }
+
+
+    /**
      * @Route("/delete/{id}", name="video_delete")
      */
     public function deleteAction(Request $request)

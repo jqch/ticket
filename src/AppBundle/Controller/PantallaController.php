@@ -22,6 +22,14 @@ class PantallaController extends Controller
     }
 
     /**
+     * @Route("/test", name="pantalla_test")
+     */
+    public function testAction(Request $request)
+    {
+        return $this->render('Pantalla/pantallaTest.html.twig');
+    }
+
+    /**
      * @Route("/", name="pantalla_index")
      */
     public function indexAction(Request $request)
@@ -48,12 +56,15 @@ class PantallaController extends Controller
 
         $valores = $em->getRepository('AppBundle:Valores')->find(2);
         $cantidad = $valores->getMensajecabecera();
+        $agencia = $em->getRepository('AppBundle:Agencia')->find($agenciaId);
 
         //$firstVideo = 'buscando-a-dori.mp4';
         return $this->render('Pantalla/pantalla.html.twig',array(
             'firstVideo'=>$firstVideo,
             'agenciaId'=>$agenciaId,
-            'cantidad'=>$cantidad
+            'cantidad'=>$cantidad,
+            'agenciaNombre'=>$agencia->getAgencia(),
+            'frase'=>$agencia->getFrase()
         ));
     }
 

@@ -34,10 +34,21 @@ class VentanillaController extends Controller
 
             $area = $em->getRepository('AppBundle:AreaTipo')->find($areaTipoId);
 
-            $ventanillas = $em->getRepository('AppBundle:Ventanilla')->findBy(array(
+            /*$ventanillas = $em->getRepository('AppBundle:Ventanilla')->findBy(array(
                 'agencia'=>$this->session->get('agenciaId'),
                 'areaTipo'=>$areaTipoId
-            ));
+            ));*/
+            $ventanillas = $em->createQueryBuilder()
+                                ->select('v')
+                                ->from('AppBundle:Ventanilla','v')
+                                ->where('v.agencia = :agenciaId')
+                                ->andWhere('v.areaTipo = :areaTipoId')
+                                ->andWhere('v.numero != :numero')
+                                ->setParameter('agenciaId',$this->session->get('agenciaId'))
+                                ->setParameter('areaTipoId',$areaTipoId)
+                                ->setParameter('numero',0)
+                                ->getQuery()
+                                ->getResult();
 
             $em->getConnection()->commit();
             return $this->render('Ventanilla/index.html.twig', array(
@@ -78,6 +89,19 @@ class VentanillaController extends Controller
 
             $transaccionCliente = $em->getRepository('AppBundle:TransaccionTipo')->findAll();
 
+            $ventanillas = $em->createQueryBuilder()
+                                ->select('v')
+                                ->from('AppBundle:Ventanilla','v')
+                                ->where('v.agencia = :agenciaId')
+                                ->andWhere('v.areaTipo = :areaTipoId')
+                                ->andWhere('v.numero NOT IN (:numero)')
+                                ->setParameter('agenciaId',$this->session->get('agenciaId'))
+                                ->setParameter('areaTipoId',$areaTipoId)
+                                ->setParameter('numero',array(0,$ventanilla->getNumero()))
+                                ->getQuery()
+                                ->getResult();
+
+
             $em->getConnection()->commit();
             return $this->render('Ventanilla/ventanilla.html.twig', array(
                 'area'=>$area,
@@ -88,7 +112,8 @@ class VentanillaController extends Controller
                 'ventanillaId'=>$ventanillaId,
                 'transaccionCliente'=>$transaccionCliente,
                 'agenciaId' => $agenciaId,
-                'agencia'=>$agencia
+                'agencia'=>$agencia,
+                'ventanillas'=>$ventanillas
             ));
 
         } catch (Exception $e) {
@@ -152,17 +177,26 @@ class VentanillaController extends Controller
             $query->bindValue(':operador_id',$operadorId);
             $query->execute();
             $ticket = $query->fetchAll();
-            $ticket = json_decode($ticket[0]['get_generar_ticket_llamada_json']);
+            if(count($ticket)>0){
+                $ticket = json_decode($ticket[0]['get_generar_ticket_llamada_json']);
+                
+                $servicioId = $ticket->o_servicio_id;
+                $clienteTipoId = $ticket->o_cliente_tipo_id;
+                $ticketNro = $ticket->o_numeroticket;
 
-            //dump($ticket);die;
+                $existe = 1;
+            }else{
+                $servicioId = 0;
+                $clienteTipoId = 0;
+                $ticketNro = 0;
+
+                $existe = 0;
+            }
             
-            $servicioId = $ticket->o_servicio_id;
-            $clienteTipoId = $ticket->o_cliente_tipo_id;
-            $ticketNro = $ticket->o_numeroticket;
 
             $em->getConnection()->commit();
             return new JsonResponse(array(
-                'existe'=>1,
+                'existe'=>$existe,
                 'estado'=>1,
                 'servicioId'=>$servicioId,
                 'clienteTipoId'=>$clienteTipoId,
@@ -192,6 +226,7 @@ class VentanillaController extends Controller
             $accion = $request->get('accion');
             $transaccionId = $request->get('transaccionId');
             $observacion = $request->get('observacion');
+            $observacion2 = $request->get('observacion2');
 
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
@@ -212,8 +247,12 @@ class VentanillaController extends Controller
             $newTicket->setFecha(new \DateTime('now'));
             $newTicket->setHora(new \DateTime('now'));
             $newTicket->setOperador($operadorId);
-            $newTicket->setAgenciaId(203);
-            $newTicket->setObs($observacion);
+            $newTicket->setAgenciaId($agenciaId);
+            if($accion == 7){
+                $newTicket->setObs($observacion2);
+            }else{
+                $newTicket->setObs($observacion);
+            }
             $em->persist($newTicket);
             $em->flush();
 

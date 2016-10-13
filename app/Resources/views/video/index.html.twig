@@ -21,7 +21,11 @@
     <div class="clearfix">
             <div class="pull-right tableTools-container">
                 <div class="dt-buttons btn-overlap btn-group">
-                    <a href="{{ path('video_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                    {% if app.session.get('areaTipoId') == 1 or app.session.get('areaTipoId') == 2 %}
+                        <a href="{{ path('video_upload') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                    {% else %}
+                        <a href="{{ path('video_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+                    {% endif %}
                 </div>
             </div>
         </div>

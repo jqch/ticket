@@ -100,7 +100,7 @@
             <input type="hidden" id="horaInicio" value="">
             <input type="hidden" id="horaFin" value="">
             <button id="btn-rellamar" class="btn btn-primary nivel2" onclick="accion(1);">Re-llamar</button>
-            <button id="btn-suspender" class="btn btn-danger nivel2" onclick="accion(6)">Suspender/Anular</button>
+            <button id="btn-suspender" class="btn btn-danger nivel2" onclick="accion(6)">Abandono</button>
             <br><br>
             <label for="">Transaccion del cliente:</label>
             <select name="" id="transaccion" class="nivel2">
@@ -111,6 +111,7 @@
             </select><br><br>
             <button id="btn-iniciar" class="btn btn-success nivel3" onclick="accion(2)">Iniciar</button>
             <button id="btn-pausar" class="btn btn-warning nivel4" onclick="accion(3)">Pausar</button>
+            <button id="btn-suspender" class="btn btn-primary nivel5" onclick="accion(7)">Suspender</button>
             <button id="btn-finalizar" class="btn btn-primary nivel5" onclick="accion(5)">Finalizar</button>
             <div class="row">
                 <div id="divObservacion" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="border:1px solid #CCCCCC; background-color:#EEEEEE; padding:5px; display:none">
@@ -119,12 +120,19 @@
                     <button onclick="accion(3)" class="btn btn-warning">Confirmar pausa</button>
                     <button onclick="document.getElementById('divObservacion').style.display = 'none'" class="btn btn-danger">Cancelar</button>
                 </div>
+                <div id="divObservacion2" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="border:1px solid #CCCCCC; background-color:#EEEEEE; padding:5px; display:none">
+                    <p style="color:#1C81BC">Justifique:</p>
+                    <textarea name="observacion2" id="observacion2" style="width:100%"></textarea>
+                    <button onclick="accion(7)" class="btn btn-primary">Confirmar la suspensión</button>
+                    <button onclick="document.getElementById('divObservacion2').style.display = 'none'" class="btn btn-danger">Cancelar</button>
+                </div>
             </div>
             <br><br>
-                <select name="" id="siguienteOperador" class="nivel5">
+                <select name="" id="siguienteOperador" class="nivel50">
                     <option value="">Seleccionar...</option>
-                    <option value="">Jefe de Cajeros</option>
-                    <option value="">Supervisor</option>
+                    {% for vent in ventanillas %}
+                        <option value="{{vent.id}}">{{vent.numero}} - {{vent.areaTipo.areaTipo}}</option>
+                    {% endfor %}
                 </select>
                 <button class="btn btn-purple nivel5" onclick="accion(4)">Derivar</button>
         </div>
@@ -276,6 +284,8 @@
             var ventanillaId = $('#ventanillaId').val();
             var operadorId = $('#operadorId').val();
             var newEstado = 0; // Para intercambiar estadoes en el boton de pausa y continuar
+            var observacion = "";
+            var observacion2 = "";
 
             switch(accion){
                 case 1: transaccionId = 0; observacion = ""; break;
@@ -302,6 +312,17 @@
                 case 4: transaccionId = 0; observacion = ""; break;
                 case 5: transaccionId = transaccionIdGlobal; observacion = ""; break;
                 case 6: transaccionId = 0; observacion = ""; break;
+                case 7: 
+                        $('#divObservacion2').fadeIn();
+                        observacion2 = $('#observacion2').val();
+                        if(observacion2 == ""){
+                            $('#divObservacion2').fadeIn();
+                            alert('Debe justificar el motivo de la suspensión');
+                            return false;
+                        }
+                        transaccionId = transaccionIdGlobal; observacion2 = $('#observacion2').val();
+                        $('#divObservacion2').fadeOut();
+                        break;
             }
 
             if (xhr2 && xhr2.readyState != 4) {
@@ -310,7 +331,7 @@
             xhr2 = $.ajax({
                     type: 'post',
                     cache: false,
-                    data: {agenciaId:agenciaId, servicioId:servicioId, clienteTipoId:clienteTipoId, ticketNro:ticketNro, fecha:fecha, accion:accion, ventanillaId:ventanillaId, operadorId:operadorId, transaccionId:transaccionId, observacion:observacion, newEstado: newEstado},
+                    data: {agenciaId:agenciaId, servicioId:servicioId, clienteTipoId:clienteTipoId, ticketNro:ticketNro, fecha:fecha, accion:accion, ventanillaId:ventanillaId, operadorId:operadorId, transaccionId:transaccionId, observacion:observacion, newEstado: newEstado, observacion2:observacion2},
                     url: "{{ path('ventanilla_accion') }}",
                     beforeSend: function () {
 
@@ -379,6 +400,26 @@
                                     resetearCombos();
                                     break;
                             case 6: // Anular Suspender
+                                    $('.nivel1').removeAttr('disabled');
+                                    $('.nivel2').attr('disabled','disabled');
+                                    $('.nivel3').attr('disabled','disabled');
+                                    $('.nivel4').attr('disabled','disabled');
+                                    $('.nivel5').attr('disabled','disabled');
+                                    $('.ficha').empty();
+                                    resetearCombos();
+                                    break;
+                            case 7: // Finalizar
+                                    $('#observacion2').val('');
+                                    clearInterval(control);
+                                    centesimas = 0;
+                                    segundos = 0;
+                                    minutos = 0;
+                                    horas = 0;
+                                    $('#Centesimas').val("00");
+                                    $('#Segundos').val("00");
+                                    $('#Minutos').val("00");
+                                    $('#Horas').val("00");
+
                                     $('.nivel1').removeAttr('disabled');
                                     $('.nivel2').attr('disabled','disabled');
                                     $('.nivel3').attr('disabled','disabled');

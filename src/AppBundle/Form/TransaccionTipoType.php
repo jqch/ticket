@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ServicioType extends AbstractType
+class TransaccionTipoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,12 +15,8 @@ class ServicioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id')
-            ->add('servicioTipo','hidden',array('data'=>'1'))
-            ->add('servicio')
-            ->add('esactivo','checkbox',array('label'=>'Activo'))
-            ->add('esticket','hidden')
-            ->add('abrev','hidden')
+            ->add('transaccionTipo','text',array('label'=>'Transacción'))
+            ->add('esactivo','checkbox',array('label'=>'Habilitado'))
             ->add('obs')
         ;
     }
@@ -31,7 +27,7 @@ class ServicioType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Servicio'
+            'data_class' => 'AppBundle\Entity\TransaccionTipo'
         ));
     }
 }

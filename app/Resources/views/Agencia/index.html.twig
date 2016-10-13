@@ -35,25 +35,23 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Agenciatipo</th>
                         <th>Código</th>
                         <th>Agencia</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
                         <th>Celular</th>
-                        <th>Fechaapertura</th>
-                        <th>Fechacierre</th>
+                        <th>Fecha Apertura</th>
+                        <th>Fecha Cierre</th>
                         <th>Obs</th>
-                        <th>Anchobanda</th>
-                        <th>Esactivo</th>
-                        <th>Actions</th>
+                        <th>Ancho Banda</th>
+                        <th>Habilitado</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for agencium in agencias %}
                     <tr>
                         <td><a href="{{ path('agencia_show', { 'id': agencium.id }) }}">{{ agencium.id }}</a></td>
-                        <td>{{ agencium.agenciaTipo }}</td>
                         <td>{{ agencium.codigo }}</td>
                         <td>{{ agencium.agencia }}</td>
                         <td>{{ agencium.direccion }}</td>

@@ -32,9 +32,26 @@ class OperadorController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         if($this->session->get('agenciaTipoId') == 2){
-            $operadors = $em->getRepository('AppBundle:Operador')->findBy(array('agencia'=>$this->session->get('agenciaId')));
+            //$operadors = $em->getRepository('AppBundle:Operador')->findBy(array('agencia'=>$this->session->get('agenciaId')));
+            $operadors = $em->createQueryBuilder()
+                            ->select('o')
+                            ->from('AppBundle:Operador','o')
+                            ->innerJoin('AppBundle:Agencia','ag','with','o.agencia = ag.id')
+                            ->where('ag.id = :agenciaId')
+                            ->andWhere('o.ci != :carnet')
+                            ->setParameter('agenciaId',$this->session->get('agenciaId'))
+                            ->setParameter('carnet', 11111111)
+                            ->getQuery()
+                            ->getResult();
         }else{
-            $operadors = $em->getRepository('AppBundle:Operador')->findAll();            
+            //$operadors = $em->getRepository('AppBundle:Operador')->findAll();   
+            $operadors = $em->createQueryBuilder()
+                            ->select('o')
+                            ->from('AppBundle:Operador','o')
+                            ->where('o.ci != :carnet')
+                            ->setParameter('carnet', 11111111)
+                            ->getQuery()
+                            ->getResult();         
         }
 
         return $this->render('operador/index.html.twig', array(

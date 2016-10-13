@@ -7,7 +7,7 @@
         </li>
         <li>
             <i class="ace-icon fa fa-list-ul home-icon"></i>
-            <a href="{{path('servicio_index')}}">Servicio</a>
+            <a href="{{path('transacciontipo_index')}}">Transacción</a>
         </li>
         <li class="active">Datos</li>
     </ul><!-- /.breadcrumb -->
@@ -15,7 +15,7 @@
 {% block body %}
     <div class="page-header">
         <h1>
-            Servicio
+            Transacción
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
                 Datos generales
@@ -25,8 +25,8 @@
     <div class="clearfix">
         <div class="pull-right tableTools-container">
             <div class="dt-buttons btn-overlap btn-group">
-                <a href="{{ path('servicio_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
-                <a href="{{ path('servicio_edit', { 'id': servicio.id }) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-pencil bigger-130 green"></i></a>
+                <a href="{{ path('transacciontipo_index') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-hand-o-left bigger-110 blue"></i></a>
+                <a href="{{ path('transacciontipo_edit', { 'id': transaccionTipo.id }) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-pencil bigger-130 green"></i></a>
                 {{ form_start(delete_form) }}
                     <button type="submit" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-trash-o bigger-110 red"></i></button>
                 {{ form_end(delete_form) }}
@@ -36,27 +36,23 @@
     <div class="table-responsive">
         <table class="table table-stripped">
             <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ servicio.id }}</td>
-                </tr>
-                <tr>
-                    <th>Servicio</th>
-                    <td>{{ servicio.servicio }}</td>
-                </tr>
-                <tr>
-                    <th>Activo</th>
-                    <td>{% if servicio.esactivo %}Si{% else %}No{% endif %}</td>
-                </tr>
-                <tr>
-                    <th>Area</th>
-                    <td>{{ servicio.areaTipo.areaTipo }}</td>
-                </tr>
-                <tr>
-                    <th>Obs</th>
-                    <td>{{ servicio.obs }}</td>
-                </tr>
-            </tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ transaccionTipo.id }}</td>
+            </tr>
+            <tr>
+                <th>Transacción</th>
+                <td>{{ transaccionTipo.transaccionTipo }}</td>
+            </tr>
+            <tr>
+                <th>Habilitado</th>
+                <td>{% if transaccionTipo.esactivo %}Si{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Obs</th>
+                <td>{{ transaccionTipo.obs }}</td>
+            </tr>
+        </tbody>
         </table>
     </div>
 {% endblock %}

@@ -8,7 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Servicio;
 use AppBundle\Form\ServicioType;
-
+use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\EntityRepository;
 /**
  * Servicio controller.
  *
@@ -16,6 +17,11 @@ use AppBundle\Form\ServicioType;
  */
 class ServicioController extends Controller
 {
+    public $session;
+
+    public function __construct(){
+        $this->session = new Session();
+    }
     /**
      * Lists all Servicio entities.
      *
@@ -43,6 +49,16 @@ class ServicioController extends Controller
     {
         $servicio = new Servicio();
         $form = $this->createForm('AppBundle\Form\ServicioType', $servicio);
+        if($this->session->get('areaTipoId') == 1 or $this->session->get('areaTipoId') == 2){
+            $form->add('areaTipo','entity',array('class'=>'AppBundle:AreaTipo'));
+        }else{
+            $form->add('areaTipo','entity', array('class' => 'AppBundle:AreaTipo',
+                    'query_builder' => function (EntityRepository $e) {
+                        return $e->createQueryBuilder('at')
+                                ->where('at.id NOT IN (:id)')
+                                ->setParameter('id', array(0,1,2,3));
+                    }, 'property' => 'areaTipo'));            
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

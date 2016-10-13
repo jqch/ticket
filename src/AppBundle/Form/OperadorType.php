@@ -33,8 +33,8 @@ class OperadorType extends AbstractType
             ->add('materno')
             ->add('nombres')
             ->add('usuario')
-            ->add('contrasena')
-            ->add('esactivo')
+            ->add('contrasena','password')
+            ->add('esactivo','checkbox',array('label'=>'Habilitado'))
             ->add('obs')
             ->add('agencia', 'entity', array(
                 'class' => 'AppBundle:Agencia',

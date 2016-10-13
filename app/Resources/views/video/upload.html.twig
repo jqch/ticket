@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('dashboard')}}">Dashboard</a>
+        </li>
+        <li class="active">Subida de Videos</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-duallistbox.min.css')}}" />
+    <div class="page-header">
+        <h1>
+            Video
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Subida de Videos
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-info">
+                <i class="fa fa-info-circle"></i> Seleccione las agencias a las cuales desea enviar el video.
+            </div>
+            <form action="{{path('video_upload')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group" style="">
+                    <label for="">Seleccionar Video</label>
+                    <input type="file" name="video">
+                </div>
+                <br>
+                <div class="form-group">
+                    <select multiple="multiple" name="agencias[]" id="demo2" class="demo2">
+                        {% for ag in agencias %}
+                            <option value="{{ag.id}}">{{ag.agencia}} - <span style="background:#42BC04">{{ ag.anchobanda }} kbps</span></option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <hr>
+                <button class="btn btn-white btn-info"><i class="fa fa-save"></i> Subir video</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('js/jquery.bootstrap-duallistbox.min.js')}}"></script>
+    <script src="{{asset('js/jquery.raty.min.js')}}"></script>
+    <script type="text/javascript">
+            jQuery(function($){
+                var demo2 = $('.demo2').bootstrapDualListbox({
+                    nonSelectedListLabel: 'Agencias',
+                    selectedListLabel : 'Agencias destino',
+                    heigth: '300px'
+                });
+            });
+        </script>
+{% endblock %}

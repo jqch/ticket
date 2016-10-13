@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+{% block header %}
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{{path('dashboard')}}">Dashboard</a>
+        </li>
+        <li class="active">Tipo de Cliente</li>
+    </ul><!-- /.breadcrumb -->
+{% endblock %}
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Tipos de Clientes
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Tipos de clientes y prioridades
+            </small>
+        </h1>
+    </div>
+    <div class="clearfix">
+        <div class="pull-right tableTools-container">
+            <div class="dt-buttons btn-overlap btn-group">
+                <a href="{{ path('clientetipo_new') }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold"><i class="fa fa-file bigger-110 blue"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="table-header">
+        Lista de tipos de clientes
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped dataTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tipo de cliente</th>
+                <th>Descripcion</th>
+                <th>Prioridad</th>
+                <th>Obs</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for clienteTipo in clienteTipos %}
+            <tr>
+                <td><a href="{{ path('clientetipo_show', { 'id': clienteTipo.id }) }}">{{ clienteTipo.id }}</a></td>
+                <td>{{ clienteTipo.clienteTipo }}</td>
+                <td>{{ clienteTipo.descripcion }}</td>
+                <td>{% if clienteTipo.prioridad == 0 %}Alta{% else %} {% if clienteTipo.prioridad == 1 %} Media {% else %} Baja {% endif %} {% endif %}</td>
+                <td>{{ clienteTipo.obs }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a class="blue" href="{{ path('clientetipo_show', { 'id': clienteTipo.id }) }}">
+                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                        </a>
+
+                        <a class="green" href="{{ path('clientetipo_edit', { 'id': clienteTipo.id }) }}">
+                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

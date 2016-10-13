@@ -34,3 +34,5 @@ $('.dataTable').DataTable({
 
     }
 });
+
+//$('.table-stripped').addClass('table-bordered');

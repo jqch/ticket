@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Agencia;
 use AppBundle\Form\AgenciaType;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Agencia controller.
@@ -43,6 +44,13 @@ class AgenciaController extends Controller
     {
         $agencium = new Agencia();
         $form = $this->createForm('AppBundle\Form\AgenciaType', $agencium);
+        $form->add('lugar', 'entity', array('label'=>'Departamento','class' => 'AppBundle:Lugar',
+                    'query_builder' => function (EntityRepository $e) {
+                        return $e->createQueryBuilder('l')
+                                ->where('l.id IN (:id)')
+                                ->setParameter('id', array(1,2,3,4,5,6,7,8,9));
+                    }, 'property' => 'lugar'));
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -39,8 +39,7 @@
                     <th>Materno</th>
                     <th>Nombres</th>
                     <th>Usuario</th>
-                    <th>Contraseña</th>
-                    <th>Esactivo</th>
+                    <th>Habilitado</th>
                     <th>Agencia</th>
                     <th>Área</th>
                     <th>Obs</th>
@@ -56,8 +55,7 @@
                     <td>{{ operador.materno }}</td>
                     <td>{{ operador.nombres }}</td>
                     <td>{{ operador.usuario }}</td>
-                    <td>{{ operador.contrasena }}</td>
-                    <td>{% if operador.esactivo %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if operador.esactivo %}Si{% else %}No{% endif %}</td>
                     <td>{{operador.agencia.agencia}}</td>
                     <td>{{operador.areaTipo.areaTipo}}</td>
                     <td>{{ operador.obs }}</td>
