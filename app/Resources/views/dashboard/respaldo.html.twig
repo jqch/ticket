@@ -97,160 +97,9 @@
 			</div>
 
 			<div class="row">
-				<div class="col-sm-7">
-					<div class="widget-box transparent">
-						<div class="widget-header widget-header-flat">
-							<h4 class="widget-title lighter">
-								<i class="ace-icon fa fa-star orange"></i>
-								Detalle de tickets por Departamento
-							</h4>
-
-							<div class="widget-toolbar">
-								<a href="#" data-action="collapse">
-									<i class="ace-icon fa fa-chevron-up"></i>
-								</a>
-							</div>
-						</div>
-
-						<div class="widget-body">
-							<div class="widget-main no-padding">
-								<table class="table table-bordered table-striped">
-									<thead class="thin-border-bottom">
-										<tr>
-											<th>Departamento
-											</th>
-
-											<th>En atención
-											</th>
-
-											<th class="hidden-480">En Pausa
-											</th>
-											<th class="hidden-480">Derivados
-											</th>
-											<th class="hidden-480">Atendidos
-											</th>
-											<th class="hidden-480">Abandonados
-											</th>
-											<th class="hidden-480">Suspendidos
-											</th>
-											<th class="hidden-480">Total
-											</th>
-											<th class="hidden-480">
-												<i class="ace-icon fa fa-caret-right blue"></i>Opcion
-											</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										{% for r in registros %}
-										<tr>
-											<td>{{r.departamento}}</td>
-											<td><b class="blue">{{r.atencion}}</b></td>
-											<td><b class="blue">{{r.pausa}}</b></td>
-											<td><b class="blue">{{r.derivados}}</b></td>
-											<td><b class="blue">{{r.terminados}}</b></td>
-											<td><b class="blue">{{r.abandonados}}</b></td>
-											<td><b class="blue">{{r.suspendidos}}</b></td>
-											<td><b class="blue">{{r.total}}</b></td>
-											<td class="hidden-480">
-												<span class="label label-info arrowed-right arrowed-in">Detalles</span>
-											</td>
-										</tr>
-										{% endfor %}
-									</tbody>
-								</table>
-							</div><!-- /.widget-main -->
-						</div><!-- /.widget-body -->
-					</div><!-- /.widget-box -->
-				</div><!-- /.col -->
-				
-
-				<div class="vspace-12-sm"></div>
-
-				<div class="col-sm-5">
-					<div class="widget-box">
-						<div class="widget-header widget-header-flat widget-header-small">
-							<h5 class="widget-title">
-								<i class="ace-icon fa fa-signal"></i>
-								Estados de tickets
-							</h5>
-
-							<div class="widget-toolbar no-border">
-								<div class="inline dropdown-hover">
-									<button class="btn btn-minier btn-primary">
-										Exportar
-										<i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
-									</button>
-
-									<ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-										<li class="active">
-											<a href="#" class="blue">
-												<i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
-												 .jpg
-											</a>
-										</li>
-
-										<li>
-											<a href="#">
-												<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-												 .png
-											</a>
-										</li>
-
-										<li>
-											<a href="#">
-												<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-												.pdf
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-
-						<div class="widget-body">
-							<div class="widget-main">
-								<div id="piechart-placeholder" style="width: 90%; min-height: 150px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 323px; height: 150px;" width="646" height="300"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 323px; height: 150px;" width="646" height="300"></canvas><div class="legend"><div style="position: absolute; width: 90px; height: 110px; top: 15px; right: -30px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:15px;right:-30px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #68BC31;overflow:hidden"></div></div></td><td class="legendLabel">social networks</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #2091CF;overflow:hidden"></div></div></td><td class="legendLabel">search engines</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #AF4E96;overflow:hidden"></div></div></td><td class="legendLabel">ad campaigns</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #DA5430;overflow:hidden"></div></div></td><td class="legendLabel">direct traffic</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td><td class="legendLabel">other</td></tr></tbody></table></div></div>
-
-								<div class="hr hr8 hr-double"></div>
-
-								<div class="clearfix">
-									<div class="grid3">
-										<span class="grey">
-											<i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
-											&nbsp; likes
-										</span>
-										<h4 class="bigger pull-right">1,255</h4>
-									</div>
-
-									<div class="grid3">
-										<span class="grey">
-											<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
-											&nbsp; tweets
-										</span>
-										<h4 class="bigger pull-right">941</h4>
-									</div>
-
-									<div class="grid3">
-										<span class="grey">
-											<i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
-											&nbsp; pins
-										</span>
-										<h4 class="bigger pull-right">1,050</h4>
-									</div>
-								</div>
-							</div><!-- /.widget-main -->
-						</div><!-- /.widget-body -->
-					</div><!-- /.widget-box -->
-				</div><!-- /.col -->
-			</div><!-- /.row -->
-
-			<div class="hr hr32 hr-dotted"></div>
-
-			<div class="row">
 				<div class="space-6"></div>
-				
-				<div class="col-sm-6 infobox-container">
+
+				<div class="col-sm-7 infobox-container">
 					<div class="infobox infobox-green">
 						<div class="infobox-icon">
 							<i class="ace-icon fa fa-comments"></i>
@@ -374,7 +223,206 @@
 					</div>
 				</div>
 
-				<div class="col-sm-6">
+				<div class="vspace-12-sm"></div>
+
+				<div class="col-sm-5">
+					<div class="widget-box">
+						<div class="widget-header widget-header-flat widget-header-small">
+							<h5 class="widget-title">
+								<i class="ace-icon fa fa-signal"></i>
+								Traffic Sources
+							</h5>
+
+							<div class="widget-toolbar no-border">
+								<div class="inline dropdown-hover">
+									<button class="btn btn-minier btn-primary">
+										This Week
+										<i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+									</button>
+
+									<ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+										<li class="active">
+											<a href="#" class="blue">
+												<i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+												This Week
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+												Last Week
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+												This Month
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+												Last Month
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="widget-body">
+							<div class="widget-main">
+								<div id="piechart-placeholder" style="width: 90%; min-height: 150px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 323px; height: 150px;" width="646" height="300"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 323px; height: 150px;" width="646" height="300"></canvas><div class="legend"><div style="position: absolute; width: 90px; height: 110px; top: 15px; right: -30px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:15px;right:-30px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #68BC31;overflow:hidden"></div></div></td><td class="legendLabel">social networks</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #2091CF;overflow:hidden"></div></div></td><td class="legendLabel">search engines</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #AF4E96;overflow:hidden"></div></div></td><td class="legendLabel">ad campaigns</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #DA5430;overflow:hidden"></div></div></td><td class="legendLabel">direct traffic</td></tr><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td><td class="legendLabel">other</td></tr></tbody></table></div></div>
+
+								<div class="hr hr8 hr-double"></div>
+
+								<div class="clearfix">
+									<div class="grid3">
+										<span class="grey">
+											<i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+											&nbsp; likes
+										</span>
+										<h4 class="bigger pull-right">1,255</h4>
+									</div>
+
+									<div class="grid3">
+										<span class="grey">
+											<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+											&nbsp; tweets
+										</span>
+										<h4 class="bigger pull-right">941</h4>
+									</div>
+
+									<div class="grid3">
+										<span class="grey">
+											<i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+											&nbsp; pins
+										</span>
+										<h4 class="bigger pull-right">1,050</h4>
+									</div>
+								</div>
+							</div><!-- /.widget-main -->
+						</div><!-- /.widget-body -->
+					</div><!-- /.widget-box -->
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+
+			<div class="hr hr32 hr-dotted"></div>
+
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-flat">
+							<h4 class="widget-title lighter">
+								<i class="ace-icon fa fa-star orange"></i>
+								Popular Domains
+							</h4>
+
+							<div class="widget-toolbar">
+								<a href="#" data-action="collapse">
+									<i class="ace-icon fa fa-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+
+						<div class="widget-body">
+							<div class="widget-main no-padding">
+								<table class="table table-bordered table-striped">
+									<thead class="thin-border-bottom">
+										<tr>
+											<th>
+												<i class="ace-icon fa fa-caret-right blue"></i>name
+											</th>
+
+											<th>
+												<i class="ace-icon fa fa-caret-right blue"></i>price
+											</th>
+
+											<th class="hidden-480">
+												<i class="ace-icon fa fa-caret-right blue"></i>status
+											</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td>internet.com</td>
+
+											<td>
+												<small>
+													<s class="red">$29.99</s>
+												</small>
+												<b class="green">$19.99</b>
+											</td>
+
+											<td class="hidden-480">
+												<span class="label label-info arrowed-right arrowed-in">on sale</span>
+											</td>
+										</tr>
+
+										<tr>
+											<td>online.com</td>
+
+											<td>
+												<b class="blue">$16.45</b>
+											</td>
+
+											<td class="hidden-480">
+												<span class="label label-success arrowed-in arrowed-in-right">approved</span>
+											</td>
+										</tr>
+
+										<tr>
+											<td>newnet.com</td>
+
+											<td>
+												<b class="blue">$15.00</b>
+											</td>
+
+											<td class="hidden-480">
+												<span class="label label-danger arrowed">pending</span>
+											</td>
+										</tr>
+
+										<tr>
+											<td>web.com</td>
+
+											<td>
+												<small>
+													<s class="red">$24.99</s>
+												</small>
+												<b class="green">$19.95</b>
+											</td>
+
+											<td class="hidden-480">
+												<span class="label arrowed">
+													<s>out of stock</s>
+												</span>
+											</td>
+										</tr>
+
+										<tr>
+											<td>domain.com</td>
+
+											<td>
+												<b class="blue">$12.00</b>
+											</td>
+
+											<td class="hidden-480">
+												<span class="label label-warning arrowed arrowed-right">SOLD</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><!-- /.widget-main -->
+						</div><!-- /.widget-body -->
+					</div><!-- /.widget-box -->
+				</div><!-- /.col -->
+
+				<div class="col-sm-7">
 					<div class="widget-box transparent">
 						<div class="widget-header widget-header-flat">
 							<h4 class="widget-title lighter">
@@ -1189,11 +1237,11 @@
 			
 			  var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
 			  var data = [
-				{ label: "Atendidos",  data: 38.7, color: "#68BC31"},
-				{ label: "En atención",  data: 24.5, color: "#2091CF"},
-				{ label: "Abandonados",  data: 8.2, color: "#AF4E96"},
-				{ label: "Derivados",  data: 18.6, color: "#DA5430"},
-				{ label: "Suspendidos",  data: 10, color: "#FEE074"}
+				{ label: "social networks",  data: 38.7, color: "#68BC31"},
+				{ label: "search engines",  data: 24.5, color: "#2091CF"},
+				{ label: "ad campaigns",  data: 8.2, color: "#AF4E96"},
+				{ label: "direct traffic",  data: 18.6, color: "#DA5430"},
+				{ label: "other",  data: 10, color: "#FEE074"}
 			  ]
 			  function drawPieChart(placeholder, data, position) {
 			 	  $.plot(placeholder, data, {
